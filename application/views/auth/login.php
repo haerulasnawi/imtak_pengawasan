@@ -14,9 +14,8 @@
                                 <div class="text-center">
                                     <h1 class="h4 text-gray-900 mb-4">Holla, Welcome Back!</h1>
                                 </div>
-                                <div class="alert alert-success" role="alert">
-                                    <?= $this->session->flashdata('message'); ?>
-                                </div>
+                                <!-- Flash data -->
+                                <?php $this->view('message')?>
                                 <form class="user" method="post" action="<?= base_url('auth'); ?>">
                                     <div class="form-group">
                                         <input type="text" class="form-control form-control-user" id="email" name="email" placeholder="Enter Email Address..." value="<?= set_value('email'); ?>">
@@ -48,3 +47,11 @@
     </div>
 
 </div>
+<script>
+      $(document).ready(function() {
+          $('.confirm-div').hide();
+          <?php if($this->session->flashdata('message')){ ?>
+          $('.confirm-div').html('<?php echo $this->session->flashdata('message'); ?>').show();
+          <?php } ?>
+          });
+    </script>

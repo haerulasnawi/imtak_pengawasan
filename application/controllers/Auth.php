@@ -53,7 +53,7 @@ class Auth extends CI_Controller
                 redirect('auth');
             }
         } else {
-            $this->session->set_flashdata('messsage', '<div class="alert alert-danger" role="alert">
+            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">
             Email is not registered!
             </div>');
             redirect('auth');
@@ -90,7 +90,7 @@ class Auth extends CI_Controller
             ];
 
             $this->db->insert('user', $data);
-            $this->session->set_flashdata('messsage', 'Congratulation, please login');
+            $this->session->set_flashdata('message', 'Congratulation, please login');
             redirect('auth');
         }
     }
@@ -100,7 +100,7 @@ class Auth extends CI_Controller
         $this->session->unset_userdata('email');
         $this->session->unset_userdata('role_id');
 
-        $this->session->set_flashdata('messsage', '<div class="alert 
+        $this->session->set_flashdata('messsage', '<div class="alert
             alert-success" role="alert">You have been logged out!
             </div>');
         redirect('auth');
