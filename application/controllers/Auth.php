@@ -39,23 +39,22 @@ class Auth extends CI_Controller
                         'role_id' => $user['role_id']
                     ];
                     $this->session->set_userdata($data);
+                    if ($user['role_id'] == 1) {
+                        redirect('admin');
+                    } else {
+                        redirect('user');
+                    }
                     redirect('user');
                 } else {
-                    $this->session->set_flashdata('messsage', '<div class="alert alert-danger" role="alert">
-                    Wrong Password!
-                    </div>');
+                    $this->session->set_flashdata('wrong', 'Wrong Password!');
                     redirect('auth');
                 }
             } else {
-                $this->session->set_flashdata('messsage', '<div class="alert alert-danger" role="alert">
-                This Email is not activated!
-                </div>');
+                $this->session->set_flashdata('activated', 'This Email is not activated!');
                 redirect('auth');
             }
         } else {
-            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">
-            Email is not registered!
-            </div>');
+            $this->session->set_flashdata('registered', 'Email is not registered!');
             redirect('auth');
         }
     }
@@ -90,7 +89,7 @@ class Auth extends CI_Controller
             ];
 
             $this->db->insert('user', $data);
-            $this->session->set_flashdata('message', 'Congratulation, please login');
+            $this->session->set_flashdata('message', 'Congratulation, your account has been created, please login!');
             redirect('auth');
         }
     }
@@ -100,9 +99,7 @@ class Auth extends CI_Controller
         $this->session->unset_userdata('email');
         $this->session->unset_userdata('role_id');
 
-        $this->session->set_flashdata('messsage', '<div class="alert
-            alert-success" role="alert">You have been logged out!
-            </div>');
+        $this->session->set_flashdata('logout', 'You have been logged out!');
         redirect('auth');
     }
 }
