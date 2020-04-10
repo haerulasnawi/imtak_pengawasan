@@ -102,4 +102,9 @@ class Auth extends CI_Controller
         $this->session->set_flashdata('logout', 'You have been logged out!');
         redirect('auth');
     }
+
+    public function blocked()
+    {
+        $this->load->view('auth/blocked');
+    }
 }
