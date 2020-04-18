@@ -11,4 +11,10 @@ class Menu_model extends CI_Model
 
         return $this->db->query($query)->result_array();
     }
+
+    function editmenu($id)
+    {
+        $query = $this->db->get_where('user_menu', array('id' => $id));
+        return $query;
+    }
 }

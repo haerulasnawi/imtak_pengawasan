@@ -30,14 +30,28 @@ class Menu extends CI_Controller
             redirect('menu');
         }
     }
-    public function edit()
+    public function editmenu()
     {
-        $id_menu = $this->input->post('id');
-        $menu = $this->input->post('menu');
-        $hasil = $this->db->query("UPDATE user_menu SET menu = $menu WHERE id ='$id_menu'");
-        return $hasil;
-        $this->session->set_flashdata('menus', '<div class="alert alert-success alert-dismissible" role="alert"Menu successfully updated! </div>');
-        redirect('menu');
+        $data['title'] = 'Menu Management';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+
+        if ($this->form_validation->run() == false) {
+            $this->load->view('templates/header', $data);
+            $this->load->view('templates/sidebar', $data);
+            $this->load->view('templates/topbar', $data);
+            $this->load->view('menu/index', $data);
+            $this->load->view('templates/footer');
+        } else {
+            $menus = $this->input->post('menu');
+            $id = $this->input->post('id');
+
+            $this->db->set('menu', $menus);
+            $this->db->where('id', $id);
+            $this->db->update('user_menu');
+
+            $this->session->set_flashdata('menus', '<div class="alert alert-success alert-dismissible" role="alert">Menu successfully changed! </div>');
+            redirect('menu');
+        }
     }
 
     public function submenu()
