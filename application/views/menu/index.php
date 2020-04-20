@@ -8,7 +8,7 @@
         <div class="col-lg-6">
             <?= form_error('menu', '<div class="alert alert-danger alert-dismissible" role="alert">', '</div>'); ?>
             <?= $this->session->flashdata('menus'); ?>
-            <a href="" class="btn btn-primary mb-3" data-toggle="modal" data-target="#newMenuModal">Add New Menu</a>
+            <a href="" class="btn btn-primary mb-3 tombolTambahData" data-toggle="modal" data-target="#newMenuModal">Add New Menu</a>
             <table class="table table-hover">
                 <thead>
                     <tr>
@@ -24,7 +24,7 @@
                             <th scope="row"><?= $i; ?></th>
                             <td><?= $m['menu']; ?></td>
                             <td>
-                                <a href="" data-toggle="modal" data-target="#editMenuModal" class="badge badge-success">edit</a>
+                                <a href="" data-toggle="modal" data-id="<?= $m['id']; ?>" data-target="#newMenuModal" class="badge badge-success tampilModalUbah">edit</a>
                                 <a href="" class="badge badge-danger">delete</a>
                             </td>
                         </tr>
@@ -53,6 +53,7 @@
                 </button>
             </div>
             <form action="<?= base_url('menu'); ?>" method="post">
+                <input type="hidden" name="id" id="id">
                 <div class="modal-body">
                     <div class="form-group">
                         <input type="text" class="form-control" id="menu" name="menu" placeholder="Menu name">
@@ -62,33 +63,6 @@
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary">Add</button>
                 </div>
-            </form>
-        </div>
-    </div>
-</div>
-<!-- Modal Edit Tabel -->
-<div class="modal fade" id="editMenuModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editMenuModal">Edit Menu</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form action="<?= base_url('menu/editmenu'); ?>" method="post">
-
-                <div class="modal-body">
-                    <div class="form-group">
-                        <input type="hidden" id="id" name="id">
-                        <input type="text" class="form-control" id="menu" name="menu" placeholder="Edit menu">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary" value="Update">Change</button>
-                </div>
-
             </form>
         </div>
     </div>

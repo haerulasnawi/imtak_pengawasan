@@ -30,29 +30,6 @@ class Menu extends CI_Controller
             redirect('menu');
         }
     }
-    public function editmenu()
-    {
-        $data['title'] = 'Menu Management';
-        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
-
-        if ($this->form_validation->run() == false) {
-            $this->load->view('templates/header', $data);
-            $this->load->view('templates/sidebar', $data);
-            $this->load->view('templates/topbar', $data);
-            $this->load->view('menu/index', $data);
-            $this->load->view('templates/footer');
-        } else {
-            $menus = $this->input->post('menu');
-            $id = $this->input->post('id');
-
-            $this->db->set('menu', $menus);
-            $this->db->where('id', $id);
-            $this->db->update('user_menu');
-
-            $this->session->set_flashdata('menus', '<div class="alert alert-success alert-dismissible" role="alert">Menu successfully changed! </div>');
-            redirect('menu');
-        }
-    }
 
     public function submenu()
     {
@@ -85,6 +62,24 @@ class Menu extends CI_Controller
             $this->db->insert('user_sub_menu', $data);
             $this->session->set_flashdata('menus', '<div class="alert alert-success alert-dismissible" role="alert"New Sub Menu successfully created! </div>');
             redirect('menu/submenu');
+        }
+    }
+
+    public function getubah()
+    {
+
+        $this->load->model('Menu_model', 'menu');
+        echo json_encode($this->menu->getDataUbah($_POST['id']));
+    }
+
+    public function editmenu()
+    {
+        $this->load->model('Menu_model', 'menu');
+        if ($this->menu->ubah($_POST) > 0) {
+            $this->session->set_flashdata('menus', '<div class="alert alert-success alert-dismissible" role="alert">Menu successfully changed! </div>');
+            redirect('menu');
+        } else {
+            $this->session->set_flashdata('menus', '<div class="alert alert-danger alert-dismissible" role="alert">Error while changed menu! </div>');
         }
     }
 }
