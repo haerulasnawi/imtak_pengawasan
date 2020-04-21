@@ -25,7 +25,7 @@
                             <td><?= $m['menu']; ?></td>
                             <td>
                                 <a href="" data-toggle="modal" data-id="<?= $m['id']; ?>" data-target="#newMenuModal" class="badge badge-success tampilModalUbah">edit</a>
-                                <a href="" class="badge badge-danger">delete</a>
+                                <a href="<?= base_url('menu/deletemenu/' . $m['id']); ?>" class="badge badge-danger" onclick="return confirm('Want to delete this stuff ?')">delete</a>
                             </td>
                         </tr>
                         <?php $i++; ?>
@@ -52,17 +52,18 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="<?= base_url('menu'); ?>" method="post">
-                <input type="hidden" name="id" id="id">
-                <div class="modal-body">
+            <div class="modal-body">
+                <form action="<?= base_url('menu'); ?>" method="post">
+                    <input type="hidden" name="id" id="id">
+
                     <div class="form-group">
                         <input type="text" class="form-control" id="menu" name="menu" placeholder="Menu name">
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Add</button>
-                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Add</button>
+            </div>
             </form>
         </div>
     </div>

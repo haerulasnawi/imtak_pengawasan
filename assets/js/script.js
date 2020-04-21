@@ -12,7 +12,7 @@ $(function () {
         $('#newMenuModalLabel').html('Change Menu');
 
         $('.modal-footer button[type=submit]').html('Change');
-        $('.modal-body form').attr('action', 'http://localhost/wpu-login/menu/editmenu');
+        $('.modal-body form').attr("action", "<?= base_url('menu/editmenu');?>");
 
         const id = $(this).data('id');
 

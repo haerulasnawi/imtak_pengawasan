@@ -74,12 +74,37 @@ class Menu extends CI_Controller
 
     public function editmenu()
     {
+        $data['title'] = 'Menu Management';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+
+        $data['menu'] = $this->db->get('user_menu')->result_array();
+
+        $this->form_validation->set_rules('menu', 'Menu', 'required');
         $this->load->model('Menu_model', 'menu');
         if ($this->menu->ubah($_POST) > 0) {
             $this->session->set_flashdata('menus', '<div class="alert alert-success alert-dismissible" role="alert">Menu successfully changed! </div>');
             redirect('menu');
         } else {
-            $this->session->set_flashdata('menus', '<div class="alert alert-danger alert-dismissible" role="alert">Error while changed menu! </div>');
+            $this->session->set_flashdata('menus', '<div class="alert alert-danger alert-dismissible" role="alert">Error while changing menu! </div>');
+        }
+    }
+
+    public function deletemenu($id)
+    {
+        $data['title'] = 'Menu Management';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+
+        $data['menu'] = $this->db->get('user_menu')->result_array();
+
+
+        $this->load->model('Menu_model', 'menu');
+
+        if ($this->menu->deleteMenu($id) > 0) {
+            $this->session->set_flashdata('menus', '<div class="alert alert-success alert-dismissible" role="alert">Menu successfully deleted! </div>');
+            redirect('menu');
+        } else {
+            $this->session->set_flashdata('menus', '<div class="alert alert-danger alert-dismissible" role="alert">Error while deleting menu! </div>');
+            redirect('menu');
         }
     }
 }
