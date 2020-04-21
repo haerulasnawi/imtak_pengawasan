@@ -25,7 +25,7 @@
                             <td><?= $m['menu']; ?></td>
                             <td>
                                 <a href="" data-toggle="modal" data-id="<?= $m['id']; ?>" data-target="#newMenuModal" class="badge badge-success tampilModalUbah">edit</a>
-                                <a href="<?= base_url('menu/deletemenu/' . $m['id']); ?>" class="badge badge-danger" onclick="return confirm('Want to delete this stuff ?')">delete</a>
+                                <a href="<?= site_url('menu/deletemenu/' . $m['id']); ?>" class="badge badge-danger" onclick="return confirm('Want to delete this stuff ?')">delete</a>
                             </td>
                         </tr>
                         <?php $i++; ?>

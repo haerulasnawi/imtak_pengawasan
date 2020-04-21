@@ -86,6 +86,7 @@ class Menu extends CI_Controller
             redirect('menu');
         } else {
             $this->session->set_flashdata('menus', '<div class="alert alert-danger alert-dismissible" role="alert">Error while changing menu! </div>');
+            redirect('menu');
         }
     }
 
