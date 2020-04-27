@@ -16,7 +16,7 @@
                                 </div>
                                 <!-- Flash data -->
                                 <?php $this->view('message') ?>
-
+                                <?= $this->session->flashdata('menus') ?>
                                 <form class="user" method="post" action="<?= base_url('auth'); ?>">
                                     <div class="form-group">
                                         <input type="text" class="form-control form-control-user" id="email" name="email" placeholder="Enter Email Address..." value="<?= set_value('email'); ?>">

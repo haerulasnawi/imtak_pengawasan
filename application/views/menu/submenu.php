@@ -6,14 +6,27 @@
 
     <div class="row">
         <div class="col-lg">
+            <?= $this->session->flashdata('menus'); ?>
             <?php if (validation_errors()) : ?>
                 <div class="alert alert-danger" role="alert">
                     <?= validation_errors(); ?>
                 </div>
             <?php endif; ?>
 
-            <?= $this->session->flashdata('menus'); ?>
-            <a href="" class="btn btn-primary mb-3" data-toggle="modal" data-target="#newSubMenuModal">Add New Submenu</a>
+            <a href="" class="btn btn-primary mb-2" data-toggle="modal" data-target="#newSubMenuModal">Add New Submenu</a>
+            <div class="row mb-1 justify-content-end">
+                <div class="col-lg-3">
+
+                    <form action="<?= base_url('menu/carisubmenu'); ?>" method="post">
+                        <div class="input-group mb-2">
+                            <input type="text" class="form-control" placeholder="Find submenu.." name="keyword" id="keyword" autocomplete="off">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="submit" value="keyword" name="keyword" id="tombolCari">Search</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
             <table class="table table-hover">
                 <thead>
                     <tr>
