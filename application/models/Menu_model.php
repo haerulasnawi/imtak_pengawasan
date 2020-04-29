@@ -41,4 +41,12 @@ class Menu_model extends CI_Model
 
         return $this->db->query($query)->result_array();
     }
+
+    public function deleteUser($id)
+    {
+
+        $this->db->delete('user', array('id' => $id));
+
+        return $this->db->affected_rows();
+    }
 }

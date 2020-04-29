@@ -2,11 +2,11 @@
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
     <!-- Sidebar - Brand -->
-    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="<?= base_url('user') ?>">
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="<?= base_url('humanresource') ?>">
         <div class="sidebar-brand-icon rotate-n-0">
             <i class="	fas fa-calendar-check"></i>
         </div>
-        <div class="sidebar-brand-text mx-3">Admin</div>
+        <div class="sidebar-brand-text mx-3">PT. STAR Software</div>
     </a>
 
     <!-- Divider -->

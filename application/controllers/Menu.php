@@ -224,4 +224,23 @@ class Menu extends CI_Controller
             die;
         }
     }
+
+    public function deleteuser($id)
+    {
+        $data['title'] = 'User Management';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+
+        $data['user'] = $this->db->get('user')->result_array();
+
+
+        $this->load->model('Menu_model', 'menu');
+
+        if ($this->menu->deleteUser($id) > 0) {
+            $this->session->set_flashdata('menus', '<div class="alert alert-success alert-dismissible" role="alert">User successfully deleted! </div>');
+            redirect('menu/userlist');
+        } else {
+            $this->session->set_flashdata('menus', '<div class="alert alert-danger alert-dismissible" role="alert">Error while deleting user! </div>');
+            redirect('menu/userlist');
+        }
+    }
 }

@@ -44,8 +44,7 @@
                             <td><?= date('d F Y', $us['date_created']); ?></td>
 
                             <td>
-                                <a href="" class="badge badge-success tampilModalUbah">edit</a>
-                                <a href="" class="badge badge-danger" onclick="return confirm('Want to delete this stuff ?')">delete</a>
+                                <a href="<?= site_url('menu/deleteuser/' . $us['id']); ?>" class="badge badge-danger" onclick="return confirm('Want to delete this stuff ?')">delete</a>
                             </td>
                         </tr>
                         <?php $i++; ?>
