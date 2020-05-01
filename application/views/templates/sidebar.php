@@ -6,7 +6,7 @@
         <div class="sidebar-brand-icon rotate-n-0">
             <i class="	fas fa-calendar-check"></i>
         </div>
-        <div class="sidebar-brand-text mx-3">Admin</div>
+        <div class="sidebar-brand-text mx-3">PT. STAR Software</div>
     </a>
 
     <!-- Divider -->
