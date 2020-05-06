@@ -15,45 +15,70 @@
 
         <?php endif; ?>
 
-        <div class="col-lg-10">
+        <div class="col-lg-12">
 
-            <a href="" class="btn btn-primary mb-3" data-toggle="modal" data-target="#newUserModal">Add New User</a>
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">Image</th>
-                        <th scope="col">Role ID</th>
-                        <th scope="col">Active</th>
-                        <th scope="col">Created</th>
-                        <th scope="col">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php $i = 1; ?>
-                    <?php foreach ($userlist as $us) : ?>
-                        <tr>
-                            <th scope="row"><?= $i; ?></th>
-                            <td><?= $us['name']; ?></td>
-                            <td><?= $us['email']; ?></td>
-                            <td><?= $us['image']; ?></td>
-                            <td><?= $us['role_id']; ?></td>
-                            <td><?= $us['is_active']; ?></td>
-                            <td><?= date('d F Y', $us['date_created']); ?></td>
+            <body>
+                <link rel="stylesheet" href="<?= base_url('assets'); ?>/css/sb-admin-2.min.css" />
+                <link rel="stylesheet" href="<?= base_url('assets'); ?>/vendor/datatables/dataTables.bootstrap4.min.css" />
 
-                            <td>
-                                <a href="<?= site_url('menu/deleteuser/' . $us['id']); ?>" class="badge badge-danger" onclick="return confirm('Want to delete this stuff ?')">delete</a>
-                            </td>
-                        </tr>
-                        <?php $i++; ?>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
+
+                <a href="" class="btn btn-primary mb-3" data-toggle="modal" data-target="#newUserModal">Add New User</a>
+                <div class="table-responsive-md" style="margin-bottom: 15px;">
+                    <table class="table table-hover" cellspacing="0" width="100%" id="tabeluserlist">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Image</th>
+                                <th scope="col">Role ID</th>
+                                <th scope="col">Active</th>
+                                <th scope="col">Created</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php $i = 1; ?>
+                            <?php foreach ($userlist as $us) : ?>
+                                <tr>
+                                    <th scope="row"><?= $i; ?></th>
+                                    <td><?= $us['name']; ?></td>
+                                    <td><?= $us['email']; ?></td>
+                                    <td><?= $us['image']; ?></td>
+                                    <td><?= $us['role_id']; ?></td>
+                                    <td><?= $us['is_active']; ?></td>
+                                    <td><?= date('d F Y', $us['date_created']); ?></td>
+
+                                    <td>
+                                        <a href="<?= site_url('menu/deleteuser/' . $us['id']); ?>" class="badge badge-danger" onclick="return confirm('Want to delete this stuff ?')">delete</a>
+                                    </td>
+                                </tr>
+                                <?php $i++; ?>
+                            <?php endforeach; ?>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Image</th>
+                                <th scope="col">Role ID</th>
+                                <th scope="col">Active</th>
+                                <th scope="col">Created</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                    <script src="<?= base_url('assets/'); ?>vendor/bootstrap/js/bootstrap.min.js"></script>
+                    <script src="<?= base_url('assets/'); ?>js/jquery.min.js"></script>
+                    <script src="<?= base_url('assets/'); ?>vendor/datatables/jquery.dataTables.min.js"></script>
+                    <script src="<?= base_url('assets/'); ?>vendor/datatables/dataTables.bootstrap4.min.js"></script>
+                    <script src="<?= base_url('assets/'); ?>js/demo/datatables-demo.js"></script>
+            </body>
 
         </div>
     </div>
+</div>
 
 
 </div>
@@ -104,6 +129,7 @@
 
 
 <!-- /.container-fluid -->
+
 
 
 

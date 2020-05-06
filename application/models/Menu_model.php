@@ -49,4 +49,22 @@ class Menu_model extends CI_Model
 
         return $this->db->affected_rows();
     }
+
+    public function getFreelance()
+    {
+        $query = "SELECT `freelance`.*,`user`.`email`
+                    FROM `freelance` JOIN `user`
+                    ON `freelance`.`email` = `user`.`email`
+                    WHERE `user`.`role_id` = 2";
+
+        return $this->db->query($query)->result_array();
+    }
+
+    public function deleteFreelance($id)
+    {
+
+        $this->db->delete('freelance', array('id' => $id));
+
+        return $this->db->affected_rows();
+    }
 }

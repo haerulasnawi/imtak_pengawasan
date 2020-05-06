@@ -5,36 +5,50 @@
     <h1 class="h3 mb-4 text-gray-800"><?= $title; ?></h1>
 
     <div class="row">
-        <div class="col-lg-6">
+        <div class="col-lg-12">
             <?= form_error('menu', '<div class="alert alert-danger alert-dismissible" role="alert">', '</div>'); ?>
             <?= $this->session->flashdata('menus'); ?>
             <a href="" class="btn btn-primary mb-3" data-toggle="modal" data-target="#newRoleModal">Add New Role</a>
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Role</th>
-                        <th scope="col">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php $i = 1; ?>
-                    <?php foreach ($role as $r) : ?>
-                        <tr>
-                            <th scope="row"><?= $i; ?></th>
-                            <td><?= $r['role']; ?></td>
-                            <td>
-                                <a href="<?= base_url('admin/roleaccess/') . $r['id']; ?>" class="badge badge-warning">access</a>
-                                <a href="" data-toggle="modal" data-target="#editMenuModal" class="badge badge-success">edit</a>
-                                <a href="" class="badge badge-danger">delete</a>
-                            </td>
-                        </tr>
-                        <?php $i++; ?>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
+
+            <body>
+                <link rel="stylesheet" href="<?= base_url('assets'); ?>/css/sb-admin-2.min.css" />
+                <link rel="stylesheet" href="<?= base_url('assets'); ?>/vendor/datatables/dataTables.bootstrap4.min.css" />
+
+                <div class="table-responsive-md" style="margin-bottom: 15px;">
+                    <table class="table table-hover" cellspacing="0" width="100%" id="tabelsub">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Role</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php $i = 1; ?>
+                            <?php foreach ($role as $r) : ?>
+                                <tr>
+                                    <th scope="row"><?= $i; ?></th>
+                                    <td><?= $r['role']; ?></td>
+                                    <td>
+                                        <a href="<?= base_url('admin/roleaccess/') . $r['id']; ?>" class="badge badge-warning">access</a>
+                                        <a href="" data-toggle="modal" data-target="#editMenuModal" class="badge badge-success">edit</a>
+                                        <a href="" class="badge badge-danger">delete</a>
+                                    </td>
+                                </tr>
+                                <?php $i++; ?>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                    <script src="<?= base_url('assets/'); ?>vendor/bootstrap/js/bootstrap.min.js"></script>
+                    <script src="<?= base_url('assets/'); ?>js/jquery.min.js"></script>
+                    <script src="<?= base_url('assets/'); ?>vendor/datatables/jquery.dataTables.min.js"></script>
+                    <script src="<?= base_url('assets/'); ?>vendor/datatables/dataTables.bootstrap4.min.js"></script>
+                    <script src="<?= base_url('assets/'); ?>js/demo/datatables-demo.js"></script>
+
+            </body>
         </div>
     </div>
+</div>
 
 
 </div>

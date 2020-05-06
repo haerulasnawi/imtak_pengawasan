@@ -5,35 +5,55 @@
     <h1 class="h3 mb-4 text-gray-800"><?= $title; ?></h1>
 
     <div class="row">
-        <div class="col-lg-6">
+        <div class="col-lg-12">
             <?= form_error('menu', '<div class="alert alert-danger alert-dismissible" role="alert">', '</div>'); ?>
             <?= $this->session->flashdata('menus'); ?>
-            <a href="" class="btn btn-primary mb-3 tombolTambahData" data-toggle="modal" data-target="#newMenuModal">Add New Menu</a>
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Menu</th>
-                        <th scope="col">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php $i = 1; ?>
-                    <?php foreach ($menu as $m) : ?>
-                        <tr>
-                            <th scope="row"><?= $i; ?></th>
-                            <td><?= $m['menu']; ?></td>
-                            <td>
-                                <a href="" data-toggle="modal" data-id="<?= $m['id']; ?>" data-target="#newMenuModal" class="badge badge-success tampilModalUbah">edit</a>
-                                <a href="<?= site_url('menu/deletemenu/' . $m['id']); ?>" class="badge badge-danger" onclick="return confirm('Want to delete this stuff ?')">delete</a>
-                            </td>
-                        </tr>
-                        <?php $i++; ?>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
+
+            <body>
+                <link rel="stylesheet" href="<?= base_url('assets'); ?>/css/sb-admin-2.min.css" />
+                <link rel="stylesheet" href="<?= base_url('assets'); ?>/vendor/datatables/dataTables.bootstrap4.min.css" />
+                <a href="" class="btn btn-primary mb-3 tombolTambahData" data-toggle="modal" data-target="#newMenuModal">Add New Menu</a>
+                <div class="table-responsive-md" style="margin-bottom: 15px;">
+                    <table class="table table-hover" cellspacing="0" width="100%" id="tabelmenu">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Menu</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php $i = 1; ?>
+                            <?php foreach ($menu as $m) : ?>
+                                <tr>
+                                    <th scope="row"><?= $i; ?></th>
+                                    <td><?= $m['menu']; ?></td>
+                                    <td>
+                                        <a href="" data-toggle="modal" data-id="<?= $m['id']; ?>" data-target="#newMenuModal" class="badge badge-success tampilModalUbah">edit</a>
+                                        <a href="<?= site_url('menu/deletemenu/' . $m['id']); ?>" class="badge badge-danger" onclick="return confirm('Want to delete this stuff ?')">delete</a>
+                                    </td>
+                                </tr>
+                                <?php $i++; ?>
+                            <?php endforeach; ?>
+                        </tbody>
+                        <!-- <tfoot>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Menu</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                        </tfoot> -->
+                    </table>
+
+                    <script src="<?= base_url('assets/'); ?>vendor/bootstrap/js/bootstrap.min.js"></script>
+                    <script src="<?= base_url('assets/'); ?>js/jquery.min.js"></script>
+                    <script src="<?= base_url('assets/'); ?>vendor/datatables/jquery.dataTables.min.js"></script>
+                    <script src="<?= base_url('assets/'); ?>vendor/datatables/dataTables.bootstrap4.min.js"></script>
+                    <script src="<?= base_url('assets/'); ?>js/demo/datatables-demo.js"></script>
+            </body>
         </div>
     </div>
+</div>
 
 
 </div>

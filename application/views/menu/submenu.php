@@ -5,7 +5,7 @@
     <h1 class="h3 mb-4 text-gray-800"><?= $title; ?></h1>
 
     <div class="row">
-        <div class="col-lg">
+        <div class="col-lg-12">
             <?= $this->session->flashdata('menus'); ?>
             <?php if (validation_errors()) : ?>
                 <div class="alert alert-danger" role="alert">
@@ -13,53 +13,63 @@
                 </div>
             <?php endif; ?>
 
-            <a href="" class="btn btn-primary mb-2" data-toggle="modal" data-target="#newSubMenuModal">Add New Submenu</a>
-            <div class="row mb-1 justify-content-end">
-                <div class="col-lg-3">
+            <body>
+                <link rel="stylesheet" href="<?= base_url('assets'); ?>/css/sb-admin-2.min.css" />
+                <link rel="stylesheet" href="<?= base_url('assets'); ?>/vendor/datatables/dataTables.bootstrap4.min.css" />
 
-                    <form action="<?= base_url('menu/carisubmenu'); ?>" method="post">
-                        <div class="input-group mb-2">
-                            <input type="text" class="form-control" placeholder="Find submenu.." name="keyword" id="keyword" autocomplete="off">
-                            <div class="input-group-append">
-                                <button class="btn btn-primary" type="submit" value="keyword" name="keyword" id="tombolCari">Search</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Title</th>
-                        <th scope="col">Menu</th>
-                        <th scope="col">Url</th>
-                        <th scope="col">Icon</th>
-                        <th scope="col">Active</th>
-                        <th scope="col">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php $i = 1; ?>
-                    <?php foreach ($subMenu as $sm) : ?>
-                        <tr>
-                            <th scope="row"><?= $i; ?></th>
-                            <td><?= $sm['title']; ?></td>
-                            <td><?= $sm['menu']; ?></td>
-                            <td><?= $sm['url']; ?></td>
-                            <td><?= $sm['icon']; ?></td>
-                            <td><?= $sm['is_active']; ?></td>
-                            <td>
-                                <a href="" data-toggle="modal" data-target="#editMenuModal" class="badge badge-success">edit</a>
-                                <a href="" class="badge badge-danger">delete</a>
-                            </td>
-                        </tr>
-                        <?php $i++; ?>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
+                <a href="" class="btn btn-primary mb-3" data-toggle="modal" data-target="#newSubMenuModal">Add New Submenu</a>
+                <div class="table-responsive-md" style="margin-bottom: 15px;">
+                    <table class="table table-hover" cellspacing="0" width="100%" id="tabelmu">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Title</th>
+                                <th scope="col">Menu</th>
+                                <th scope="col">Url</th>
+                                <th scope="col">Icon</th>
+                                <th scope="col">Active</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php $i = 1; ?>
+                            <?php foreach ($subMenu as $sm) : ?>
+                                <tr>
+                                    <th scope="row"><?= $i; ?></th>
+                                    <td><?= $sm['title']; ?></td>
+                                    <td><?= $sm['menu']; ?></td>
+                                    <td><?= $sm['url']; ?></td>
+                                    <td><?= $sm['icon']; ?></td>
+                                    <td><?= $sm['is_active']; ?></td>
+                                    <td>
+                                        <a href="" data-toggle="modal" data-target="#editMenuModal" class="badge badge-success">edit</a>
+                                        <a href="" class="badge badge-danger">delete</a>
+                                    </td>
+                                </tr>
+                                <?php $i++; ?>
+                            <?php endforeach; ?>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Title</th>
+                                <th scope="col">Menu</th>
+                                <th scope="col">Url</th>
+                                <th scope="col">Icon</th>
+                                <th scope="col">Active</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                    <script src="<?= base_url('assets/'); ?>vendor/bootstrap/js/bootstrap.min.js"></script>
+                    <script src="<?= base_url('assets/'); ?>js/jquery.min.js"></script>
+                    <script src="<?= base_url('assets/'); ?>vendor/datatables/jquery.dataTables.min.js"></script>
+                    <script src="<?= base_url('assets/'); ?>vendor/datatables/dataTables.bootstrap4.min.js"></script>
+                    <script src="<?= base_url('assets/'); ?>js/demo/datatables-demo.js"></script>
+            </body>
         </div>
     </div>
+</div>
 
 
 </div>
