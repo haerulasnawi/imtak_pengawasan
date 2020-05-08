@@ -68,4 +68,33 @@ class Humanresource extends CI_Controller
             redirect('humanresource');
         }
     }
+
+    public function getubahfreelance()
+    {
+
+        $this->load->model('Menu_model', 'menu');
+        echo json_encode($this->menu->getDataUbahFree($_POST['id']));
+    }
+
+    public function editfreelance()
+    {
+        $data['title'] = 'Data Freelance';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+
+        $this->load->model('Menu_model', 'menu');
+        $data['freelance'] = $this->menu->getFreelance();
+
+        $this->form_validation->set_rules('name', 'Name', 'required');
+        $this->form_validation->set_rules('alamat', 'Alamat', 'required');
+        $this->form_validation->set_rules('no_telp', 'Telepon', 'required');
+        $this->form_validation->set_rules('language', 'Language', 'required');
+        $this->load->model('Menu_model', 'menu');
+        if ($this->menu->ubahfree($_POST) > 0) {
+            $this->session->set_flashdata('menus', '<div class="alert alert-success alert-dismissible" role="alert">Data freelance successfully changed! </div>');
+            redirect('humanresource');
+        } else {
+            $this->session->set_flashdata('menus', '<div class="alert alert-danger alert-dismissible" role="alert">Error while changing data freelance! </div>');
+            redirect('humanresource');
+        }
+    }
 }

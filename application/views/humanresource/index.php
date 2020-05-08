@@ -18,7 +18,7 @@
             <link rel="stylesheet" href="<?= base_url('assets'); ?>/vendor/datatables/dataTables.bootstrap4.min.css" />
             <div class="col-sm-12">
 
-                <a href="" class="btn btn-primary mb-3" data-toggle="modal" data-target="#newFreelanceModal">Add New Freelance</a>
+                <a href="" class="btn btn-primary mb-3 tampilModalUbahFree" data-toggle="modal" data-target="#newFreelanceModal">Add New Freelance</a>
                 <div class="table-responsive-md" style="margin-bottom: 15px;">
                     <table class="table table-hover" cellspacing="0" width="100%" id="tabelku">
                         <thead>
@@ -43,7 +43,7 @@
                                     <td><?= $fr['email']; ?></td>
                                     <td><?= $fr['language']; ?></td>
                                     <td>
-                                        <a href="" data-toggle="modal" data-target="#editFreelanceModal" class="badge badge-success">edit</a>
+                                        <a href="" data-toggle="modal" data-id="<?= $fr['id']; ?>" data-target="#newFreelanceModal" class="badge badge-success tampilModalFreelance">edit</a>
                                         <a href="<?= site_url('humanresource/deleteuser/' . $fr['id']); ?>" class="badge badge-danger" onclick="return confirm('Want to delete this stuff ?')">delete</a>
                                     </td>
                                 </tr>
@@ -76,7 +76,7 @@
 
 
 </div>
-<!-- Modal Add Menu -->
+<!-- Modal Add Freelance -->
 <div class="modal fade" id="newFreelanceModal" tabindex="-1" role="dialog" aria-labelledby="newFreelanceModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -86,8 +86,10 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="<?= base_url('humanresource'); ?>" method="post">
-                <div class="modal-body">
+
+            <div class="modal-body">
+                <form action="<?= base_url('humanresource'); ?>" method="post">
+                    <input type="hidden" name="id" id="id">
                     <div class="form-group">
                         <input type="text" class="form-control" id="name" name="name" placeholder="Name" value="<?= set_value('name'); ?>">
                         <?= form_error('name', '<small class="text-danger pl-3">', '</small>'); ?>
@@ -114,10 +116,10 @@
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary">Add Freelance</button>
                     </div>
-            </form>
+                </form>
+            </div>
         </div>
     </div>
-</div>
 </div>
 
 

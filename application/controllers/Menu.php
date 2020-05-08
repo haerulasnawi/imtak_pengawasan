@@ -109,38 +109,6 @@ class Menu extends CI_Controller
         }
     }
 
-    public function carisubmenu()
-    {
-        $data['title'] = 'Submenu Management';
-        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
-        $this->load->model('Menu_model', 'menu');
-        $keyword = $this->input->post('keyword');
-        $data['subMenu'] = $this->menu->cariSubMenu();
-        $data['menu'] = $this->db->get('user_menu')->result_array();
-
-        $this->form_validation->set_rules('keyword', 'keyword', 'required');
-
-        if ($this->form_validation->run() == false) {
-            $this->load->view('templates/header', $data);
-            $this->load->view('templates/sidebar', $data);
-            $this->load->view('templates/topbar', $data);
-            $this->load->view('menu/submenu', $data);
-            $this->load->view('templates/footer');
-        } else {
-            $data = [
-                'title' => $this->input->post('title'),
-                'menu_id' => $this->input->post('menu_id'),
-                'url' => $this->input->post('url'),
-                'icon' => $this->input->post('icon'),
-                'is_active' => $this->input->post('is_active')
-            ];
-            $this->db->like('title', "%$keyword%");
-            $this->db->get('user_sub_menu', $data);
-            $this->session->set_flashdata('menus', '<div class="alert alert-success alert-dismissible" role="alert">New Sub Menu successfully created! </div>');
-            redirect('menu/submenu');
-        }
-    }
-
     public function userlist()
     {
         $data['title'] = 'User Management';
@@ -241,6 +209,53 @@ class Menu extends CI_Controller
         } else {
             $this->session->set_flashdata('menus', '<div class="alert alert-danger alert-dismissible" role="alert">Error while deleting user! </div>');
             redirect('menu/userlist');
+        }
+    }
+
+    public function deleteSubmenu($id)
+    {
+        $data['title'] = 'Submenu Management';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+
+        $data['subMenu'] = $this->db->get('user_sub_menu')->result_array();
+
+
+        $this->load->model('Menu_model', 'menu');
+
+        if ($this->menu->deleteSubm($id) > 0) {
+            $this->session->set_flashdata('menus', '<div class="alert alert-success alert-dismissible" role="alert">Submenu successfully deleted! </div>');
+            redirect('menu/submenu');
+        } else {
+            $this->session->set_flashdata('menus', '<div class="alert alert-danger alert-dismissible" role="alert">Error while deleting submenu! </div>');
+            redirect('menu/submenu');
+        }
+    }
+
+    public function getubahsub()
+    {
+
+        $this->load->model('Menu_model', 'menu');
+        echo json_encode($this->menu->getDataUbahSub($_POST['id']));
+    }
+
+    public function editsubmenu()
+    {
+        $data['title'] = 'Submenu Management';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+
+        $data['subMenu'] = $this->db->get('user_sub_menu')->result_array();
+
+        $this->form_validation->set_rules('title', 'Title', 'required');
+        $this->form_validation->set_rules('menu_id', 'Menu', 'required');
+        $this->form_validation->set_rules('url', 'Url', 'required');
+        $this->form_validation->set_rules('icon', 'Icon', 'required');
+        $this->load->model('Menu_model', 'menu');
+        if ($this->menu->ubahsub($_POST) > 0) {
+            $this->session->set_flashdata('menus', '<div class="alert alert-success alert-dismissible" role="alert">Submenu successfully changed! </div>');
+            redirect('menu/submenu');
+        } else {
+            $this->session->set_flashdata('menus', '<div class="alert alert-danger alert-dismissible" role="alert">Error while changing Submenu! </div>');
+            redirect('menu/submenu');
         }
     }
 }

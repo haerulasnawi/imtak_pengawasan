@@ -33,15 +33,6 @@ class Menu_model extends CI_Model
         return $this->db->affected_rows();
     }
 
-    public function cariSubMenu()
-    {
-        $query = "SELECT `user_sub_menu`.*,`user_menu`.`menu`
-        FROM `user_sub_menu` JOIN `user_menu`
-        ON `user_sub_menu`.`menu_id` = `user_menu`.`id`";
-
-        return $this->db->query($query)->result_array();
-    }
-
     public function deleteUser($id)
     {
 
@@ -66,5 +57,37 @@ class Menu_model extends CI_Model
         $this->db->delete('freelance', array('id' => $id));
 
         return $this->db->affected_rows();
+    }
+
+    public function deleteSubm($id)
+    {
+
+        $this->db->delete('user_sub_menu', array('id' => $id));
+
+        return $this->db->affected_rows();
+    }
+
+    function ubahsub($data)
+    {
+        $this->db->replace('user_sub_menu', $data);
+        return $this;
+    }
+
+    public function getDataUbahSub($id)
+    {
+        $query = " SELECT * FROM `user_sub_menu` WHERE `id`=$id";
+        return $this->db->query($query)->row();
+    }
+
+    function ubahfree($data)
+    {
+        $this->db->replace('freelance', $data);
+        return $this;
+    }
+
+    public function getDataUbahFree($id)
+    {
+        $query = " SELECT * FROM `freelance` WHERE `id`=$id";
+        return $this->db->query($query)->row();
     }
 }

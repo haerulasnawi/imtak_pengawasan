@@ -48,6 +48,8 @@
 <!-- Custom scripts for all pages-->
 <script src="<?= base_url('assets/'); ?>js/sb-admin-2.min.js"></script>
 <script src="<?= base_url('assets/'); ?>js/script.js"></script>
+<script src="<?= base_url('assets/'); ?>js/modalsub.js"></script>
+<script src="<?= base_url('assets/'); ?>js/modalfreelance.js"></script>
 <script src="<?= base_url('assets/'); ?>js/jquery.js"></script>
 <script>
     $('.custom-file-input').on('change', function() {

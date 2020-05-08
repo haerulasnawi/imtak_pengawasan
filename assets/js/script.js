@@ -1,6 +1,6 @@
 $(function () {
 
-    $('.tombolTambahData').on('click', function () {
+    $(document).on('click', '.tampilTambahData', function (e) {
         $('#newMenuModalLabel').html('Add New Menu');
         $('.modal-footer button[type=submit]').html('Add');
         $('#menu').val("");
@@ -8,7 +8,7 @@ $(function () {
 
     });
 
-    $('.tampilModalUbah').on('click', function () {
+    $(document).on('click', '.tampilModalUbah', function (e) {
         $('#newMenuModalLabel').html('Change Menu');
 
         $('.modal-footer button[type=submit]').html('Change');

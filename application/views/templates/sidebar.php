@@ -9,7 +9,7 @@
             <?php endif; ?>
 
             <div class="sidebar-brand-icon rotate-n-0">
-                <i class="	fas fa-calendar-check"></i>
+                <img src="assets/img/icon/apple-icon-180x180.png" class="rounded img-thumbnail" alt="tes" width="304" height="236">
             </div>
             <div class="sidebar-brand-text mx-3">PT. STAR Software</div>
             </a>

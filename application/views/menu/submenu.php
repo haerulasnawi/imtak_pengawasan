@@ -17,7 +17,7 @@
                 <link rel="stylesheet" href="<?= base_url('assets'); ?>/css/sb-admin-2.min.css" />
                 <link rel="stylesheet" href="<?= base_url('assets'); ?>/vendor/datatables/dataTables.bootstrap4.min.css" />
 
-                <a href="" class="btn btn-primary mb-3" data-toggle="modal" data-target="#newSubMenuModal">Add New Submenu</a>
+                <a href="" class="btn btn-primary mb-3 tombolTambahsub" data-toggle="modal" data-target="#newSubMenuModal">Add New Submenu</a>
                 <div class="table-responsive-md" style="margin-bottom: 15px;">
                     <table class="table table-hover" cellspacing="0" width="100%" id="tabelmu">
                         <thead>
@@ -42,8 +42,8 @@
                                     <td><?= $sm['icon']; ?></td>
                                     <td><?= $sm['is_active']; ?></td>
                                     <td>
-                                        <a href="" data-toggle="modal" data-target="#editMenuModal" class="badge badge-success">edit</a>
-                                        <a href="" class="badge badge-danger">delete</a>
+                                        <a href="" data-toggle="modal" data-id="<?= $sm['id']; ?>" data-target="#newSubMenuModal" class="badge badge-success tampilModal">edit</a>
+                                        <a href="<?= base_url('menu/deleteSubmenu/' . $sm['id']); ?>" class="badge badge-danger" onclick="return confirm('Want to delete this stuff ?')">delete</a>
                                     </td>
                                 </tr>
                                 <?php $i++; ?>
@@ -88,8 +88,9 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="<?= base_url('menu/submenu'); ?>" method="post">
-                <div class="modal-body">
+            <div class="modal-body">
+                <form action="<?= base_url('menu/submenu'); ?>" method="post">
+                    <input type="hidden" name="id" id="id">
                     <div class="form-group">
                         <input type="text" class="form-control" id="title" name="title" placeholder="Submenu title">
                     </div>
@@ -115,35 +116,11 @@
                             </label>
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Add</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-<!-- Modal Edit Tabel -->
-<div class="modal fade" id="editMenuModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editMenuModal">Edit Menu</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
             </div>
-            <form action="<?= base_url('menu/edit'); ?>" method="post">
-                <div class="modal-body">
-                    <div class="form-group">
-                        <input type="text" class="form-control" id="editMenuModal" name="menu" placeholder="<?= $m['menu']; ?>">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Change</button>
-                </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Add</button>
+            </div>
             </form>
         </div>
     </div>
