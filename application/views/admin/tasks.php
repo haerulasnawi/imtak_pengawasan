@@ -1,18 +1,15 @@
-<!-- Begin Page Content -->
 <div class="container-fluid">
 
     <!-- Page Heading -->
     <h1 class="h3 mb-4 text-gray-800"><?= $title; ?></h1>
 
     <div class="row">
-        <?php $this->view('message') ?>
 
-        <?= $this->session->flashdata('menus'); ?>
+        <?= $this->session->flashdata('menus') ?>
         <?php if (validation_errors()) : ?>
             <div class="alert alert-danger" role="alert">
                 <?= validation_errors(); ?>
             </div>
-
         <?php endif; ?>
 
         <div class="col-lg-12">
@@ -22,35 +19,37 @@
                 <link rel="stylesheet" href="<?= base_url('assets'); ?>/vendor/datatables/dataTables.bootstrap4.min.css" />
 
 
-                <a href="" class="btn btn-primary mb-3" data-toggle="modal" data-target="#newUserModal">Add New User</a>
+                <a href="" class="btn btn-primary mb-3" data-toggle="modal" data-target="#newTaskModal">Create New Task</a>
                 <div class="table-responsive-md" style="margin-bottom: 15px;">
-                    <table class="table table-hover" cellspacing="0" width="100%" id="tabeluserlist">
+                    <table class="table table-hover" cellspacing="0" width="100%" id="tabeltask">
                         <thead>
                             <tr>
-                                <th>#</th>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Image</th>
-                                <th>Role ID</th>
-                                <th>Active</th>
-                                <th>Created</th>
-                                <th>Action</th>
+                                <th scope="col">#</th>
+                                <th scope="col">Task Type</th>
+                                <th scope="col">Source Language</th>
+                                <th scope="col">Target Language</th>
+                                <th scope="col">Freelance</th>
+                                <th scope="col">Files</th>
+                                <th scope="col">Deadline</th>
+                                <th scope="col">Date Created</th>
+                                <th scope="col">Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php $i = 1; ?>
-                            <?php foreach ($userlist as $us) : ?>
+                            <?php foreach ($reqtasks as $rt) : ?>
                                 <tr>
                                     <th scope="row"><?= $i; ?></th>
-                                    <td><?= $us['name']; ?></td>
-                                    <td><?= $us['email']; ?></td>
-                                    <td><?= $us['image']; ?></td>
-                                    <td><?= $us['role_id']; ?></td>
-                                    <td><?= $us['is_active']; ?></td>
-                                    <td><?= date('d F Y', $us['date_created']); ?></td>
+                                    <td><?= $rt['task_type']; ?></td>
+                                    <td><?= $rt['source_lang']; ?></td>
+                                    <td><?= $rt['target_lang']; ?></td>
+                                    <td><?= $rt['name']; ?></td>
+                                    <td><?= $rt['task_files']; ?></td>
+                                    <td><?= date('d-m-Y', strtotime($rt['deadline'])); ?></td>
+                                    <td><?= date('d-m-Y', strtotime($rt['date_created'])); ?></td>
 
                                     <td>
-                                        <a href="<?= site_url('menu/deleteuser/' . $us['id']); ?>" class="badge badge-danger" onclick="return confirm('Want to delete this stuff ?')">delete</a>
+                                        <a href="<?= site_url('menu/deleteuser/' . $rt['id']); ?>" class="badge badge-danger" onclick="return confirm('Want to delete this stuff ?')">delete</a>
                                     </td>
                                 </tr>
                                 <?php $i++; ?>
@@ -59,13 +58,13 @@
                         <tfoot>
                             <tr>
                                 <th scope="col">#</th>
-                                <th scope="col">Name</th>
-                                <th scope="col">Email</th>
-                                <th scope="col">Image</th>
-                                <th scope="col">Role ID</th>
-                                <th scope="col">Active</th>
-                                <th scope="col">Created</th>
-                                <th scope="col">Action</th>
+                                <th scope="col">Task Type</th>
+                                <th scope="col">Source Language</th>
+                                <th scope="col">Target Language</th>
+                                <th scope="col">Freelance</th>
+                                <th scope="col">Files</th>
+                                <th scope="col">Deadline</th>
+                                <th scope="col">Date Created</th>
                             </tr>
                         </tfoot>
                     </table>
@@ -77,11 +76,11 @@
             </body>
 
         </div>
+
     </div>
 </div>
-
-
 </div>
+
 <!-- Modal Add Menu -->
 <div class="modal fade" id="newUserModal" tabindex="-1" role="dialog" aria-labelledby="newUserModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">

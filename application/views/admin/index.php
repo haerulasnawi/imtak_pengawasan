@@ -106,7 +106,7 @@
                 <div class="card shadow mb-4">
                     <!-- Card Header - Dropdown -->
                     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                        <h6 class="m-0 font-weight-bold text-primary">Projects Overview (<?= date('d F Y'); ?>)</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">Projects Overview</h6>
                     </div>
                     <!-- Card Body -->
 
@@ -131,7 +131,7 @@
     <?php
     for ($i = 1; $i <= 12; $i++) {
     ?>
-        <?php $query = $this->db->query("SELECT * FROM `request_task` WHERE YEAR(date_required) = '" . date('Y-m-d') . "' and MONTH(date_required) = '" . $i . "'"); ?>
+        <?php $query = $this->db->query("SELECT * FROM `request_task` WHERE YEAR(date_created) = '" . date('Y-m-d') . "' and MONTH(date_created) = '" . $i . "'"); ?>
         <input type="hidden" value="<?= $query->num_rows(); ?>" id="ke<?= $i ?>">
     <?php
     }

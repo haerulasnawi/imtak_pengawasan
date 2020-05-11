@@ -90,4 +90,13 @@ class Menu_model extends CI_Model
         $query = " SELECT * FROM `freelance` WHERE `id`=$id";
         return $this->db->query($query)->row();
     }
+
+    public function gettasks()
+    {
+        $query = "SELECT `request_task`.*,`freelance`.`name`
+                    FROM `request_task` JOIN `freelance`
+                    ON `request_task`.`id_freelance` = `freelance`.`id`";
+
+        return $this->db->query($query)->result_array();
+    }
 }
