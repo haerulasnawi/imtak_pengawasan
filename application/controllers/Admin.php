@@ -92,8 +92,9 @@ class Admin extends CI_Controller
 
         $this->form_validation->set_rules('task_type', 'task_type', 'required');
         $this->form_validation->set_rules('source_lang', 'source_lang', 'required');
+        $this->form_validation->set_rules('target_lang', 'target_lang', 'required');
         $this->form_validation->set_rules('id_freelance', 'id_freelance', 'required');
-        $this->form_validation->set_rules('task_files', 'task_files', 'required');
+        //$this->form_validation->set_rules('task_files', 'task_files', 'required');
         $this->form_validation->set_rules('deadline', 'deadline', 'required');
         $this->form_validation->set_rules('name', 'name', 'required');
 
@@ -104,19 +105,107 @@ class Admin extends CI_Controller
             $this->load->view('admin/tasks', $data);
             $this->load->view('templates/footer');
         } else {
+
+            $this->load->model('Menu_model', 'menu');
+            $email = $this->input->post('email');
+
             $data = [
                 'task_type' => $this->input->post('task_type'),
-                'date_created' => $this->input->post('date_created'),
                 'source_lang' => $this->input->post('source_lang'),
+                'target_lang' => $this->input->post('target_lang'),
                 'id_freelance' => $this->input->post('id_freelance'),
-                'task_files' => $this->input->post('task_files'),
+                'status' => 'pending',
+                'date_created' => time(),
                 'deadline' => $this->input->post('deadline'),
-                'name' => $this->input->post('name')
+                'name' => $this->input->post('name'),
+                'email' => htmlspecialchars($email),
+                'task_files' => $this->_filetoupload()
 
             ];
+
+            // $task_type = htmlspecialchars($this->input->post('task_type'));
+            // $source_lang = htmlspecialchars($this->input->post('source_lang'));
+            // $target_lang = htmlspecialchars($this->input->post('target_lang'));
+            // $id_freelance = htmlspecialchars($this->input->post('id_freelance'));
+            // $date_created = $this->input->post(time());
+            // $deadline = $this->input->post('deadline');
+            // $name =  htmlspecialchars($this->input->post('name'));
+            // $email = htmlspecialchars($this->input->post('email'));
+            // $fileupload = $this->_filetoupload();
+
+            //siapkan token
+            $token = base64_encode(random_bytes(32));
+            $task_token = [
+                'email' => $email,
+                'token' => $token,
+                'date_created' => time()
+            ];
+
+            // $this->menu->uploadfile($dataFile);
+            // $query = "INSERT INTO request_task VALUES
+            //  ('','$task_type','$date_created','$source_lang','$target_lang','$id_freelance','$fileupload','$deadline','$name','pending','$email')";
+
+            // return $this->db->query($query)->row();
             $this->db->insert('request_task', $data);
-            $this->session->set_flashdata('menus', '<div class="alert alert-success alert-dismissible" role="alert"New Task successfully posted! </div>');
+            $this->db->insert('task_token', $task_token);
+            $this->_sendEmailTask($token, 'verify_task');
+
+            $this->session->set_flashdata('menus', '<div class="alert alert-success" role="alert">New task successfully created!</div>');
             redirect('admin/tasks');
         }
+    }
+
+    function download($id)
+    {
+        $data = $this->db->get_where('request_task', ['id' => $id])->row();
+        force_download('assets/taskfiles/' . $data->task_files, NULL);
+
+        redirect('admin/tasks');
+    }
+    private function _sendEmailTask($token, $type)
+    {
+        $config = [
+            'protocol' => 'smtp',
+            'smtp_host' => 'ssl://smtp.gmail.com',
+            'smtp_user' => 'selesetidur@gmail.com',
+            'smtp_pass' => 'selesetidur99',
+            'smtp_port' => '465',
+            'mailtype' => 'html',
+            'charset' => 'utf-8',
+            'newline' => "\r\n"
+        ];
+
+        $this->load->library('email', $config);
+        $this->email->initialize($config);
+
+        $this->email->from('selesetidur@gmail.com', 'Admin PT. STAR Software Indonesia');
+        $this->email->to($this->input->post('email'));
+
+        if ($type == 'verify_task') {
+            $this->email->subject('You have a new request task!');
+            $this->email->message('Please login to accept or denied this task : <a href=" ' . base_url() . 'auth' . '">Login</a>');
+        }
+        if ($this->email->send()) {
+            return true;
+        } else {
+            echo $this->email->print_debugger();
+            die;
+        }
+    }
+
+    private function _filetoupload()
+    {
+
+        $config['upload_path'] = './assets/taskfiles/';
+        $config['allowed_types'] = 'doc|docx|pdf|xlsx|csv';
+        $config['max_size']     = 0;
+
+        $this->load->library('upload', $config);
+
+        if ($this->upload->do_upload('task_files')) {
+            return $this->upload->data("file_name");
+        }
+
+        return true;
     }
 }

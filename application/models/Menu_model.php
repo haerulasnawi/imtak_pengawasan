@@ -93,10 +93,18 @@ class Menu_model extends CI_Model
 
     public function gettasks()
     {
-        $query = "SELECT `request_task`.*,`freelance`.`name`
+        $query = "SELECT `request_task`.*,`freelance`.`name`,`freelance`.`email`
                     FROM `request_task` JOIN `freelance`
                     ON `request_task`.`id_freelance` = `freelance`.`id`";
 
         return $this->db->query($query)->result_array();
     }
+
+    // public function uploadfile($dataFile)
+    // {
+    //     $this->db->insert('request_task', $dataFile);
+    //     $taskId = $this->db->insert_id();
+
+    //     return $taskId;
+    // }
 }

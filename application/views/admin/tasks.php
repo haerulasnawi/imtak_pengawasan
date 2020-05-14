@@ -2,10 +2,9 @@
 
     <!-- Page Heading -->
     <h1 class="h3 mb-4 text-gray-800"><?= $title; ?></h1>
-
+    <?= $this->session->flashdata('menus') ?>
     <div class="row">
 
-        <?= $this->session->flashdata('menus') ?>
         <?php if (validation_errors()) : ?>
             <div class="alert alert-danger" role="alert">
                 <?= validation_errors(); ?>
@@ -17,9 +16,6 @@
             <body>
                 <link rel="stylesheet" href="<?= base_url('assets'); ?>/css/sb-admin-2.min.css" />
                 <link rel="stylesheet" href="<?= base_url('assets'); ?>/vendor/datatables/dataTables.bootstrap4.min.css" />
-
-
-                <a href="" class="btn btn-primary mb-3" data-toggle="modal" data-target="#newTaskModal">Create New Task</a>
                 <div class="table-responsive-md" style="margin-bottom: 15px;">
                     <table class="table table-hover" cellspacing="0" width="100%" id="tabeltask">
                         <thead>
@@ -29,9 +25,11 @@
                                 <th scope="col">Source Language</th>
                                 <th scope="col">Target Language</th>
                                 <th scope="col">Freelance</th>
+                                <th scope="col">Email</th>
                                 <th scope="col">Files</th>
                                 <th scope="col">Deadline</th>
                                 <th scope="col">Date Created</th>
+                                <th scope="col">Status</th>
                                 <th scope="col">Action</th>
                             </tr>
                         </thead>
@@ -44,12 +42,16 @@
                                     <td><?= $rt['source_lang']; ?></td>
                                     <td><?= $rt['target_lang']; ?></td>
                                     <td><?= $rt['name']; ?></td>
+                                    <td><?= $rt['email']; ?></td>
                                     <td><?= $rt['task_files']; ?></td>
                                     <td><?= date('d-m-Y', strtotime($rt['deadline'])); ?></td>
                                     <td><?= date('d-m-Y', strtotime($rt['date_created'])); ?></td>
+                                    <td><?= $rt['status']; ?></td>
 
                                     <td>
+                                        <a href="" class="badge badge-success">edit</a>
                                         <a href="<?= site_url('menu/deleteuser/' . $rt['id']); ?>" class="badge badge-danger" onclick="return confirm('Want to delete this stuff ?')">delete</a>
+                                        <a href="<?= base_url('admin/download/' . $rt['id']); ?>" class="badge badge-primary">download</a>
                                     </td>
                                 </tr>
                                 <?php $i++; ?>
@@ -62,9 +64,12 @@
                                 <th scope="col">Source Language</th>
                                 <th scope="col">Target Language</th>
                                 <th scope="col">Freelance</th>
+                                <th scope="col">Email</th>
                                 <th scope="col">Files</th>
                                 <th scope="col">Deadline</th>
                                 <th scope="col">Date Created</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Action</th>
                             </tr>
                         </tfoot>
                     </table>
@@ -74,6 +79,80 @@
                     <script src="<?= base_url('assets/'); ?>vendor/datatables/dataTables.bootstrap4.min.js"></script>
                     <script src="<?= base_url('assets/'); ?>js/demo/datatables-demo.js"></script>
             </body>
+            <h1 class="h3 text-gray-800 py-4">Create New Task</h1>
+            <div class="form-row">
+                <div class="col-lg-4">
+                    <?= form_open_multipart('admin/tasks'); ?>
+                    <input type="hidden" id="id" name="id">
+                    <input type="hidden" id="date_created" name="date_created">
+                    <input type="hidden" id="status" name="status">
+                    <form>
+                        <div class="form-group">
+                            <label for="task_type">Task Type</label>
+                            <input type="text" class="form-control" id="task_type" name="task_type">
+                            <?= form_error('task_type', '<small class="text-danger pl-3">', '</small>'); ?>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="source_lang">Source Language</label>
+                                <input type="text" class="form-control" id="source_lang" name="source_lang">
+                                <?= form_error('source_lang', '<small class="text-danger pl-3">', '</small>'); ?>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="target_lang">Target Language</label>
+                                <input type="text" class="form-control" id="target_lang" name="target_lang">
+                                <?= form_error('target_lang', '<small class="text-danger pl-3">', '</small>'); ?>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="name">Freelance</label>
+                            <select name="name" id="name" class="form-control">
+                                <option value="">Select Freelance - Language</option>
+                                <?php foreach ($freelance as $fr) : ?>
+                                    <option value="<?= $fr['name']; ?>"><?= $fr['name']; ?> - <?= $fr['language']; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                            <?= form_error('name', '<small class="text-danger pl-3">', '</small>'); ?>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_freelance">Re-enter Freelance</label>
+                            <select name="id_freelance" id="id_freelance" class="form-control">
+                                <option value="">Select ID by Name</option>
+                                <?php foreach ($freelance as $fr) : ?>
+                                    <option value="<?= $fr['id']; ?>"><?= $fr['name']; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                            <?= form_error('name', '<small class="text-danger pl-3">', '</small>'); ?>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="email">Email</label>
+                                <select name="email" id="email" class="form-control">
+                                    <option value="">Select Email</option>
+                                    <?php foreach ($freelance as $fr) : ?>
+                                        <option value="<?= $fr['email']; ?>"><?= $fr['email']; ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                                <?= form_error('name', '<small class="text-danger pl-3">', '</small>'); ?>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="deadline">Deadline</label>
+                                <input type="text" class="form-control" id="deadline" placeholder="dd-mm-yyyy" name="deadline" value="<?= set_value('deadline'); ?>">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="task_files">Upload Task File</label>
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="task_files" name="task_files">
+                                <label class="custom-file-label" for="task_files">Choose file</label>
+                                <?= form_error('task_files', '<small class="text-danger pl-3">', '</small>'); ?>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Create New Task</button>
+                    </form>
+
+                </div>
+            </div>
 
         </div>
 
@@ -82,49 +161,79 @@
 </div>
 
 <!-- Modal Add Menu -->
-<div class="modal fade" id="newUserModal" tabindex="-1" role="dialog" aria-labelledby="newUserModalLabel" aria-hidden="true">
+<!-- <div class="modal fade" id="newTaskModal" tabindex="-1" role="dialog" aria-labelledby="newTaskModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="newUserModalLabel">Add New User</h5>
+                <h5 class="modal-title" id="newTaskModalLabel">Create New Task</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="<?= base_url('menu/userlist'); ?>" method="post">
-                <div class="modal-body">
+            <div class="modal-body">
+
+                <form action="<?= base_url('admin/tasks'); ?>" method="post" enctype="multipart/form-data">
+                    <input type="hidden" id="id" name="id">
+                    <input type="hidden" id="date_created" name="date_created">
+                    <input type="hidden" id="status" name="status">
                     <div class="form-group">
-                        <input type="text" class="form-control" id="name" name="name" placeholder="Name" value="<?= set_value('name'); ?>">
+                        <input type="text" class="form-control" id="task_type" name="task_type" placeholder="Task Type" value="<?= set_value('task_type'); ?>">
+                        <?= form_error('task_type', '<small class="text-danger pl-3">', '</small>'); ?>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="source_lang" name="source_lang" placeholder="Source Language" value="<?= set_value('source_lang'); ?>">
+                        <?= form_error('source_lang', '<small class="text-danger pl-3">', '</small>'); ?>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="target_lang" name="target_lang" placeholder="Target Language" value="<?= set_value('target_lang'); ?>">
+                        <?= form_error('target_lang', '<small class="text-danger pl-3">', '</small>'); ?>
+                    </div>
+                    <div class="form-group">
+                        <select name="name" id="name" class="form-control">
+                            <option value="">Select Freelance</option>
+                            <?php foreach ($freelance as $fr) : ?>
+                                <option value="<?= $fr['name']; ?>"><?= $fr['name']; ?> - <?= $fr['language']; ?></option>
+                            <?php endforeach; ?>
+                        </select>
                         <?= form_error('name', '<small class="text-danger pl-3">', '</small>'); ?>
                     </div>
                     <div class="form-group">
-                        <input type="text" class="form-control" id="email" name="email" placeholder="Email Address" value="<?= set_value('email'); ?>">
-                        <?= form_error('email', '<small class="text-danger pl-3">', '</small>'); ?>
-                    </div>
-                    <div class="form-group">
-                        <select name="role_id" id="role_id" class="form-control">
-                            <option value="">Select Role</option>
-                            <?php foreach ($user_role as $ur) : ?>
-                                <option value="<?= $ur['id']; ?>"><?= $ur['role']; ?></option>
+                        <select name="id_freelance" id="id_freelance" class="form-control">
+                            <option value="">ID Freelance by name</option>
+                            <?php foreach ($freelance as $fr) : ?>
+                                <option value="<?= $fr['id']; ?>"><?= $fr['name']; ?></option>
                             <?php endforeach; ?>
                         </select>
+                        <?= form_error('name', '<small class="text-danger pl-3">', '</small>'); ?>
                     </div>
                     <div class="form-group">
-                        <input type="password" class="form-control" id="password1" name="password1" placeholder="Password">
-                        <?= form_error('password1', '<small class="text-danger pl-3">', '</small>'); ?>
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="task_files" name="task_files">
+                            <label class="custom-file-label" for="task_files">Choose file</label>
+                        </div>
                     </div>
                     <div class="form-group">
-                        <input type="password" class="form-control" id="password2" name="password2" placeholder="Repeat Password">
+                        <input type="text" class="form-control" id="deadline" name="deadline" placeholder="dd-mm-yyyy" value="<?= set_value('Deadline'); ?>">
+                        <?= form_error('source_lang', '<small class="text-danger pl-3">', '</small>'); ?>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Add User</button>
-                </div>
+                    <div class="form-group">
+                        <select name="email" id="email" class="form-control">
+                            <option value="">Select Email</option>
+                            <?php foreach ($freelance as $fr) : ?>
+                                <option value="<?= $fr['email']; ?>"><?= $fr['email']; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                        <?= form_error('name', '<small class="text-danger pl-3">', '</small>'); ?>
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Create</button>
+            </div>
             </form>
         </div>
     </div>
-</div>
+</div> -->
 
 
 <!-- /.container-fluid -->
