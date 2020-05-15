@@ -94,7 +94,8 @@ class Admin extends CI_Controller
         $this->form_validation->set_rules('source_lang', 'source_lang', 'required');
         $this->form_validation->set_rules('target_lang', 'target_lang', 'required');
         $this->form_validation->set_rules('id_freelance', 'id_freelance', 'required');
-        //$this->form_validation->set_rules('task_files', 'task_files', 'required');
+        $this->form_validation->set_rules('job_value', 'job_value', 'required');
+        // $this->form_validation->set_rules('task_files', 'task_files', 'required');
         $this->form_validation->set_rules('deadline', 'deadline', 'required');
         $this->form_validation->set_rules('name', 'name', 'required');
 
@@ -114,8 +115,8 @@ class Admin extends CI_Controller
                 'source_lang' => $this->input->post('source_lang'),
                 'target_lang' => $this->input->post('target_lang'),
                 'id_freelance' => $this->input->post('id_freelance'),
+                'job_value' => $this->input->post('job_value'),
                 'status' => 'pending',
-                'date_created' => time(),
                 'deadline' => $this->input->post('deadline'),
                 'name' => $this->input->post('name'),
                 'email' => htmlspecialchars($email),
@@ -167,8 +168,8 @@ class Admin extends CI_Controller
         $config = [
             'protocol' => 'smtp',
             'smtp_host' => 'ssl://smtp.gmail.com',
-            'smtp_user' => 'selesetidur@gmail.com',
-            'smtp_pass' => 'selesetidur99',
+            'smtp_user' => 'pt.starjogjaindonesia@gmail.com',
+            'smtp_pass' => 'Ptstarindonesia2020.',
             'smtp_port' => '465',
             'mailtype' => 'html',
             'charset' => 'utf-8',
@@ -183,7 +184,7 @@ class Admin extends CI_Controller
 
         if ($type == 'verify_task') {
             $this->email->subject('You have a new request task!');
-            $this->email->message('Please login to accept or denied this task : <a href=" ' . base_url() . 'auth' . '">Login</a>');
+            $this->email->message('Click this link to accept or deny the task : <a href=" ' . base_url() . 'user/verify_task?email=' . $this->input->post('email') . '& token=' . urlencode($token) . '">Accept</a><a href=" ' . base_url() . 'user/verify_taskdenied?email=' . $this->input->post('email') . '& token=' . urlencode($token) . '">Deny</a>');
         }
         if ($this->email->send()) {
             return true;
@@ -207,5 +208,23 @@ class Admin extends CI_Controller
         }
 
         return true;
+    }
+
+    public function deletetask($id)
+    {
+        $data['title'] = 'Request Tasks';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+
+        $this->load->model('Menu_model', 'menu');
+
+        $data['reqtasks'] = $this->menu->gettasks();
+
+        if ($this->menu->deleteTask($id) > 0) {
+            $this->session->set_flashdata('menus', '<div class="alert alert-success alert-dismissible" role="alert">Task successfully deleted! </div>');
+            redirect('admin/tasks');
+        } else {
+            $this->session->set_flashdata('menus', '<div class="alert alert-danger alert-dismissible" role="alert">Error while deleting task! </div>');
+            redirect('admin/tasks');
+        }
     }
 }

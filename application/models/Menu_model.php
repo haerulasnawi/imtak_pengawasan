@@ -100,11 +100,11 @@ class Menu_model extends CI_Model
         return $this->db->query($query)->result_array();
     }
 
-    // public function uploadfile($dataFile)
-    // {
-    //     $this->db->insert('request_task', $dataFile);
-    //     $taskId = $this->db->insert_id();
+    public function deleteTask($id)
+    {
 
-    //     return $taskId;
-    // }
+        $this->db->delete('request_task', array('id' => $id));
+
+        return $this->db->affected_rows();
+    }
 }

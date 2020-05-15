@@ -116,6 +116,47 @@ class User extends CI_Controller
     public function verify_task()
     {
         $email = $this->input->get('email');
+        $id = $this->input->get('id');
+        $token = $this->input->get('token');
+
+        $user = $this->db->get_where('user', ['email' => $email])->row_array();
+        $user = $this->db->get_where('request_task', ['id' => $id])->row_array();
+
+        if ($user) {
+            $task_token = $this->db->get_where('task_token', ['token' => $token])->row_array();
+
+            if ($task_token) {
+                if (time() - $task_token['date_created'] < (60 * 60 * 24 * 2)) {
+                    $this->db->set('status', 'accepted');
+                    $this->db->where('email', $email);
+                    $this->db->where('id', $id);
+                    $this->db->update('request_task');
+
+                    $this->db->delete('task_token', ['email' => $email]);
+
+                    $this->session->set_flashdata('menus', '<div class="alert alert-success alert-dismissible" role="alert">Task has been accepted! Happy working </div>');
+                    redirect('user/requestedTask');
+                } else {
+                    $this->db->set('status', 'denied');
+                    $this->db->where('email', $email);
+                    $this->db->update('request_task');
+                    $this->db->delete('task_token', ['email' => $email]);
+                    $this->session->set_flashdata('menus', '<div class="alert alert-danger alert-dismissible" role="alert">Task Expired!</div>');
+                    redirect('user/requestedTasks');
+                }
+            } else {
+                $this->session->set_flashdata('menus', '<div class="alert alert-danger alert-dismissible" role="alert">Invalid token task, please contact admin!</div>');
+                redirect('user/requestedTasks');
+            }
+        } else {
+            $this->session->set_flashdata('menus', '<div class="alert alert-danger alert-dismissible" role="alert">Failed when sending task! Wrong email </div>');
+            redirect('user/requestedTask');
+        }
+    }
+
+    public function verify_taskdenied()
+    {
+        $email = $this->input->get('email');
         $token = $this->input->get('token');
 
         $user = $this->db->get_where('user', ['email' => $email])->row_array();
@@ -124,28 +165,54 @@ class User extends CI_Controller
             $task_token = $this->db->get_where('task_token', ['token' => $token])->row_array();
 
             if ($task_token) {
-                if (time() - $task_token['date_created'] < (60 * 60 * 24)) {
-                    $this->db->set('status', 'accepted');
+                if (time() - $task_token['date_created'] < (60 * 60 * 24 * 2)) {
+                    $this->db->set('status', 'denied');
                     $this->db->where('email', $email);
-                    $this->db->update('user');
+                    $this->db->update('request_task');
 
                     $this->db->delete('task_token', ['email' => $email]);
 
                     $this->session->set_flashdata('menus', '<div class="alert alert-success alert-dismissible" role="alert">Task has been accepted! Happy working </div>');
-                    redirect('user/requested_tasks');
+                    redirect('user/requestedTask');
                 } else {
-                    $this->db->delete('request_task', ['email' => $email]);
+                    $this->db->set('status', 'denied');
+                    $this->db->where('email', $email);
+                    $this->db->update('request_task');
                     $this->db->delete('task_token', ['email' => $email]);
                     $this->session->set_flashdata('menus', '<div class="alert alert-danger alert-dismissible" role="alert">Task Expired!</div>');
-                    redirect('user/requested_tasks');
+                    redirect('user/requestedTasks');
                 }
             } else {
                 $this->session->set_flashdata('menus', '<div class="alert alert-danger alert-dismissible" role="alert">Invalid token task, please contact admin!</div>');
-                redirect('user/requested_tasks');
+                redirect('user/requestedTasks');
             }
         } else {
             $this->session->set_flashdata('menus', '<div class="alert alert-danger alert-dismissible" role="alert">Failed when sending task! Wrong email </div>');
-            redirect('user/requested_tasks');
+            redirect('user/requestedTask');
         }
+    }
+
+    public function requestedTask()
+    {
+        $data['title'] = 'Requested Tasks';
+        $data['user'] = $this->db->get_where('user', ['email' => $user = $this->session->userdata('email')])->row_array();
+
+        $data['taskuser'] = $this->db->get_where('request_task', ['email' => $user])->result_array();
+
+        // if ($this->form_validation->run() == false) {
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('user/requestedTasks', $data);
+        $this->load->view('templates/footer');
+        // } else {
+        // }
+    }
+    function download($id)
+    {
+        $data = $this->db->get_where('request_task', ['id' => $id])->row();
+        force_download('assets/taskfiles/' . $data->task_files, NULL);
+
+        redirect('user/requestedTask');
     }
 }

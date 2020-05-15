@@ -2,22 +2,23 @@
 
     <!-- Page Heading -->
     <h1 class="h3 mb-4 text-gray-800"><?= $title; ?></h1>
-    <?= $this->session->flashdata('menus') ?>
-    <div class="row">
+
+    <div class="row align-middle position-relative">
 
         <?php if (validation_errors()) : ?>
             <div class="alert alert-danger" role="alert">
                 <?= validation_errors(); ?>
             </div>
         <?php endif; ?>
+        <?= $this->session->flashdata('menus') ?>
 
         <div class="col-lg-12">
 
             <body>
                 <link rel="stylesheet" href="<?= base_url('assets'); ?>/css/sb-admin-2.min.css" />
                 <link rel="stylesheet" href="<?= base_url('assets'); ?>/vendor/datatables/dataTables.bootstrap4.min.css" />
-                <div class="table-responsive-md" style="margin-bottom: 15px;">
-                    <table class="table table-hover" cellspacing="0" width="100%" id="tabeltask">
+                <div class="table-responsive" style="margin-bottom: 15px;">
+                    <table class="table table-hover mx-auto align-middle" cellspacing="0" width="100%" id="tabeltask">
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
@@ -27,8 +28,9 @@
                                 <th scope="col">Freelance</th>
                                 <th scope="col">Email</th>
                                 <th scope="col">Files</th>
-                                <th scope="col">Deadline</th>
                                 <th scope="col">Date Created</th>
+                                <th scope="col">Value</th>
+                                <th scope="col">Deadline</th>
                                 <th scope="col">Status</th>
                                 <th scope="col">Action</th>
                             </tr>
@@ -45,12 +47,13 @@
                                     <td><?= $rt['email']; ?></td>
                                     <td><?= $rt['task_files']; ?></td>
                                     <td><?= date('d-m-Y', strtotime($rt['deadline'])); ?></td>
+                                    <td>$<?= $rt['job_value']; ?></td>
                                     <td><?= date('d-m-Y', strtotime($rt['date_created'])); ?></td>
                                     <td><?= $rt['status']; ?></td>
 
                                     <td>
                                         <a href="" class="badge badge-success">edit</a>
-                                        <a href="<?= site_url('menu/deleteuser/' . $rt['id']); ?>" class="badge badge-danger" onclick="return confirm('Want to delete this stuff ?')">delete</a>
+                                        <a href="<?= site_url('admin/deletetask/' . $rt['id']); ?>" class="badge badge-danger" onclick="return confirm('Want to delete this stuff ?')">delete</a>
                                         <a href="<?= base_url('admin/download/' . $rt['id']); ?>" class="badge badge-primary">download</a>
                                     </td>
                                 </tr>
@@ -67,6 +70,7 @@
                                 <th scope="col">Email</th>
                                 <th scope="col">Files</th>
                                 <th scope="col">Deadline</th>
+                                <th scope="col">Value</th>
                                 <th scope="col">Date Created</th>
                                 <th scope="col">Status</th>
                                 <th scope="col">Action</th>
@@ -137,18 +141,27 @@
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="deadline">Deadline</label>
-                                <input type="text" class="form-control" id="deadline" placeholder="dd-mm-yyyy" name="deadline" value="<?= set_value('deadline'); ?>">
+                                <input type="date" class="form-control" id="deadline" placeholder="dd-mm-yyyy" name="deadline" value="<?= set_value('deadline'); ?>">
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label for="task_files">Upload Task File</label>
-                            <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="task_files" name="task_files">
-                                <label class="custom-file-label" for="task_files">Choose file</label>
-                                <?= form_error('task_files', '<small class="text-danger pl-3">', '</small>'); ?>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="job_value">Value</label>
+                                <input type="text" class="form-control" id="job_value" name="job_value">
+                                <?= form_error('source_lang', '<small class="text-danger pl-3">', '</small>'); ?>
                             </div>
+                            <div class="form-group col-md-6">
+                                <label for="task_files">Upload Task File</label>
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input" id="task_files" name="task_files">
+                                    <label class="custom-file-label" for="task_files">Choose file</label>
+                                    <?= form_error('task_files', '<small class="text-danger pl-3">', '</small>'); ?>
+                                </div>
+                            </div>
+
+
                         </div>
-                        <button type="submit" class="btn btn-primary">Create New Task</button>
+                        <button type="submit" class="btn btn-primary mb-3">Create New Task</button>
                     </form>
 
                 </div>

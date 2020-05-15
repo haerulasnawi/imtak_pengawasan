@@ -167,8 +167,8 @@ class Menu extends CI_Controller
         $config = [
             'protocol' => 'smtp',
             'smtp_host' => 'ssl://smtp.gmail.com',
-            'smtp_user' => 'selesetidur@gmail.com',
-            'smtp_pass' => 'selesetidur99',
+            'smtp_user' => 'pt.starjogjaindonesia@gmail.com',
+            'smtp_pass' => 'Ptstarindonesia2020.',
             'smtp_port' => '465',
             'mailtype' => 'html',
             'charset' => 'utf-8',
