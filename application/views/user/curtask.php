@@ -18,16 +18,18 @@
                 <link rel="stylesheet" href="<?= base_url('assets'); ?>/css/sb-admin-2.min.css" />
                 <link rel="stylesheet" href="<?= base_url('assets'); ?>/vendor/datatables/dataTables.bootstrap4.min.css" />
                 <div class="table-responsive-md" style="margin-bottom: 15px;">
-                    <table class="table table-hover" cellspacing="0" width="100%" id="tabeltaskuser">
+                    <table class="table table-hover" cellspacing="0" width="100%" id="tabelcurtaskuser">
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">Task Type</th>
                                 <th scope="col">Source Language</th>
                                 <th scope="col">Target Language</th>
+                                <th scope="col">Files</th>
                                 <th scope="col">Value</th>
                                 <th scope="col">Deadline</th>
                                 <th scope="col">Status</th>
+                                <th scope="col">Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -38,9 +40,13 @@
                                     <td><?= $rtso['task_type']; ?></td>
                                     <td><?= $rtso['source_lang']; ?></td>
                                     <td><?= $rtso['target_lang']; ?></td>
+                                    <td><?= $rtso['task_files']; ?></td>
                                     <td>$<?= $rtso['job_value']; ?></td>
                                     <td><?= date('d-m-Y', strtotime($rtso['deadline'])); ?></td>
                                     <td><?= $rtso['status']; ?></td>
+                                    <td>
+                                        <a href="<?= base_url('user/download/' . $rtso['id']); ?>" class="badge badge-primary">download</a>
+                                    </td>
                                 </tr>
                                 <?php $i++; ?>
                             <?php endforeach; ?>
@@ -51,6 +57,7 @@
                                 <th scope="col">Task Type</th>
                                 <th scope="col">Source Language</th>
                                 <th scope="col">Target Language</th>
+                                <th scope="col">Files</th>
                                 <th scope="col">Value</th>
                                 <th scope="col">Deadline</th>
                                 <th scope="col">Status</th>
@@ -69,7 +76,7 @@
 </div>
 <!-- /.container-fluid -->
 <script>
-    var ctx = document.getElementById("tabeltaskuser");
+    var ctx = document.getElementById("tabelcurtaskuser");
     $(ctx).DataTable({
         // dom: '<"top">rt<"bottom"lfp><"clear">',
         pagingType: 'full_numbers',

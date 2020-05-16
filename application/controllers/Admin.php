@@ -120,8 +120,7 @@ class Admin extends CI_Controller
                 'deadline' => $this->input->post('deadline'),
                 'name' => $this->input->post('name'),
                 'email' => htmlspecialchars($email),
-                'task_files' => $this->_filetoupload()
-
+                'task_files' => $file = $this->_filetoupload()
             ];
 
             // $task_type = htmlspecialchars($this->input->post('task_type'));
@@ -133,10 +132,10 @@ class Admin extends CI_Controller
             // $name =  htmlspecialchars($this->input->post('name'));
             // $email = htmlspecialchars($this->input->post('email'));
             // $fileupload = $this->_filetoupload();
-
             //siapkan token
             $token = base64_encode(random_bytes(32));
             $task_token = [
+                'file' => $file,
                 'email' => $email,
                 'token' => $token,
                 'date_created' => time()
@@ -149,7 +148,7 @@ class Admin extends CI_Controller
             // return $this->db->query($query)->row();
             $this->db->insert('request_task', $data);
             $this->db->insert('task_token', $task_token);
-            $this->_sendEmailTask($token, 'verify_task');
+            $this->_sendEmailTask($token, 'verify_task', $file);
 
             $this->session->set_flashdata('menus', '<div class="alert alert-success" role="alert">New task successfully created!</div>');
             redirect('admin/tasks');
@@ -163,7 +162,7 @@ class Admin extends CI_Controller
 
         redirect('admin/tasks');
     }
-    private function _sendEmailTask($token, $type)
+    private function _sendEmailTask($token, $type, $file)
     {
         $config = [
             'protocol' => 'smtp',
@@ -184,7 +183,7 @@ class Admin extends CI_Controller
 
         if ($type == 'verify_task') {
             $this->email->subject('You have a new request task!');
-            $this->email->message('Click this link to accept or deny the task : <a href=" ' . base_url() . 'user/verify_task?email=' . $this->input->post('email') . '& token=' . urlencode($token) . '">Accept</a><a href=" ' . base_url() . 'user/verify_taskdenied?email=' . $this->input->post('email') . '& token=' . urlencode($token) . '">Deny</a>');
+            $this->email->message('Click this link to login & accept/deny the task : <a href=" ' . base_url() . 'user/verify_task?email=' . $this->input->post('email') . '& token=' . urlencode($token) .  '& file=' . $file . '">Accept </a> <a href=" ' . base_url() . 'user/verify_taskdenied?email=' . $this->input->post('email') . '& token=' . urlencode($token) .  '& file=' . $file . '"> Deny</a>');
         }
         if ($this->email->send()) {
             return true;
@@ -224,6 +223,36 @@ class Admin extends CI_Controller
             redirect('admin/tasks');
         } else {
             $this->session->set_flashdata('menus', '<div class="alert alert-danger alert-dismissible" role="alert">Error while deleting task! </div>');
+            redirect('admin/tasks');
+        }
+    }
+
+    public function getubahtask()
+    {
+        $this->load->model('Menu_model', 'menu');
+        echo json_encode($this->menu->getDataUbahTask($_POST['id']));
+    }
+
+    public function editTask()
+    {
+        $data['title'] = 'Request Tasks';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+
+        $data['reqtask'] = $this->db->get('request_task')->result_array();
+
+        $this->form_validation->set_rules('task_type', 'task_type', 'required');
+        $this->form_validation->set_rules('source_lang', 'source_lang', 'required');
+        $this->form_validation->set_rules('target_lang', 'target_lang', 'required');
+        $this->form_validation->set_rules('id_freelance', 'id_freelance', 'required');
+        $this->form_validation->set_rules('job_value', 'job_value', 'required');
+        $this->form_validation->set_rules('deadline', 'deadline', 'required');
+        $this->form_validation->set_rules('name', 'name', 'required');
+        $this->load->model('Menu_model', 'menu');
+        if ($this->menu->ubahtask($_POST) > 0) {
+            $this->session->set_flashdata('menus', '<div class="alert alert-success alert-dismissible" role="alert">Task successfully changed! </div>');
+            redirect('admin/tasks');
+        } else {
+            $this->session->set_flashdata('menus', '<div class="alert alert-danger alert-dismissible" role="alert">Error while changing Task! </div>');
             redirect('admin/tasks');
         }
     }

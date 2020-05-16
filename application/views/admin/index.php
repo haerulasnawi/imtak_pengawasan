@@ -218,8 +218,8 @@
                                 maxTicksLimit: 5,
                                 padding: 10,
                                 suggestedMin: 0,
-                                suggestedMax: 10,
-                                stepSize: 1,
+                                suggestedMax: 50,
+                                stepSize: 5,
                                 // Include a dollar sign in the ticks
                                 callback: function(value, index, values) {
                                     return number_format(value);

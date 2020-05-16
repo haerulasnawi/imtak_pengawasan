@@ -107,4 +107,16 @@ class Menu_model extends CI_Model
 
         return $this->db->affected_rows();
     }
+
+    function ubahtask($data)
+    {
+        $this->db->replace('request_task', $data);
+        return $this;
+    }
+
+    public function getDataUbahTask($id)
+    {
+        $query = " SELECT * FROM `request_task` WHERE `id`=$id";
+        return $this->db->query($query)->row();
+    }
 }
