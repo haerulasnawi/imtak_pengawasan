@@ -119,4 +119,20 @@ class Menu_model extends CI_Model
         $query = " SELECT * FROM `request_task` WHERE `id`=$id";
         return $this->db->query($query)->row();
     }
+
+    public function gettasksinvoice()
+    {
+        $query = "SELECT `task_invoice`.*,`request_task`.`task_files`
+                    FROM `task_invoice` JOIN `request_task`
+                    ON `task_invoice`.`id_reqtask` = `request_task`.`id`";
+        return $this->db->query($query)->result_array();
+    }
+
+    public function deleteTaskInvoice($id)
+    {
+
+        $this->db->delete('task_invoice', array('id' => $id));
+
+        return $this->db->affected_rows();
+    }
 }

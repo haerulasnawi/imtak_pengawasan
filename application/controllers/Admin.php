@@ -178,7 +178,7 @@ class Admin extends CI_Controller
         $this->load->library('email', $config);
         $this->email->initialize($config);
 
-        $this->email->from('selesetidur@gmail.com', 'Admin PT. STAR Software Indonesia');
+        $this->email->from('pt.starjogjaindonesia@gmail.com', 'Admin PT. STAR Software Indonesia');
         $this->email->to($this->input->post('email'));
 
         if ($type == 'verify_task') {
@@ -238,15 +238,10 @@ class Admin extends CI_Controller
         $data['title'] = 'Request Tasks';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
-        $data['reqtask'] = $this->db->get('request_task')->result_array();
+        $this->load->model('Menu_model', 'menu');
 
-        $this->form_validation->set_rules('task_type', 'task_type', 'required');
-        $this->form_validation->set_rules('source_lang', 'source_lang', 'required');
-        $this->form_validation->set_rules('target_lang', 'target_lang', 'required');
-        $this->form_validation->set_rules('id_freelance', 'id_freelance', 'required');
-        $this->form_validation->set_rules('job_value', 'job_value', 'required');
-        $this->form_validation->set_rules('deadline', 'deadline', 'required');
-        $this->form_validation->set_rules('name', 'name', 'required');
+        $data['reqtasks'] = $this->db->get('request_task')->result_array();
+
         $this->load->model('Menu_model', 'menu');
         if ($this->menu->ubahtask($_POST) > 0) {
             $this->session->set_flashdata('menus', '<div class="alert alert-success alert-dismissible" role="alert">Task successfully changed! </div>');

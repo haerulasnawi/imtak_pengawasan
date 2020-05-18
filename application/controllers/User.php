@@ -174,7 +174,7 @@ class User extends CI_Controller
                     $this->db->where('task_files', $file);
                     $this->db->update('request_task');
 
-                    $this->db->delete('task_token', ['email' => $email]);
+                    $this->db->delete('task_token', ['email' => $email, 'file' => $file]);
 
                     $this->session->set_flashdata('menus', '<div class="alert alert-warning alert-dismissible" role="alert">Task has been denied!</div>');
                     redirect('user/requestedTask');
@@ -183,7 +183,7 @@ class User extends CI_Controller
                     $this->db->where('email', $email);
                     $this->db->where('task_files', $file);
                     $this->db->update('request_task');
-                    $this->db->delete('task_token', ['email' => $email]);
+                    $this->db->delete('task_token', ['email' => $email, 'file' => $file]);
                     $this->session->set_flashdata('menus', '<div class="alert alert-danger alert-dismissible" role="alert">Task Expired!</div>');
                     redirect('user/requestedTasks');
                 }
@@ -236,5 +236,136 @@ class User extends CI_Controller
         $this->load->view('templates/footer');
         // } else {
         // }
+    }
+
+    public function invoiceAwait()
+    {
+        $data['title'] = 'Awaiting Invoice';
+        $data['user'] = $this->db->get_where('user', ['email' => $user = $this->session->userdata('email')])->row_array();
+
+        // $this->db->select('*');
+        // $this->db->from('task_invoice');
+        // $this->db->join('request_task', 'task_invoice.id_reqtask = request_task.id');
+        // $this->db->where('request_task.email', $user);
+
+        // $data['taskinvoiceuser'] = $this->db->
+
+        $this->load->model('Menu_model', 'menu');
+        $data['taskinvoiceuser'] = $this->menu->gettasksinvoice();
+        $data['taskinvoiceuser'] = $this->db->get_where('task_invoice', ['email' => $user])->result_array();
+        $data['humanr'] = $this->db->get_where('user', ['role_id' => 4])->result_array();
+        $data['reqtask'] = $this->db->get_where('request_task', ['email' => $user])->result_array();
+
+        $this->form_validation->set_rules('email_hr', 'Email HR', 'required|trim');
+        $this->form_validation->set_rules('name', 'Your Name', 'required|trim');
+        $this->form_validation->set_rules('email', 'Your Email', 'required|trim');
+        $this->form_validation->set_rules('id_reqtask', 'Base Task ID', 'required|trim');
+
+        if ($this->form_validation->run() == false) {
+            $this->load->view('templates/header', $data);
+            $this->load->view('templates/sidebar', $data);
+            $this->load->view('templates/topbar', $data);
+            $this->load->view('user/invoiceawait', $data);
+            $this->load->view('templates/footer');
+        } else {
+            $this->load->model('Menu_model', 'menu');
+            $email = $this->input->post('email_hr');
+
+            $data = [
+                'id_reqtask' => $this->input->post('id_reqtask'),
+                'name' => $this->input->post('name'),
+                'email_hr' => $this->input->post('email_hr'),
+                'email' => $this->input->post('email'),
+                'status' => 'pending invoice',
+                'file_final' => $file = $this->_filetouploads()
+            ];
+
+            $token = base64_encode(random_bytes(32));
+            $task_token = [
+                'file' => $file,
+                'email' => $email,
+                'token' => $token,
+                'date_created' => time()
+            ];
+
+            $this->db->insert('task_invoice', $data);
+            $this->db->insert('task_token', $task_token);
+            $this->_sendEmailTaskuser($token, 'verify_task', $file);
+
+            $this->session->set_flashdata('menus', '<div class="alert alert-success" role="alert">The task successfully submitted!</div>');
+            redirect('user/invoiceAwait');
+        }
+    }
+
+    function downloadtaskfinal($id)
+    {
+        $data = $this->db->get_where('task_invoice', ['id' => $id])->row();
+        force_download('assets/taskfilesfinal/' . $data->file_final, NULL);
+
+        redirect('user/invoiceAwait');
+    }
+    private function _sendEmailTaskuser($token, $type, $file)
+    {
+        $config = [
+            'protocol' => 'smtp',
+            'smtp_host' => 'ssl://smtp.gmail.com',
+            'smtp_user' => 'pt.starjogjaindonesia@gmail.com',
+            'smtp_pass' => 'Ptstarindonesia2020.',
+            'smtp_port' => '465',
+            'mailtype' => 'html',
+            'charset' => 'utf-8',
+            'newline' => "\r\n"
+        ];
+
+        $this->load->library('email', $config);
+        $this->email->initialize($config);
+
+        $this->email->from('pt.starjogjaindonesia@gmail.com', 'HR PT. STAR Software Indonesia');
+        $this->email->to($this->input->post('email'));
+
+        if ($type == 'verify_taskFinal') {
+            $this->email->subject('New task ready to invoice!');
+            $this->email->message('Click this link to login & invoicing the task : <a href=" ' . base_url() . 'humanresource/verify_taskFinal?email=' . $this->input->post('email') . '& token=' . urlencode($token) .  '& file=' . $file . '">Accept</a>');
+        }
+        if ($this->email->send()) {
+            return true;
+        } else {
+            echo $this->email->print_debugger();
+            die;
+        }
+    }
+
+    private function _filetouploads()
+    {
+
+        $config['upload_path'] = './assets/taskfilesfinal/';
+        $config['allowed_types'] = 'doc|docx|pdf|xlsx|csv';
+        $config['max_size']     = 0;
+
+        $this->load->library('upload', $config);
+
+        if ($this->upload->do_upload('file_final')) {
+            return $this->upload->data("file_name");
+        }
+
+        return true;
+    }
+
+    public function deletetaskfinal($id)
+    {
+        $data['title'] = 'Awaiting Invoice';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+
+        $this->load->model('Menu_model', 'menu');
+
+        $data['taskinvoice'] = $this->menu->gettasksinvoice();
+
+        if ($this->menu->deleteTaskInvoice($id) > 0) {
+            $this->session->set_flashdata('menus', '<div class="alert alert-success alert-dismissible" role="alert">Task successfully deleted! </div>');
+            redirect('user/invoiceAwait');
+        } else {
+            $this->session->set_flashdata('menus', '<div class="alert alert-danger alert-dismissible" role="alert">Error while deleting task! </div>');
+            redirect('user/invoiceAwait');
+        }
     }
 }

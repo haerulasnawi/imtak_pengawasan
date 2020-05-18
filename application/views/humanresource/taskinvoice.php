@@ -17,45 +17,38 @@
             <body>
                 <link rel="stylesheet" href="<?= base_url('assets'); ?>/css/sb-admin-2.min.css" />
                 <link rel="stylesheet" href="<?= base_url('assets'); ?>/vendor/datatables/dataTables.bootstrap4.min.css" />
-                <a href="" class="btn btn-primary mb-3 tombolTambahtask" data-toggle="modal" data-target="#newTaskModal">Create a New Task</a>
+                <a href="" class="btn btn-primary mb-3 tombolTambahtaskinvoice" data-toggle="modal" data-target="#newTaskInvoiceModal">Send a Invoice</a>
                 <div class="table-responsive-sm" style="margin-bottom: 15px;">
-                    <table class="table table-hover" cellspacing="0" width="100%" id="tabeltask">
+                    <table class="table table-hover" cellspacing="0" width="100%" id="tabeltaskinvoice">
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
-                                <th scope="col">Task Type</th>
-                                <th scope="col">Source Language</th>
-                                <th scope="col">Target Language</th>
-                                <th scope="col">Freelance</th>
+                                <th scope="col">Email HR</th>
+                                <th scope="col">Name</th>
                                 <th scope="col">Email</th>
+                                <th scope="col">Base Task ID</th>
                                 <th scope="col">Files</th>
                                 <th scope="col">Date Created</th>
-                                <th scope="col">Value</th>
-                                <th scope="col">Deadline</th>
                                 <th scope="col">Status</th>
                                 <th scope="col">Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php $i = 1; ?>
-                            <?php foreach ($reqtasks as $rt) : ?>
+                            <?php foreach ($taskinvoice as $ti) : ?>
                                 <tr>
                                     <th scope="row"><?= $i; ?></th>
-                                    <td><?= $rt['task_type']; ?></td>
-                                    <td><?= $rt['source_lang']; ?></td>
-                                    <td><?= $rt['target_lang']; ?></td>
-                                    <td><?= $rt['name']; ?></td>
-                                    <td><?= $rt['email']; ?></td>
-                                    <td><?= $rt['task_files']; ?></td>
-                                    <td><?= date('d-m-Y', strtotime($rt['deadline'])); ?></td>
-                                    <td>$<?= $rt['job_value']; ?></td>
-                                    <td><?= date('d-m-Y', strtotime($rt['date_created'])); ?></td>
-                                    <td><?= $rt['status']; ?></td>
-
+                                    <td><?= $ti['email_hr']; ?></td>
+                                    <td><?= $ti['name']; ?></td>
+                                    <td><?= $ti['email']; ?></td>
+                                    <td><?= $ti['id_reqtask']; ?></td>
+                                    <td><?= $ti['file_final']; ?></td>
+                                    <td><?= $ti['date_created']; ?></td>
+                                    <td><?= $ti['status']; ?></td>
                                     <td>
-                                        <a href="" data-target="#newTaskModal" data-toggle="modal" data-id="<?= $rt['id']; ?>" class="badge badge-success tampilModalTask">edit</a>
-                                        <a href="<?= site_url('admin/deletetask/' . $rt['id']); ?>" class="badge badge-danger" onclick="return confirm('Want to delete this stuff ?')">delete</a>
-                                        <a href="<?= base_url('admin/download/' . $rt['id']); ?>" class="badge badge-primary">download</a>
+                                        <a href="" data-target="#newTaskModal" data-toggle="modal" data-id="<?= $ti['id']; ?>" class="badge badge-success tampilModalTaskInvoice">edit</a>
+                                        <a href="<?= site_url('admin/deletetask/' . $ti['id']); ?>" class="badge badge-danger" onclick="return confirm('Want to delete this stuff ?')">delete</a>
+                                        <a href="<?= base_url('humanresource/downloadtaskfinal/' . $ti['id']); ?>" class="badge badge-primary">download</a>
                                     </td>
                                 </tr>
                                 <?php $i++; ?>
@@ -64,14 +57,11 @@
                         <tfoot>
                             <tr>
                                 <th scope="col">#</th>
-                                <th scope="col">Task Type</th>
-                                <th scope="col">Source Language</th>
-                                <th scope="col">Target Language</th>
-                                <th scope="col">Freelance</th>
+                                <th scope="col">Email HR</th>
+                                <th scope="col">Name</th>
                                 <th scope="col">Email</th>
+                                <th scope="col">Base Task ID</th>
                                 <th scope="col">Files</th>
-                                <th scope="col">Deadline</th>
-                                <th scope="col">Value</th>
                                 <th scope="col">Date Created</th>
                                 <th scope="col">Status</th>
                                 <th scope="col">Action</th>
@@ -89,7 +79,7 @@
 </div>
 </div>
 <script>
-    var ctx = document.getElementById("tabeltask");
+    var ctx = document.getElementById("tabeltaskinvoice");
     $(ctx).DataTable({
         // dom: '<"top">rt<"bottom"lfp><"clear">',
         pagingType: 'full_numbers',
@@ -127,26 +117,30 @@
 
     });
 </script>
-
 <!-- Modal Add Menu -->
-<div class="modal fade" id="newTaskModal" tabindex="-1" role="dialog" aria-labelledby="newTaskModalLabel" aria-hidden="true">
+<div class="modal fade" id="newTaskInvoiceModal" tabindex="-1" role="dialog" aria-labelledby="newTaskInvoiceModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="newTaskModalLabel">Create a New Task</h5>
+                <h5 class="modal-title" id="newTaskInvoiceModalLabel">Create a New Task</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form action="<?= base_url('admin/tasks'); ?>" method="post" enctype="multipart/form-data">
+                <form action="<?= base_url('humanresource/taskInvoice'); ?>" method="post" enctype="multipart/form-data">
                     <input type="hidden" id="id" name="id">
                     <input type="hidden" id="date_created" name="date_created">
                     <input type="hidden" id="status" name="status">
                     <div class="form-group">
-                        <label for="task_type">Task Type</label>
-                        <input type="text" class="form-control" id="task_type" name="task_type">
-                        <?= form_error('task_type', '<small class="text-danger pl-3">', '</small>'); ?>
+                        <label for="email_hr">Email HR</label>
+                        <select name="email_hr" id="email_hr" class="form-control">
+                            <option value="">Select Email</option>
+                            <?php foreach ($freelance as $fr) : ?>
+                                <option value="<?= $fr['name']; ?>"><?= $fr['name']; ?> - <?= $fr['language']; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                        <?= form_error('name', '<small class="text-danger pl-3">', '</small>'); ?>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">

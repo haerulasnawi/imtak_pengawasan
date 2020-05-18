@@ -178,7 +178,7 @@ class Menu extends CI_Controller
         $this->load->library('email', $config);
         $this->email->initialize($config);
 
-        $this->email->from('selesetidur@gmail.com', 'Admin PT. STAR Software Indonesia');
+        $this->email->from('pt.starjogjaindonesia@gmail.com', 'Admin PT. STAR Software Indonesia');
         $this->email->to($this->input->post('email'));
 
         if ($type == 'verify') {
