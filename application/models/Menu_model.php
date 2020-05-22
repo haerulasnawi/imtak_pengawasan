@@ -136,11 +136,11 @@ class Menu_model extends CI_Model
         return $this->db->affected_rows();
     }
 
-    public function dataInvoice()
+    public function getdataInvoice()
     {
         $query = "SELECT `invoice`.*,`task_invoice`.`date_created`
                     FROM `invoice` JOIN `task_invoice`
-                    ON `invoice`.`id_task_invoice` = `task_invoice`.`id`";
+                    ON `invoice`.`id_task_reqtask` = `task_invoice`.`id`";
         return $this->db->query($query)->result_array();
     }
 

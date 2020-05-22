@@ -233,22 +233,22 @@ class Admin extends CI_Controller
         echo json_encode($this->menu->getDataUbahTask($_POST['id']));
     }
 
-    public function editTask()
-    {
-        $data['title'] = 'Request Tasks';
-        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+    // public function editTask()
+    // {
+    //     $data['title'] = 'Request Tasks';
+    //     $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
-        $this->load->model('Menu_model', 'menu');
+    //     $this->load->model('Menu_model', 'menu');
 
-        $data['reqtasks'] = $this->db->get('request_task')->result_array();
+    //     $data['reqtasks'] = $this->db->get('request_task')->result_array();
 
-        $this->load->model('Menu_model', 'menu');
-        if ($this->menu->ubahtask($_POST) > 0) {
-            $this->session->set_flashdata('menus', '<div class="alert alert-success alert-dismissible" role="alert">Task successfully changed! </div>');
-            redirect('admin/tasks');
-        } else {
-            $this->session->set_flashdata('menus', '<div class="alert alert-danger alert-dismissible" role="alert">Error while changing Task! </div>');
-            redirect('admin/tasks');
-        }
-    }
+    //     $this->load->model('Menu_model', 'menu');
+    //     if ($this->menu->ubahtask($_POST) > 0) {
+    //         $this->session->set_flashdata('menus', '<div class="alert alert-success alert-dismissible" role="alert">Task successfully changed! </div>');
+    //         redirect('admin/tasks');
+    //     } else {
+    //         $this->session->set_flashdata('menus', '<div class="alert alert-danger alert-dismissible" role="alert">Error while changing Task! </div>');
+    //         redirect('admin/tasks');
+    //     }
+    // }
 }

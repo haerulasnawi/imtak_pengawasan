@@ -260,6 +260,7 @@ class User extends CI_Controller
         $this->form_validation->set_rules('name', 'Your Name', 'required|trim');
         $this->form_validation->set_rules('email', 'Your Email', 'required|trim');
         $this->form_validation->set_rules('id_reqtask', 'Base Task ID', 'required|trim');
+        $this->form_validation->set_rules('password', 'Password', 'required|trim');
 
         if ($this->form_validation->run() == false) {
             $this->load->view('templates/header', $data);
@@ -330,7 +331,7 @@ class User extends CI_Controller
 
         if ($type == 'verify_taskFinal') {
             $this->email->subject('New task ready to invoice!');
-            $this->email->message('Click this link to login & invoicing the task : <a href=" ' . base_url() . 'humanresource/verify_taskFinal?email=' . $this->input->post('email') . '& token=' . urlencode($token) .  '& file=' . $file . '& task_id=' . $task_id . '">Accept</a>');
+            $this->email->message('Click this link to login & invoicing the task : <a href=" ' . base_url() . 'humanresource/verify_taskFinal?email=' . $this->input->post('email_hr') . '& token=' . urlencode($token) .  '& file=' . $file . '& task_id=' . $task_id . '">Accept</a>');
         }
         if ($this->email->send()) {
             return true;
@@ -380,66 +381,123 @@ class User extends CI_Controller
         $data['user'] = $this->db->get_where('user', ['email' => $user = $this->session->userdata('email')])->row_array();
 
         $this->load->model('Menu_model', 'menu');
-        $data['datainvoice'] = $this->menu->dataInvoice();
-        $data['datainvoice'] = $this->db->get_where('invoice', ['email_freelance' => $user, 'status' => 'Waiting for invoice'])->result_array();
+        // $data['datainvoiceTask'] = $this->menu->getdataInvoice();
+        $data['datainvoiceTask'] = $this->db->get_where('invoice', ['email_freelance' => $user, 'status' => 'Waiting for invoice'])->result_array();
         $data['humanr'] = $this->db->get_where('user', ['role_id' => 4])->result_array();
-        $data['reqtask'] = $this->db->get_where('request_task', ['email' => $user, 'status' => 'finished'])->result_array();
+        $data['reqtask'] = $this->db->get_where('request_task', ['email' => $user, 'status' => 'Waiting for invoice'])->result_array();
+        $data['taskinvoice'] = $this->db->get_where('task_invoice', ['email' => $user, 'status' => 'Ready to invoicing'])->result_array();
 
-        // $this->load->model('Menu_model', 'menu');
+        $this->form_validation->set_rules('id_task_reqtask', 'Task', 'required');
+        $this->form_validation->set_rules('task_type', 'Task type', 'required');
+        $this->form_validation->set_rules('target_lang', 'Target Language', 'required');
+        $this->form_validation->set_rules('source_lang', 'SourceLanguage', 'required');
+        $this->form_validation->set_rules('job_value', 'Value', 'required');
+        $this->form_validation->set_rules('date_completed', 'Date Completed', 'required');
+        $this->form_validation->set_rules('email_freelance', 'Freelance email', 'required');
+        $this->form_validation->set_rules('email_hr', 'HR email', 'required');
 
-        // $data['taskinvoice'] = $this->db->get_where('task_invoice', ['status' => 'Ready to invoicing', 'id' => 'id'])->result_array();
+        if ($this->form_validation->run() == false) {
+            $this->load->view('templates/header', $data);
+            $this->load->view('templates/sidebar', $data);
+            $this->load->view('templates/topbar', $data);
+            $this->load->view('user/invoiceReady', $data);
+            $this->load->view('templates/footer');
+        } else {
+            $this->load->model('Menu_model', 'menu');
+            $email = $this->input->post('email_hr');
+            $id_reqtask = $this->input->post('id_task_reqtask');
+            $password = $this->input->post('password');
 
-        // $this->form_validation->set_rules('email_hr', 'Email HR', 'required|trim');
-        // $this->form_validation->set_rules('name', 'Your Name', 'required|trim');
-        // $this->form_validation->set_rules('email', 'Your Email', 'required|trim');
-        // $this->form_validation->set_rules('id_reqtask', 'Base Task ID', 'required|trim');
 
-        // if ($this->form_validation->run() == false) {
-        $this->load->view('templates/header', $data);
-        $this->load->view('templates/sidebar', $data);
-        $this->load->view('templates/topbar', $data);
-        $this->load->view('user/invoiceReady', $data);
-        $this->load->view('templates/footer');
-        // } else {
-        //     $this->load->model('Menu_model', 'menu');
-        //     $email = $this->input->post('email_hr');
-        //     $password = $this->input->post('password');
-        //     $task_id =  $this->input->post('id_reqtask');
+            $data = [
+                'id_task_reqtask' => $id_reqtask,
+                'task_type' => $this->input->post('task_type'),
+                'target_lang' => $this->input->post('target_lang'),
+                'source_lang' => $this->input->post('source_lang'),
+                'job_value' => $this->input->post('job_value'),
+                'status' => 'Waiting for invoice',
+                'date_completed' => $this->input->post('date_completed'),
+                'email_freelance' => $this->input->post('email_freelance'),
+                'email_hr' => htmlspecialchars($email),
+                'file_invoice' => $file = $this->_filetouploadinvoiceuser()
+            ];
 
-        //     $data = [
-        //         'id_reqtask' => $task_id,
-        //         'name' => $this->input->post('name'),
-        //         'email_hr' => $this->input->post('email_hr'),
-        //         'email' => $this->input->post('email'),
-        //         'status' => 'pending invoice',
-        //         'file_final' => $file = $this->_filetouploads()
-        //     ];
 
-        //     $token = base64_encode(random_bytes(32));
-        //     $hr_token = [
-        //         'user' => $user,
-        //         'password' => password_hash($password, PASSWORD_DEFAULT),
-        //         'task_id' => $task_id,
-        //         'file' => $file,
-        //         'email' => $email,
-        //         'token' => $token,
-        //         'date_created' => time()
-        //     ];
+            $token = base64_encode(random_bytes(32));
+            $invoice_token = [
+                'user' => $user,
+                'password' => password_hash($password, PASSWORD_DEFAULT),
+                'file' => $file,
+                'id_reqtask' => $id_reqtask,
+                'email' => $email,
+                'token' => $token,
+                'date_created' => time()
+            ];
 
-        //     $this->db->insert('task_invoice', $data);
-        //     $this->db->insert('hr_token', $hr_token);
-        //     $this->_sendEmailTaskuser($token, 'verify_taskFinal', $file, $user, $password, $task_id);
+            $this->db->insert('user_invoice', $data);
+            $this->db->insert('user_invoice_token', $invoice_token);
+            $this->_sendEmailInvoiceuser($token, 'verify_Invoice', $file, $id_reqtask, $password, $user);
 
-        //     $this->session->set_flashdata('menus', '<div class="alert alert-success" role="alert">The task successfully submitted!</div>');
-        //     // redirect('user/invoiceAwait');
-        // }
+            $this->session->set_flashdata('menus', '<div class="alert alert-success" role="alert">The invoice successfully send!</div>');
+            redirect('user/invoiceReady');
+        }
     }
+
+    private function _sendEmailInvoiceuser($token, $type, $file, $id_reqtask, $password, $user)
+    {
+        $config = [
+            'protocol' => 'smtp',
+            'smtp_host' => 'ssl://smtp.gmail.com',
+            'smtp_user' => $user,
+            'smtp_pass' => $password,
+            'smtp_port' => '465',
+            'mailtype' => 'html',
+            'charset' => 'utf-8',
+            'newline' => "\r\n"
+        ];
+
+        $this->load->library('email', $config);
+        $this->email->initialize($config);
+
+        $this->email->from($user, 'Freelance PT. STAR Software Indonesia');
+        $this->email->to($this->input->post('email_hr'));
+
+        if ($type == 'verify_InvoiceHR') {
+            $this->email->subject('You have a new invoice!');
+            $this->email->message('Click this link to login & invoicing : <a href=" ' . base_url() . 'humanresource/verify_InvoiceHR?email=' . $this->input->post('email_hr') . '& token=' . urlencode($token) .  '& file=' . $file .  '& id_reqtask=' . $id_reqtask . '">Login and Invoicing</a>');
+        }
+        if ($this->email->send()) {
+            return true;
+        } else {
+            echo $this->email->print_debugger();
+            die;
+        }
+    }
+
+    private function _filetouploadinvoiceuser()
+    {
+
+        $config['upload_path'] = './assets/invoicefiles/';
+        $config['allowed_types'] = 'doc|docx|pdf|xlsx|csv|zip|rar';
+        $config['max_size']     = 0;
+
+        $this->load->library('upload', $config);
+
+        if ($this->upload->do_upload('file_invoice')) {
+            return $this->upload->data("file_name");
+        }
+
+        return true;
+    }
+
+
 
     public function verify_Invoice()
     {
         $email = $this->input->get('email');
         $file = $this->input->get('file');
         $token = $this->input->get('token');
+        $id_reqtask = $this->input->get('id_reqtask');
 
         $user = $this->db->get_where('user', ['email' => $email])->row_array();
         // $user = $this->db->get_where('user_token', ['file' => $file])->row_array();
@@ -449,10 +507,16 @@ class User extends CI_Controller
 
             if ($task_token) {
 
-                $this->db->set('status', 'accepted');
-                $this->db->where('email', $email);
+                $this->db->set('status', 'Waiting for invoice');
+                $this->db->where('email_freelance', $email);
+                $this->db->where('id_task_reqtask', $id_reqtask);
                 $this->db->where('file_invoice', $file);
                 $this->db->update('invoice');
+
+                $this->db->set('status', 'Waiting for invoice');
+                $this->db->where('email', $email);
+                $this->db->where('id', $id_reqtask);
+                $this->db->update('request_task');
 
                 $this->db->delete('invoice_token', ['email' => $email]);
 
@@ -466,5 +530,13 @@ class User extends CI_Controller
             $this->session->set_flashdata('menus', '<div class="alert alert-danger alert-dismissible" role="alert">Failed when sending invoice! Wrong email </div>');
             redirect('user/invoiceReady');
         }
+    }
+
+    function downloadinvoiceUser($id)
+    {
+        $data = $this->db->get_where('invoice', ['id' => $id])->row();
+        force_download('assets/invoicefiles/' . $data->file_invoice, NULL);
+
+        redirect('user/invoiceReady');
     }
 }

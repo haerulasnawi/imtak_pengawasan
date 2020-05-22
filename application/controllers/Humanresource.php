@@ -179,12 +179,21 @@ class Humanresource extends CI_Controller
 
     public function invoicedata()
     {
-        $data['title'] = 'Data Invoice';
+        $data['title'] = 'Send Invoice Data';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
         $this->load->model('Menu_model', 'menu');
-        $data['datainvoice'] = $this->menu->dataInvoice();
+
+        $data['datain'] = $this->db->get('invoice')->result_array();
         $data['taskinvoice'] = $this->db->get_where('task_invoice', ['status' => 'Ready to invoicing'])->result_array();
+
+        $this->form_validation->set_rules('id_task_reqtask', 'Task', 'required');
+        $this->form_validation->set_rules('task_type', 'Task type', 'required');
+        $this->form_validation->set_rules('target_lang', 'Target Language', 'required');
+        $this->form_validation->set_rules('source_lang', 'SourceLanguage', 'required');
+        $this->form_validation->set_rules('job_value', 'Value', 'required');
+        $this->form_validation->set_rules('date_completed', 'Date Completed', 'required');
+        $this->form_validation->set_rules('email_freelance', 'Freelance email', 'required');
 
         if ($this->form_validation->run() == false) {
             $this->load->view('templates/header', $data);
@@ -195,13 +204,13 @@ class Humanresource extends CI_Controller
         } else {
             $this->load->model('Menu_model', 'menu');
             $email = $this->input->post('email_freelance');
+            $id_reqtask = $this->input->post('id_task_reqtask');
 
             $data = [
-                'id_task_invoice' => $this->input->post('id_task_invoice'),
+                'id_task_reqtask' => $id_reqtask,
                 'task_type' => $this->input->post('task_type'),
                 'target_lang' => $this->input->post('target_lang'),
                 'source_lang' => $this->input->post('source_lang'),
-                'id_freelance' => $this->input->post('id_freelance'),
                 'job_value' => $this->input->post('job_value'),
                 'status' => 'Waiting for invoice',
                 'date_completed' => $this->input->post('date_completed'),
@@ -212,20 +221,21 @@ class Humanresource extends CI_Controller
             $token = base64_encode(random_bytes(32));
             $invoice_token = [
                 'file' => $file,
+                'id_reqtask' => $id_reqtask,
                 'email' => $email,
                 'token' => $token,
                 'date_created' => time()
             ];
 
-            $this->db->insert('task_invoice', $data);
+            $this->db->insert('invoice', $data);
             $this->db->insert('invoice_token', $invoice_token);
-            $this->_sendEmailInvoice($token, 'verify_Invoice', $file);
+            $this->_sendEmailInvoice($token, 'verify_Invoice', $file, $id_reqtask);
 
-            $this->session->set_flashdata('menus', '<div class="alert alert-success" role="alert">The task successfully submitted!</div>');
-            redirect('user/invoicedata');
+            $this->session->set_flashdata('menus', '<div class="alert alert-success" role="alert">The invoice successfully send!</div>');
+            redirect('humanresource/invoicedata');
         }
     }
-    private function _sendEmailInvoice($token, $type, $file)
+    private function _sendEmailInvoice($token, $type, $file, $id_reqtask)
     {
         $config = [
             'protocol' => 'smtp',
@@ -242,11 +252,11 @@ class Humanresource extends CI_Controller
         $this->email->initialize($config);
 
         $this->email->from('allandanshiva@gmail.com', 'HR PT. STAR Software Indonesia');
-        $this->email->to($this->input->post('email'));
+        $this->email->to($this->input->post('email_freelance'));
 
-        if ($type == 'verify_task') {
-            $this->email->subject('You have a new request task!');
-            $this->email->message('Click this link to login & get invoice : <a href=" ' . base_url() . 'user/verify_Invoice?email=' . $this->input->post('email') . '& token=' . urlencode($token) .  '& file=' . $file . '">Accept </a>');
+        if ($type == 'verify_Invoice') {
+            $this->email->subject('You have a new request invoice!');
+            $this->email->message('Click this link to login & get invoice : <a href=" ' . base_url() . 'user/verify_Invoice?email=' . $this->input->post('email_freelance') . '& token=' . urlencode($token) .  '& file=' . $file .  '& id_reqtask=' . $id_reqtask . '">Login</a>');
         }
         if ($this->email->send()) {
             return true;

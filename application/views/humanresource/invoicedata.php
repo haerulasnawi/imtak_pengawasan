@@ -19,7 +19,7 @@
                 <link rel="stylesheet" href="<?= base_url('assets'); ?>/vendor/datatables/dataTables.bootstrap4.min.css" />
                 <a href="" class="btn btn-primary mb-3 tombolTambahinvoice" data-toggle="modal" data-target="#newInvoiceModal">Send a Invoice to Freelance</a>
                 <div class="table-responsive-sm" style="margin-bottom: 15px;">
-                    <table class="table table-hover" cellspacing="0" width="100%" id="tabelinvoice">
+                    <table class="table table-hover" cellspacing="0" width="100%" id="tabeldatainvoice">
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
@@ -38,23 +38,23 @@
                         </thead>
                         <tbody>
                             <?php $i = 1; ?>
-                            <?php foreach ($datainvoice as $di) : ?>
+                            <?php foreach ($datain as $dn) : ?>
                                 <tr>
                                     <th scope="row"><?= $i; ?></th>
-                                    <td><?= $di['id_task_invoice']; ?></td>
-                                    <td><?= $di['task_type']; ?></td>
-                                    <td><?= $di['email_freelance']; ?></td>
-                                    <td><?= $di['source_lang']; ?></td>
-                                    <td><?= $di['target_lang']; ?></td>
-                                    <td><?= $di['job_value']; ?></td>
-                                    <td><?= $di['date_completed']; ?></td>
-                                    <td><?= $di['date_created']; ?></td>
-                                    <td><?= $di['file_invoice']; ?></td>
-                                    <td><?= $di['status']; ?></td>
+                                    <td><?= $dn['id_task_reqtask']; ?></td>
+                                    <td><?= $dn['task_type']; ?></td>
+                                    <td><?= $dn['email_freelance']; ?></td>
+                                    <td><?= $dn['source_lang']; ?></td>
+                                    <td><?= $dn['target_lang']; ?></td>
+                                    <td><?= $dn['job_value']; ?></td>
+                                    <td><?= $dn['date_completed']; ?></td>
+                                    <td><?= $dn['date_created']; ?></td>
+                                    <td><?= $dn['file_invoice']; ?></td>
+                                    <td><?= $dn['status']; ?></td>
                                     <td>
-                                        <a href="" data-target="#newInvoiceModal" data-toggle="modal" data-id="<?= $di['id']; ?>" class="badge badge-success tampilModalInvoice">edit</a>
-                                        <a href="<?= site_url('humanresource/deleteinvoice/' . $di['id']); ?>" class="badge badge-danger" onclick="return confirm('Want to delete this stuff ?')">delete</a>
-                                        <a href="<?= base_url('humanresource/downloadinvoice/' . $di['id']); ?>" class="badge badge-primary">download</a>
+                                        <a href="" data-target="#newInvoiceModal" data-toggle="modal" data-id="<?= $dn['id']; ?>" class="badge badge-success tampilModalInvoice">edit</a>
+                                        <a href="<?= site_url('humanresource/deleteinvoice/' . $dn['id']); ?>" class="badge badge-danger" onclick="return confirm('Want to delete this stuff ?')">delete</a>
+                                        <a href="<?= base_url('humanresource/downloadinvoice/' . $dn['id']); ?>" class="badge badge-primary">download</a>
                                     </td>
                                 </tr>
                                 <?php $i++; ?>
@@ -73,6 +73,7 @@
                                 <th scope="col">Date Created</th>
                                 <th scope="col">File Invoices</th>
                                 <th scope="col">Status</th>
+                                <th scope="col">Action</th>
                             </tr>
                         </tfoot>
                     </table>
@@ -87,7 +88,7 @@
 </div>
 </div>
 <script>
-    var ctx = document.getElementById("tabelinvoice");
+    var ctx = document.getElementById("tabeldatainvoice");
     $(ctx).DataTable({
         // dom: '<"top">rt<"bottom"lfp><"clear">',
         pagingType: 'full_numbers',
@@ -143,14 +144,14 @@
                     <input type="hidden" id="date_created" name="date_created">
                     <input type="hidden" id="status" name="status">
                     <div class="form-group">
-                        <label for="id_task_invoice">ID Task</label>
-                        <select name="id_task_invoice" id="id_task_invoice" class="form-control">
-                            <option value="">Select ID by Freelance's Name</option>
+                        <label for="id_task_reqtask">Task to invoice</label>
+                        <select name="id_task_reqtask" id="id_task_reqtask" class="form-control">
+                            <option value="">Select Task</option>
                             <?php foreach ($taskinvoice as $ti) : ?>
-                                <option value="<?= $ti['id']; ?>"><?= $ti['name']; ?> - <?= $ti['file_final']; ?></option>
+                                <option value="<?= $ti['id_reqtask']; ?>"><?= $ti['name']; ?> - <?= $ti['file_final']; ?></option>
                             <?php endforeach; ?>
                         </select>
-                        <?= form_error('id_task_invoice', '<small class="text-danger pl-3">', '</small>'); ?>
+                        <?= form_error('id_task_reqtask', '<small class="text-danger pl-3">', '</small>'); ?>
                     </div>
                     <div class="form-group">
                         <label for="task_type">Task Type</label>
@@ -169,58 +170,43 @@
                             <?= form_error('target_lang', '<small class="text-danger pl-3">', '</small>'); ?>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for="name">Freelance</label>
-                        <select name="name" id="name" class="form-control">
-                            <option value="">Select Freelance - Language</option>
-                            <?php foreach ($freelance as $fr) : ?>
-                                <option value="<?= $fr['name']; ?>"><?= $fr['name']; ?> - <?= $fr['language']; ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                        <?= form_error('name', '<small class="text-danger pl-3">', '</small>'); ?>
-                    </div>
-                    <div class="form-group">
-                        <label for="id_freelance">Re-enter Freelance</label>
-                        <select name="id_freelance" id="id_freelance" class="form-control">
-                            <option value="">Select ID by Name</option>
-                            <?php foreach ($freelance as $fr) : ?>
-                                <option value="<?= $fr['id']; ?>"><?= $fr['name']; ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                        <?= form_error('name', '<small class="text-danger pl-3">', '</small>'); ?>
-                    </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label for="email">Email</label>
-                            <select name="email" id="email" class="form-control">
+                            <label for="email_freelance">Email</label>
+                            <select name="email_freelance" id="email_freelance" class="form-control">
                                 <option value="">Select Email</option>
-                                <?php foreach ($freelance as $fr) : ?>
-                                    <option value="<?= $fr['email']; ?>"><?= $fr['email']; ?></option>
+                                <?php foreach ($taskinvoice as $ti) : ?>
+                                    <option value="<?= $ti['email']; ?>"><?= $ti['email']; ?></option>
                                 <?php endforeach; ?>
                             </select>
-                            <?= form_error('name', '<small class="text-danger pl-3">', '</small>'); ?>
+                            <?= form_error('email_freelance', '<small class="text-danger pl-3">', '</small>'); ?>
                         </div>
                         <div class="form-group col-md-6">
-                            <label for="deadline">Deadline</label>
-                            <input type="date" class="form-control" id="deadline" placeholder="dd-mm-yyyy" name="deadline" value="<?= set_value('deadline'); ?>">
+                            <label for="date_completed">Date Completed</label>
+                            <select name="date_completed" id="date_completed" class="form-control">
+                                <option value="">Select Date</option>
+                                <?php foreach ($taskinvoice as $ti) : ?>
+                                    <option value="<?= $ti['date_created']; ?>"><?= $ti['date_created']; ?> - <?= $ti['email']; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                            <?= form_error('date_completed', '<small class="text-danger pl-3">', '</small>'); ?>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="job_value">Value</label>
                             <input type="text" class="form-control" id="job_value" name="job_value">
-                            <?= form_error('source_lang', '<small class="text-danger pl-3">', '</small>'); ?>
+                            <?= form_error('job_value', '<small class="text-danger pl-3">', '</small>'); ?>
                         </div>
                         <div class="form-group col-md-6">
-                            <label for="task_files">Upload Task File</label>
+                            <label for="task_files">Upload Invoice File</label>
                             <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="task_files" name="task_files">
-                                <label class="custom-file-label" for="task_files">Choose file</label>
-                                <?= form_error('task_files', '<small class="text-danger pl-3">', '</small>'); ?>
+                                <input type="file" class="custom-file-input" id="file_invoice" name="file_invoice">
+                                <label class="custom-file-label" for="file_invoice">Choose file</label>
+                                <?= form_error('file_invoice', '<small class="text-danger pl-3">', '</small>'); ?>
                             </div>
                         </div>
                     </div>
-
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary">Create</button>
@@ -230,8 +216,6 @@
         </div>
     </div>
 </div>
-
-
 
 <!-- /.container-fluid -->
 
