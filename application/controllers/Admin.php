@@ -197,7 +197,7 @@ class Admin extends CI_Controller
     {
 
         $config['upload_path'] = './assets/taskfiles/';
-        $config['allowed_types'] = 'doc|docx|pdf|xlsx|csv';
+        $config['allowed_types'] = 'doc|docx|pdf|xlsx|csv|zip|rar';
         $config['max_size']     = 0;
 
         $this->load->library('upload', $config);

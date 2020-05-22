@@ -47,8 +47,8 @@
                                     <td><?= $tiu['date_created']; ?></td>
                                     <td><?= $tiu['status']; ?></td>
                                     <td>
-                                        <a href="" data-target="#newTaskModal" data-toggle="modal" data-id="<?= $tiu['id']; ?>" class="badge badge-success tampilModalTaskInvoice">edit</a>
-                                        <a href="<?= site_url('user/deletetaskfinal/' . $tiu['id']); ?>" class="badge badge-danger" onclick="return confirm('Want to delete this stuff ?')">delete</a>
+                                        <!-- <a href="" data-target="#newTaskModal" data-toggle="modal" data-id="<?= $tiu['id']; ?>" class="badge badge-success tampilModalTaskInvoice">edit</a>
+                                        <a href="<?= site_url('user/deletetaskfinal/' . $tiu['id']); ?>" class="badge badge-danger" onclick="return confirm('Want to delete this stuff ?')">delete</a> -->
                                         <a href="<?= base_url('user/downloadtaskfinal/' . $tiu['id']); ?>" class="badge badge-primary">download</a>
                                     </td>
                                 </tr>
@@ -173,6 +173,16 @@
                             <?= form_error('file_final', '<small class="text-danger pl-3">', '</small>'); ?>
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label>Your Email Password</label>
+                        <div class="input-group" id="show_hide_password">
+                            <input class="form-control" type="password" id="password" name="password" placeholder="Password">
+                            <!-- <div class="input-group-addon">
+                                <a href=""><i class="fa fa-eye-slash" aria-hidden="true"></i></a>
+                            </div> -->
+                        </div>
+                    </div>
+                    <?= form_error('name', '<small class="text-danger pl-3">', '</small>'); ?>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary">Submit</button>
@@ -182,6 +192,22 @@
         </div>
     </div>
 </div>
+<!-- <script>
+    $(document).ready(function() {
+        $("#show_hide_password a").on('click', function(event) {
+            event.preventDefault();
+            if ($('#show_hide_password input').attr("type") == "text") {
+                $('#show_hide_password input').attr('type', 'password');
+                $('#show_hide_password i').addClass("fa-eye-slash");
+                $('#show_hide_password i').removeClass("fa-eye");
+            } else if ($('#show_hide_password input').attr("type") == "password") {
+                $('#show_hide_password input').attr('type', 'text');
+                $('#show_hide_password i').removeClass("fa-eye-slash");
+                $('#show_hide_password i').addClass("fa-eye");
+            }
+        });
+    });
+</script> -->
 
 
 
