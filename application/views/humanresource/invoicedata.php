@@ -52,8 +52,8 @@
                                     <td><?= $dn['file_invoice']; ?></td>
                                     <td><?= $dn['status']; ?></td>
                                     <td>
-                                        <a href="" data-target="#newInvoiceModal" data-toggle="modal" data-id="<?= $dn['id']; ?>" class="badge badge-success tampilModalInvoice">edit</a>
-                                        <a href="<?= site_url('humanresource/deleteinvoice/' . $dn['id']); ?>" class="badge badge-danger" onclick="return confirm('Want to delete this stuff ?')">delete</a>
+                                        <!-- <a href="" data-target="#newInvoiceModal" data-toggle="modal" data-id="<?= $dn['id']; ?>" class="badge badge-success tampilModalInvoice">edit</a>
+                                        <a href="<?= site_url('humanresource/deleteinvoice/' . $dn['id']); ?>" class="badge badge-danger" onclick="return confirm('Want to delete this stuff ?')">delete</a> -->
                                         <a href="<?= base_url('humanresource/downloadinvoice/' . $dn['id']); ?>" class="badge badge-primary">download</a>
                                     </td>
                                 </tr>
@@ -81,7 +81,26 @@
                     <script src="<?= base_url('assets/'); ?>js/jquery.min.js"></script>
                     <script src="<?= base_url('assets/'); ?>vendor/datatables/jquery.dataTables.min.js"></script>
                     <script src="<?= base_url('assets/'); ?>vendor/datatables/dataTables.bootstrap4.min.js"></script>
+                    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.2/js/dataTables.buttons.min.js"></script>
+                    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.bootstrap4.min.js"></script>
+                    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+                    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+                    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+                    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.html5.min.js"></script>
+                    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.print.min.js"></script>
+                    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.colVis.min.js"></script>
                     <!-- <script src="<?= base_url('assets/'); ?>js/demo/datatables-demo.js"></script> -->
+                    <!-- <script src="<?= base_url('assets/'); ?>js/data-table/datatableButton.js" type="text/javascript"></script>
+                    <script src="<?= base_url('assets/'); ?>js/data-table/flash.js" type="text/javascript"></script>
+                    <script src="<?= base_url('assets/'); ?>js/html5.js" type="text/javascript"></script>
+                    <script src="<?= base_url('assets/'); ?>js/jzip.js" type="text/javascript"></script>
+                    <script src="<?= base_url('assets/'); ?>js/pdf.js" type="text/javascript"></script>
+                    <script src="<?= base_url('assets/'); ?>js/print.js" type="text/javascript"></script>
+                    <script src="<?= base_url('assets/'); ?>js/vfs.js" type="text/javascript"></script> -->
+                    <!-- <script src="<?= base_url('assets/'); ?>js/js/dropify.js" type="text/javascript"></script> -->
+                    <!-- <script src="{{ asset('public/assets/js/sweetalert.js') }}"></script> -->
+                    <!-- <script src="<?= base_url('assets/'); ?>js/select2.js" type="text/javascript"></script> -->
+
             </body>
         </div>
     </div>
@@ -90,7 +109,6 @@
 <script>
     var ctx = document.getElementById("tabeldatainvoice");
     $(ctx).DataTable({
-        // dom: '<"top">rt<"bottom"lfp><"clear">',
         pagingType: 'full_numbers',
         responsive: true,
         scrollX: true,
@@ -99,15 +117,42 @@
             [10, 25, 50, -1],
             [10, 25, 50, "All"]
         ],
-        columnDefs: [{
-            orderable: false,
-            className: 'select-checkbox select-checkbox-all',
-            targets: 0
-        }],
-        select: {
-            style: 'multi',
-            selector: 'td:first-child'
-        },
+        // lengthChange: false,
+        dom: 'Bfrtip',
+        buttons: [{
+                extend: 'copyHtml5',
+                exportOptions: {
+                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+                }
+            },
+            {
+                extend: 'excelHtml5',
+                exportOptions: {
+                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+                }
+            },
+            {
+                extend: 'csvHtml5',
+                exportOptions: {
+                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+                }
+            },
+            {
+                extend: 'pdfHtml5',
+                orientation: 'landscape',
+                pageSize: 'LEGAL',
+                filename: 'Send Invoice Data',
+                exportOptions: {
+                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+                }
+            },
+            {
+                extend: 'print',
+                exportOptions: {
+                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+                }
+            }
+        ],
         initComplete: function() {
             this.api().columns().every(function() {
                 var column = this;
@@ -195,8 +240,13 @@
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="job_value">Value</label>
-                            <input type="text" class="form-control" id="job_value" name="job_value">
-                            <?= form_error('job_value', '<small class="text-danger pl-3">', '</small>'); ?>
+                            <select name="job_value" id="job_value" class="form-control">
+                                <option value="">Select Value</option>
+                                <?php foreach ($reqtask as $rt) : ?>
+                                    <option value="<?= $rt['job_value']; ?>">$<?= $rt['job_value']; ?> - <?= $rt['email']; ?> - <?= $rt['task_type']; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                            <?= form_error('date_completed', '<small class="text-danger pl-3">', '</small>'); ?>
                         </div>
                         <div class="form-group col-md-6">
                             <label for="task_files">Upload Invoice File</label>

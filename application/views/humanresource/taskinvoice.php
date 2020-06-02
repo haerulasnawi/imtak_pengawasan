@@ -72,6 +72,14 @@
                     <script src="<?= base_url('assets/'); ?>vendor/datatables/jquery.dataTables.min.js"></script>
                     <script src="<?= base_url('assets/'); ?>vendor/datatables/dataTables.bootstrap4.min.js"></script>
                     <!-- <script src="<?= base_url('assets/'); ?>js/demo/datatables-demo.js"></script> -->
+                    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.2/js/dataTables.buttons.min.js"></script>
+                    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.bootstrap4.min.js"></script>
+                    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+                    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+                    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+                    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.html5.min.js"></script>
+                    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.print.min.js"></script>
+                    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.colVis.min.js"></script>
             </body>
         </div>
     </div>
@@ -86,8 +94,43 @@
         scrollX: true,
         scrollY: true,
         lengthMenu: [
-            [5, 10, 25, 50, -1],
-            [5, 10, 25, 50, "All"]
+            [10, 25, 50, -1],
+            [10, 25, 50, "All"]
+        ],
+        dom: 'Bfrtip',
+        buttons: [{
+                extend: 'copyHtml5',
+                exportOptions: {
+                    columns: [0, 1, 2, 3, 4, 5, 6, 7]
+                }
+            },
+            {
+                extend: 'excelHtml5',
+                exportOptions: {
+                    columns: [0, 1, 2, 3, 4, 5, 6, 7]
+                }
+            },
+            {
+                extend: 'csvHtml5',
+                exportOptions: {
+                    columns: [0, 1, 2, 3, 4, 5, 6, 7]
+                }
+            },
+            {
+                extend: 'pdfHtml5',
+                orientation: 'landscape',
+                pageSize: 'LEGAL',
+                filename: 'Task to Invoice',
+                exportOptions: {
+                    columns: [0, 1, 2, 3, 4, 5, 6, 7]
+                }
+            },
+            {
+                extend: 'print',
+                exportOptions: {
+                    columns: [0, 1, 2, 3, 4, 5, 6, 7]
+                }
+            }
         ],
         columnDefs: [{
             orderable: false,

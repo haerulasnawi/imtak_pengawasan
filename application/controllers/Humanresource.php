@@ -105,6 +105,8 @@ class Humanresource extends CI_Controller
 
         $this->load->model('Menu_model', 'menu');
         $data['taskinvoice'] = $this->menu->gettasksinvoice();
+        // $data['taskinvoice'] = $this->db->get_where('task_invoice', ['status' => 'pending invoice'])->result_array();
+
 
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar', $data);
@@ -129,18 +131,18 @@ class Humanresource extends CI_Controller
 
             if ($hr_token) {
                 $this->db->set('status', 'Ready to invoicing');
-                $this->db->where('email', $email);
+                // $this->db->where('email', $email);
                 $this->db->where('file_final', $file);
                 $this->db->update('task_invoice');
 
                 $this->db->set('status', 'finished');
-                $this->db->where('email', $email);
+                // $this->db->where('email', $email);
                 $this->db->where('id', $task_id);
                 $this->db->update('request_task');
 
-                $this->db->delete('hr_token', ['email' => $email, 'file' => $file, 'user' => $user_email]);
+                $this->db->delete('hr_token', ['email' => $email, 'file' => $file, 'user' => $user_email, 'task_id' => $task_id]);
 
-                $this->session->set_flashdata('menus', '<div class="alert alert-success alert-dismissible" role="alert">Task has been accepted and invoiced!</div>');
+                $this->session->set_flashdata('menus', '<div class="alert alert-success alert-dismissible" role="alert">Task has been accepted! Please send a invoice to freelance ASAP</div>');
                 redirect('humanresource/taskInvoice');
             } else {
                 $this->session->set_flashdata('menus', '<div class="alert alert-danger alert-dismissible" role="alert">Invalid token task, please contact admin!</div>');
@@ -151,6 +153,7 @@ class Humanresource extends CI_Controller
             redirect('humanresource/taskInvoice');
         }
     }
+
 
     function downloadtaskfinal($id)
     {
@@ -186,6 +189,7 @@ class Humanresource extends CI_Controller
 
         $data['datain'] = $this->db->get('invoice')->result_array();
         $data['taskinvoice'] = $this->db->get_where('task_invoice', ['status' => 'Ready to invoicing'])->result_array();
+        $data['reqtask'] = $this->db->get_where('request_task', ['status' => 'finished'])->result_array();
 
         $this->form_validation->set_rules('id_task_reqtask', 'Task', 'required');
         $this->form_validation->set_rules('task_type', 'Task type', 'required');
@@ -306,5 +310,72 @@ class Humanresource extends CI_Controller
         force_download('assets/invoicefiles/' . $data->file_invoice, NULL);
 
         redirect('humanresource/invoicedata');
+    }
+
+    public function invoiceDataFromUser()
+    {
+        $data['title'] = 'Invoiced Data';
+        $data['user'] = $this->db->get_where('user', ['email' => $user = $this->session->userdata('email')])->row_array();
+        $data['datainvoiceTask'] = $this->db->get_where('user_invoice')->result_array();
+
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('humanresource/invoiceDataFromUser', $data);
+        $this->load->view('templates/footer');
+    }
+
+    function downloadinvoiceData($id)
+    {
+        $data = $this->db->get_where('user_invoice', ['id' => $id])->row();
+        force_download('assets/invoicefiles/' . $data->file_invoice, NULL);
+
+        redirect('humanresource/invoiceDataFromUser');
+    }
+
+    public function verify_InvoiceHR()
+    {
+        $email = $this->input->get('email');
+        $file = $this->input->get('file');
+        $token = $this->input->get('token');
+        $id_reqtask = $this->input->get('id_reqtask');
+
+        $user = $this->db->get_where('user', ['email' => $email])->row_array();
+        // $user = $this->db->get_where('user_token', ['file' => $file])->row_array();
+
+        if ($user) {
+            $task_token = $this->db->get_where('user_invoice_token', ['token' => $token])->row_array();
+
+            if ($task_token) {
+
+                $this->db->set('status', 'Invoiced');
+                $this->db->where('id_task_reqtask', $id_reqtask);
+                $this->db->update('invoice');
+
+                $this->db->set('status', 'Invoiced');
+                $this->db->where('id', $id_reqtask);
+                $this->db->update('request_task');
+
+                $this->db->set('status', 'Invoiced');
+                $this->db->where('id_reqtask', $id_reqtask);
+                $this->db->update('task_invoice');
+
+                $this->db->set('status', 'Invoiced');
+                $this->db->where('file_invoice', $file);
+                $this->db->where('id_task_reqtask', $id_reqtask);
+                $this->db->update('user_invoice');
+
+                $this->db->delete('user_invoice_token', ['email' => $email, 'id_reqtask' => $id_reqtask, 'file' => $file]);
+
+                $this->session->set_flashdata('menus', '<div class="alert alert-success alert-dismissible" role="alert">Invoice has been accepted!</div>');
+                redirect('humanresource/invoiceDataFromUser');
+            } else {
+                $this->session->set_flashdata('menus', '<div class="alert alert-danger alert-dismissible" role="alert">Invalid token invoice, please contact admin!</div>');
+                redirect('humanresource/invoiceDataFromUser');
+            }
+        } else {
+            $this->session->set_flashdata('menus', '<div class="alert alert-danger alert-dismissible" role="alert">Failed when sending invoice! Wrong email </div>');
+            redirect('humanresource/invoiceDataFromUser');
+        }
     }
 }

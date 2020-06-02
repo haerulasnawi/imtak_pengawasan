@@ -251,8 +251,8 @@ class User extends CI_Controller
         // $data['taskinvoiceuser'] = $this->db->
 
         $this->load->model('Menu_model', 'menu');
-        $data['taskinvoiceuser'] = $this->menu->gettasksinvoice();
-        $data['taskinvoiceuser'] = $this->db->get_where('task_invoice', ['email' => $user, 'status' => 'pending invoice', 'status' => 'Ready to invoicing'])->result_array();
+        // $data['taskinvoiceuser'] = $this->menu->gettasksinvoice();
+        $data['taskinvoiceuser'] = $this->db->get_where('task_invoice', ['email' => $user, 'status' => 'pending invoice'])->result_array();
         $data['humanr'] = $this->db->get_where('user', ['role_id' => 4])->result_array();
         $data['reqtask'] = $this->db->get_where('request_task', ['email' => $user, 'status' => 'accepted'])->result_array();
 
@@ -436,7 +436,7 @@ class User extends CI_Controller
 
             $this->db->insert('user_invoice', $data);
             $this->db->insert('user_invoice_token', $invoice_token);
-            $this->_sendEmailInvoiceuser($token, 'verify_Invoice', $file, $id_reqtask, $password, $user);
+            $this->_sendEmailInvoiceuser($token, 'verify_InvoiceHR', $file, $id_reqtask, $password, $user);
 
             $this->session->set_flashdata('menus', '<div class="alert alert-success" role="alert">The invoice successfully send!</div>');
             redirect('user/invoiceReady');
@@ -463,7 +463,7 @@ class User extends CI_Controller
         $this->email->to($this->input->post('email_hr'));
 
         if ($type == 'verify_InvoiceHR') {
-            $this->email->subject('You have a new invoice!');
+            $this->email->subject('Freelance Invoice');
             $this->email->message('Click this link to login & invoicing : <a href=" ' . base_url() . 'humanresource/verify_InvoiceHR?email=' . $this->input->post('email_hr') . '& token=' . urlencode($token) .  '& file=' . $file .  '& id_reqtask=' . $id_reqtask . '">Login and Invoicing</a>');
         }
         if ($this->email->send()) {
@@ -538,5 +538,26 @@ class User extends CI_Controller
         force_download('assets/invoicefiles/' . $data->file_invoice, NULL);
 
         redirect('user/invoiceReady');
+    }
+
+    public function invoiced()
+    {
+        $data['title'] = 'Invoiced';
+        $data['user'] = $this->db->get_where('user', ['email' => $user = $this->session->userdata('email')])->row_array();
+        $data['datainvoiceTask'] = $this->db->get_where('user_invoice', ['email_freelance' => $user, 'status' => 'Invoiced'])->result_array();
+
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('user/invoiced', $data);
+        $this->load->view('templates/footer');
+    }
+
+    function downloadinvoiceUserDone($id)
+    {
+        $data = $this->db->get_where('user_invoice', ['id' => $id])->row();
+        force_download('assets/invoicefiles/' . $data->file_invoice, NULL);
+
+        redirect('user/invoiced');
     }
 }

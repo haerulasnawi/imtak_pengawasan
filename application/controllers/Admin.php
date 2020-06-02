@@ -227,11 +227,11 @@ class Admin extends CI_Controller
         }
     }
 
-    public function getubahtask()
-    {
-        $this->load->model('Menu_model', 'menu');
-        echo json_encode($this->menu->getDataUbahTask($_POST['id']));
-    }
+    // public function getubahtask()
+    // {
+    //     $this->load->model('Menu_model', 'menu');
+    //     echo json_encode($this->menu->getDataUbahTask($_POST['id']));
+    // }
 
     // public function editTask()
     // {

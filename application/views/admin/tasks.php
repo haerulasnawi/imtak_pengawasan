@@ -53,7 +53,7 @@
                                     <td><?= $rt['status']; ?></td>
 
                                     <td>
-                                        <a href="" data-target="#newTaskModal" data-toggle="modal" data-id="<?= $rt['id']; ?>" class="badge badge-success tampilModalTask">edit</a>
+                                        <!-- <a href="" data-target="#newTaskModal" data-toggle="modal" data-id="<?= $rt['id']; ?>" class="badge badge-success tampilModalTask">edit</a> -->
                                         <a href="<?= site_url('admin/deletetask/' . $rt['id']); ?>" class="badge badge-danger" onclick="return confirm('Want to delete this stuff ?')">delete</a>
                                         <a href="<?= base_url('admin/download/' . $rt['id']); ?>" class="badge badge-primary">download</a>
                                     </td>
@@ -83,6 +83,14 @@
                     <script src="<?= base_url('assets/'); ?>vendor/datatables/jquery.dataTables.min.js"></script>
                     <script src="<?= base_url('assets/'); ?>vendor/datatables/dataTables.bootstrap4.min.js"></script>
                     <!-- <script src="<?= base_url('assets/'); ?>js/demo/datatables-demo.js"></script> -->
+                    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.2/js/dataTables.buttons.min.js"></script>
+                    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.bootstrap4.min.js"></script>
+                    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+                    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+                    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+                    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.html5.min.js"></script>
+                    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.print.min.js"></script>
+                    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.colVis.min.js"></script>
             </body>
         </div>
     </div>
@@ -109,6 +117,41 @@
             style: 'multi',
             selector: 'td:first-child'
         },
+        dom: 'Bfrtip',
+        buttons: [{
+                extend: 'copyHtml5',
+                exportOptions: {
+                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+                }
+            },
+            {
+                extend: 'excelHtml5',
+                exportOptions: {
+                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+                }
+            },
+            {
+                extend: 'csvHtml5',
+                exportOptions: {
+                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+                }
+            },
+            {
+                extend: 'pdfHtml5',
+                orientation: 'landscape',
+                pageSize: 'LEGAL',
+                filename: 'Request Tasks',
+                exportOptions: {
+                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+                }
+            },
+            {
+                extend: 'print',
+                exportOptions: {
+                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+                }
+            }
+        ],
         initComplete: function() {
             this.api().columns().every(function() {
                 var column = this;

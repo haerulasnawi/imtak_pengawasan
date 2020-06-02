@@ -228,9 +228,9 @@
                         </div>
                     </div>
                     <?= form_error('password', '<small class="text-danger pl-3">', '</small>'); ?>
-                    <div class="modal-footer">
+                    <div class="modal-footer mb-0">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Create</button>
+                        <button type="submit" class="btn btn-primary">Send</button>
                     </div>
                 </form>
             </div>

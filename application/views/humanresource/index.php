@@ -71,11 +71,83 @@
     <script src="<?= base_url('assets/'); ?>js/jquery.min.js"></script>
     <script src="<?= base_url('assets/'); ?>vendor/datatables/jquery.dataTables.min.js"></script>
     <script src="<?= base_url('assets/'); ?>vendor/datatables/dataTables.bootstrap4.min.js"></script>
-    <script src="<?= base_url('assets/'); ?>js/demo/datatables-demo.js"></script>
+    <!-- <script src="<?= base_url('assets/'); ?>js/demo/datatables-demo.js"></script> -->
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.2/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.bootstrap4.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.html5.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.print.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.colVis.min.js"></script>
     </body>
-
-
 </div>
+
+<script>
+    var ctx = document.getElementById("tabelku");
+    $(ctx).DataTable({
+        pagingType: 'full_numbers',
+        responsive: true,
+        scrollX: true,
+        scrollY: true,
+        lengthMenu: [
+            [10, 25, 50, -1],
+            [10, 25, 50, "All"]
+        ],
+        // lengthChange: false,
+        dom: 'Bfrtip',
+        buttons: [{
+                extend: 'copyHtml5',
+                exportOptions: {
+                    columns: [0, 1, 2, 3, 4, 5]
+                }
+            },
+            {
+                extend: 'excelHtml5',
+                exportOptions: {
+                    columns: [0, 1, 2, 3, 4, 5]
+                }
+            },
+            {
+                extend: 'csvHtml5',
+                exportOptions: {
+                    columns: [0, 1, 2, 3, 4, 5]
+                }
+            },
+            {
+                extend: 'pdfHtml5',
+                orientation: 'potrait',
+                pageSize: 'LEGAL',
+                filename: 'Data Freelance',
+                exportOptions: {
+                    columns: [0, 1, 2, 3, 4, 5]
+                }
+            },
+            {
+                extend: 'print',
+                exportOptions: {
+                    columns: [0, 1, 2, 3, 4, 5]
+                }
+            }
+        ],
+        initComplete: function() {
+            this.api().columns().every(function() {
+                var column = this;
+                var search = $(`<input class="form-control form-control-sm" type="text" placeholder="Search">`)
+                    .appendTo($(column.footer()).empty())
+                    .on('change input', function() {
+                        var val = $(this).val()
+
+                        column
+                            .search(val ? val : '', true, false)
+                            .draw();
+                    });
+
+            });
+        }
+
+    });
+</script>
 <!-- Modal Add Freelance -->
 <div class="modal fade" id="newFreelanceModal" tabindex="-1" role="dialog" aria-labelledby="newFreelanceModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
