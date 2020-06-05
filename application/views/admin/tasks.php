@@ -1,7 +1,13 @@
 <div class="container-fluid">
 
     <!-- Page Heading -->
-    <h1 class="h3 mb-4 text-gray-800"><?= $title; ?></h1>
+
+<!-- <div class="shadow-sm p-3 mb-3 bg-white rounded"> -->
+<h1 class="h3 mb-0 text-gray-800"><?= $title; ?></h1>
+<p>Admin can do a task request here</p>
+<hr>
+<!-- </div> -->
+    
 
     <div class="row align-middle position-relative">
 
@@ -17,7 +23,9 @@
             <body>
                 <link rel="stylesheet" href="<?= base_url('assets'); ?>/css/sb-admin-2.min.css" />
                 <link rel="stylesheet" href="<?= base_url('assets'); ?>/vendor/datatables/dataTables.bootstrap4.min.css" />
-                <a href="" class="btn btn-primary mb-3 tombolTambahtask" data-toggle="modal" data-target="#newTaskModal">Create a New Task</a>
+                <a href="" class="btn btn-primary mb-3 shadow-sm tombolTambahtask" data-toggle="modal" data-target="#newTaskModal">Create a New Task</a>
+                <div class="card border-0 shadow-sm">
+                <div class="card-body p-3">
                 <div class="table-responsive-sm" style="margin-bottom: 15px;">
                     <table class="table table-hover" cellspacing="0" width="100%" id="tabeltask">
                         <thead>
@@ -78,6 +86,8 @@
                             </tr>
                         </tfoot>
                     </table>
+                    </div>
+                    </div>
                     <script src="<?= base_url('assets/'); ?>vendor/bootstrap/js/bootstrap.min.js"></script>
                     <script src="<?= base_url('assets/'); ?>js/jquery.min.js"></script>
                     <script src="<?= base_url('assets/'); ?>vendor/datatables/jquery.dataTables.min.js"></script>

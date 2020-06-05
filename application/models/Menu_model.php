@@ -120,6 +120,18 @@ class Menu_model extends CI_Model
         return $this->db->query($query)->row();
     }
 
+    function ubahrole($data)
+    {
+        $this->db->replace('user_role', $data);
+        return $this;
+    }
+
+    public function getDataUbahRole($id)
+    {
+        $query = " SELECT * FROM `user_role` WHERE `id`=$id";
+        return $this->db->query($query)->row();
+    }
+
     public function gettasksinvoice()
     {
         $query = "SELECT `task_invoice`.*,`request_task`.`task_files`

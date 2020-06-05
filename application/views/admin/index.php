@@ -2,7 +2,9 @@
 <div class="container-fluid">
 
     <!-- Page Heading -->
-    <h1 class="h3 mb-4 text-gray-800"><?= $title; ?></h1>
+    <div class="shadow-sm p-3 mb-4 bg-white rounded">
+    <h1 class="h3 mb-2 mt-2 text-gray-800 "><?= $title; ?></h1>
+    </div>
     <link rel="stylesheet" href="<?= base_url('assets'); ?>/css/sb-admin-2.min.css" />
     <script src="<?= base_url('assets/'); ?>vendor/bootstrap/js/bootstrap.min.js"></script>
     <script src="<?= base_url('assets/'); ?>js/jquery.min.js"></script>
@@ -54,19 +56,28 @@
             </div>
 
             <!-- Earnings (Monthly) Card Example -->
+            <?php
+                $query = $this->db->query('SELECT * FROM `request_task` WHERE `status` NOT LIKE "%denied%" AND `status` NOT LIKE "%Invoiced%"');
+                $querys = $this->db->query('SELECT * FROM `request_task` WHERE `status` LIKE "%pending%"');
+                $ini = $querys->num_rows();
+                $equals = $query->num_rows();
+
+                $hasilpersen = 100-$equals;
+
+            ?>
             <div class="col-xl-3 col-md-6 mb-4">
                 <div class="card border-left-info shadow h-100 py-2">
                     <div class="card-body">
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
-                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Tasks</div>
+                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Tasks Completed</div>
                                 <div class="row no-gutters align-items-center">
                                     <div class="col-auto">
-                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
+                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"><?= $hasilpersen?>%</div>
                                     </div>
                                     <div class="col">
                                         <div class="progress progress-sm mr-2">
-                                            <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                            <div class="progress-bar bg-info" role="progressbar" style="width: <?=$hasilpersen?>%" aria-valuenow="<?=$hasilpersen?>" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -86,10 +97,10 @@
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Pending Requests</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $ini;?></div>
                             </div>
                             <div class="col-auto">
-                                <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                <i class="fas fa-hourglass-half fa-2x text-gray-300"></i>
                             </div>
                         </div>
                     </div>
@@ -218,8 +229,8 @@
                                 maxTicksLimit: 5,
                                 padding: 10,
                                 suggestedMin: 0,
-                                suggestedMax: 50,
-                                stepSize: 5,
+                                suggestedMax: 20,
+                                stepSize: 2,
                                 // Include a dollar sign in the ticks
                                 callback: function(value, index, values) {
                                     return number_format(value);

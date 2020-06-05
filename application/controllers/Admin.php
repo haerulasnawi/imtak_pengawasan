@@ -60,6 +60,28 @@ class Admin extends CI_Controller
         $this->load->view('templates/footer');
     }
 
+    public function getubahrole(){
+        $this->load->model('Menu_model', 'menu');
+        echo json_encode($this->menu->getDataUbahRole($_POST['id']));
+    }
+
+    public function editRole(){
+        $data['title'] = 'Role Access';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+
+        $data['menu'] = $this->db->get('user_menu')->result_array();
+
+        $this->form_validation->set_rules('role', 'Role', 'required');
+        $this->load->model('Menu_model', 'menu');
+        if ($this->menu->ubahrole($_POST) > 0) {
+            $this->session->set_flashdata('menus', '<div class="alert alert-success alert-dismissible" role="alert">Role successfully changed! </div>');
+            redirect('admin/role');
+        } else {
+            $this->session->set_flashdata('menus', '<div class="alert alert-danger alert-dismissible" role="alert">Error while changing role! </div>');
+            redirect('admin/role');
+        }
+    }
+
     public function changeAccess()
     {
         $menu_id = $this->input->post('menuId');

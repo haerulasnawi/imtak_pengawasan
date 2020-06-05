@@ -133,6 +133,7 @@ class Humanresource extends CI_Controller
                 $this->db->set('status', 'Ready to invoicing');
                 // $this->db->where('email', $email);
                 $this->db->where('file_final', $file);
+                $this->db->where('id_reqtask', $task_id);
                 $this->db->update('task_invoice');
 
                 $this->db->set('status', 'finished');
@@ -140,7 +141,7 @@ class Humanresource extends CI_Controller
                 $this->db->where('id', $task_id);
                 $this->db->update('request_task');
 
-                $this->db->delete('hr_token', ['email' => $email, 'file' => $file, 'user' => $user_email, 'task_id' => $task_id]);
+                $this->db->delete('hr_token', ['file' => $file, 'task_id' => $task_id]);
 
                 $this->session->set_flashdata('menus', '<div class="alert alert-success alert-dismissible" role="alert">Task has been accepted! Please send a invoice to freelance ASAP</div>');
                 redirect('humanresource/taskInvoice');
