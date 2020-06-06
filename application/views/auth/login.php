@@ -12,7 +12,7 @@
                         <div class="col-lg">
                             <div class="p-5">
                                 <div class="text-center">
-                                    <h1 class="h4 text-gray-900 mb-4">Holla, Welcome Back!</h1>
+                                    <h1 class="h4 text-gray-900 mb-4">Project Management System</h1>
                                 </div>
                                 <!-- Flash data -->
                                 <?php $this->view('message') ?>

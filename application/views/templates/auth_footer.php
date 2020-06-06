@@ -1,3 +1,12 @@
+<footer class="sticky-footer fixed-bottom">
+    <div class="container fixed-bottom">
+        <div class="copyright text-center" style="color: white;">
+            <img src="<?= base_url('assets/');?>img/icon/apple-icon.png" class="rounded mb-2" alt="..." style="max-width:45px;">
+            <span>Copyright &copy; <?= date('Y'); ?> PT. STAR Software Indonesia. All Rights Reserved</span>
+            
+        </div>
+    </div>
+</footer>
 <!-- Bootstrap core JavaScript-->
 <script src="<?= base_url('assets/'); ?>vendor/jquery/jquery.min.js"></script>
 <script src="<?= base_url('assets/'); ?>vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

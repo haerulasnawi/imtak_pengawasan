@@ -113,15 +113,14 @@
         </div>
         </div>
         </div>
-         
-    
             <div class="col-lg-6 mb-4">
 
               <!-- Illustrations -->
               <div class="card shadow mb-4 ml-4 mt-2" style="width: 450px;">
-                <div class="card-header py-3">
+              <a href="#collapseCardExample" class="card-header" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample">
                   <h6 class="m-0 font-weight-bold text-primary">Intermezzo</h6>
-                </div>
+                </a>
+                <div class="collapse show" id="collapseCardExample">
                 <div class="card-body">
                   <div class="text-center">
                     <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;" src="<?= base_url('assets/')?>img/undrawsvg.svg" alt="">
@@ -129,8 +128,9 @@
                   <p>Don't forget to take a break while tired of working, to keep your productivity well maintained and produce maximum work!</p>
                   <a target="_blank" rel="nofollow" href="https://youtube.com/">Browse your favorite content on youtube →</a>
                 </div>
-              </div>
-
+                </div>
+            </div>
+    </div>
 </div>
 <!-- /.container-fluid -->
 </div>

@@ -2,7 +2,7 @@
 <footer class="sticky-footer bg-white">
     <div class="container my-auto">
         <div class="copyright text-center my-auto">
-            <span>Copyright &copy; PT. STAR Software Indonesia <?= date('Y'); ?></span>
+            <span>Copyright &copy; <?= date('Y'); ?> PT. STAR Software Indonesia. All Rights Reserved</span>
         </div>
     </div>
 </footer>
