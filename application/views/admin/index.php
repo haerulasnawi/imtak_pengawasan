@@ -3,7 +3,7 @@
 
     <!-- Page Heading -->
     <div class="shadow-sm p-3 mb-4 bg-white rounded">
-    <h1 class="h3 mb-2 mt-2 text-gray-800 "><?= $title; ?></h1>
+        <h1 class="h3 mb-2 mt-2 text-gray-800 "><?= $title; ?></h1>
     </div>
     <link rel="stylesheet" href="<?= base_url('assets'); ?>/css/sb-admin-2.min.css" />
     <script src="<?= base_url('assets/'); ?>vendor/bootstrap/js/bootstrap.min.js"></script>
@@ -57,12 +57,12 @@
 
             <!-- Earnings (Monthly) Card Example -->
             <?php
-                $query = $this->db->query('SELECT * FROM `request_task` WHERE `status` NOT LIKE "%denied%" AND `status` NOT LIKE "%Invoiced%"');
-                $querys = $this->db->query('SELECT * FROM `request_task` WHERE `status` LIKE "%pending%"');
-                $ini = $querys->num_rows();
-                $equals = $query->num_rows();
+            $query = $this->db->query('SELECT * FROM `request_task` WHERE `status` NOT LIKE "%denied%" AND `status` NOT LIKE "%Invoiced%"');
+            $querys = $this->db->query('SELECT * FROM `request_task` WHERE `status` LIKE "%pending%"');
+            $ini = $querys->num_rows();
+            $equals = $query->num_rows();
 
-                $hasilpersen = 100-$equals;
+            $hasilpersen = 100 - $equals;
 
             ?>
             <div class="col-xl-3 col-md-6 mb-4">
@@ -73,11 +73,11 @@
                                 <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Tasks Completed</div>
                                 <div class="row no-gutters align-items-center">
                                     <div class="col-auto">
-                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"><?= $hasilpersen?>%</div>
+                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"><?= $hasilpersen ?>%</div>
                                     </div>
                                     <div class="col">
                                         <div class="progress progress-sm mr-2">
-                                            <div class="progress-bar bg-info" role="progressbar" style="width: <?=$hasilpersen?>%" aria-valuenow="<?=$hasilpersen?>" aria-valuemin="0" aria-valuemax="100"></div>
+                                            <div class="progress-bar bg-info" role="progressbar" style="width:<?= $hasilpersen ?>%" aria-valuenow="<?= $hasilpersen ?>" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -97,7 +97,7 @@
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Pending Requests</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $ini;?></div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $ini; ?></div>
                             </div>
                             <div class="col-auto">
                                 <i class="fas fa-hourglass-half fa-2x text-gray-300"></i>
