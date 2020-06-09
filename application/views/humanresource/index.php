@@ -19,6 +19,8 @@
             <div class="col-sm-12">
 
                 <a href="" class="btn btn-primary mb-3 tampilModalUbahFree" data-toggle="modal" data-target="#newFreelanceModal">Add New Freelance</a>
+                <div class="card border-0 shadow-sm">
+                <div class="card-body p-3">
                 <div class="table-responsive-md" style="margin-bottom: 15px;">
                     <table class="table table-hover" cellspacing="0" width="100%" id="tabelku">
                         <thead>
@@ -62,6 +64,8 @@
                         </tfoot>
                         </tbody>
                     </table>
+                </div>
+                </div>
                 </div>
 
             </div>

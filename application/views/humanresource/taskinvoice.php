@@ -18,6 +18,8 @@
                 <link rel="stylesheet" href="<?= base_url('assets'); ?>/css/sb-admin-2.min.css" />
                 <link rel="stylesheet" href="<?= base_url('assets'); ?>/vendor/datatables/dataTables.bootstrap4.min.css" />
                 <!-- <a href="" class="btn btn-primary mb-3 tombolTambahtaskinvoice" data-toggle="modal" data-target="#newTaskInvoiceModal">Send a Invoice to Freelance</a> -->
+                <div class="card border-0 shadow-sm">
+                <div class="card-body p-3">
                 <div class="table-responsive-sm" style="margin-bottom: 15px;">
                     <table class="table table-hover" cellspacing="0" width="100%" id="tabeltaskinvoice">
                         <thead>
@@ -81,6 +83,8 @@
                     <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.print.min.js"></script>
                     <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.colVis.min.js"></script>
             </body>
+        </div>
+        </div>
         </div>
     </div>
 </div>

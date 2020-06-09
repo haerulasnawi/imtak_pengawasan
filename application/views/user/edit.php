@@ -2,7 +2,10 @@
 <div class="container-fluid">
 
     <!-- Page Heading -->
-    <h1 class="h3 mb-4 text-gray-800"><?= $title; ?></h1>
+    <h1 class="h3 mb-0 text-gray-800"><?= $title; ?></h1>
+  <p>You can edit profile here</p>
+  <hr class="mb-4">
+
 
     <div class="row">
         <div class="col-lg-8">

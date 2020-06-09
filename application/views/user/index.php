@@ -98,7 +98,7 @@
   </div>
   <div class="row">
     <div class="col ml-0 mr-0 mt-2 mb-5">
-      <div class="card shadow p-2" style="max-width: 400px; ">
+      <div class="card shadow p-2" style="max-width: 450px; ">
         <div class="row no-gutters">
           <div class="row-md">
             <img src="<?= base_url('assets/img/profile/') . $user['image']; ?>" class="card-img-top rounded">
@@ -116,17 +116,24 @@
     <div class="col">
 
       <!-- Illustrations -->
-      <div class="card shadow mb-4 ml-4 mt-2" style="width: 450px;">
+      <div class="card shadow mb-4 ml-0 mt-2" style="width: 445px;">
         <a href="#collapseCardExample" class="card-header" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample">
-          <h6 class="m-0 font-weight-bold text-primary">Intermezzo</h6>
+          <h6 class="m-0 font-weight-bold text-primary">Tasks Remaining</h6>
         </a>
         <div class="collapse show" id="collapseCardExample">
           <div class="card-body">
             <div class="text-center">
               <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;" src="<?= base_url('assets/') ?>img/undrawsvg.svg" alt="">
             </div>
-            <p>Don't forget to take a break while tired of working, to keep your productivity well maintained and produce maximum work!</p>
-            <a target="_blank" rel="nofollow" href="https://youtube.com/">Browse your favorite content on youtube →</a>
+            <?php $taskremaining = $this->db->get_where('request_task', ['email' => $useremail = $this->session->userdata('email'), 'status'=>'accepted'])->num_rows();?>
+            <?php if ($taskremaining != 0) { ?>
+              <p>You still have <?= $taskremaining ?> tasks that have not been done!</p>
+              <a target="_blank" rel="nofollow" href="<?= base_url('user/curtask');?>">Finish now →</a>
+            <?php } else {?>
+              <p>You have no task left! Enjoy your free time</p>
+              <a target="_blank" rel="nofollow" href="<?= base_url('auth/logout');?>">Logout →</a>
+            <?php }?>
+            
           </div>
         </div>
       </div>
@@ -134,14 +141,14 @@
     <div class="col">
 
       <!-- Illustrations -->
-      <div class="card shadow mb-4 ml-4 mt-2" style="width: 450px;">
-        <a href="#collapseCardExample" class="card-header" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample">
+      <div class="card shadow mb-4 ml-0 mt-2" style="width: 400px;">
+        <a href="#collapseCardExample2" class="card-header" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample2">
           <h6 class="m-0 font-weight-bold text-primary">Intermezzo</h6>
         </a>
-        <div class="collapse show" id="collapseCardExample">
+        <div class="collapse show" id="collapseCardExample2">
           <div class="card-body">
             <div class="text-center">
-              <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;" src="<?= base_url('assets/') ?>img/undrawsvg.svg" alt="">
+              <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 20rem;" src="<?= base_url('assets/') ?>img/vidyt.svg" alt="">
             </div>
             <p>Don't forget to take a break while tired of working, to keep your productivity well maintained and produce maximum work!</p>
             <a target="_blank" rel="nofollow" href="https://youtube.com/">Browse your favorite content on youtube →</a>

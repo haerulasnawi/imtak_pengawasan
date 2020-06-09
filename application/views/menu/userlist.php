@@ -23,6 +23,8 @@
 
 
                 <a href="" class="btn btn-primary mb-3" data-toggle="modal" data-target="#newUserModal">Add New User</a>
+                <div class="card border-0 shadow-sm">
+                <div class="card-body p-3">
                 <div class="table-responsive-md" style="margin-bottom: 15px;">
                     <table class="table table-hover" cellspacing="0" width="100%" id="tabeluserlist">
                         <thead>
@@ -76,6 +78,8 @@
                     <script src="<?= base_url('assets/'); ?>js/demo/datatables-demo.js"></script>
             </body>
 
+        </div>
+        </div>
         </div>
     </div>
 </div>

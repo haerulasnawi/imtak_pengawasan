@@ -116,11 +116,11 @@
             <div class="col-xl-12 col-lg-7">
                 <div class="card shadow mb-4">
                     <!-- Card Header - Dropdown -->
-                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <a href="#collapseCardExample3" class="card-header py-3 d-flex flex-row align-items-center justify-content-between" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample3">
                         <h6 class="m-0 font-weight-bold text-primary">Projects Overview</h6>
-                    </div>
                     <!-- Card Body -->
-
+                    </a>
+                <div class="collapse show" id="collapseCardExample3">
                     <div class="card-body">
                         <div class="chart-area">
                             <div class="chartjs-size-monitor">
@@ -133,6 +133,7 @@
                             </div>
                             <canvas id="chartproject" style="display: block; height: 320px; width: 467px;" width="583" height="400" class="chartjs-render-monitor"></canvas>
                         </div>
+                    </div>
                     </div>
                 </div>
             </div>

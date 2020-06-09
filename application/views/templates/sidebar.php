@@ -1,4 +1,5 @@
 <!-- Sidebar -->
+
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
     <!-- Sidebar - Brand -->
@@ -9,7 +10,7 @@
             <?php endif; ?>
 
             <div class="sidebar-brand-icon rotate-n-0">
-                <img src="assets/img/icon/apple-icon-180x180.png" class="rounded img-thumbnail" alt="tes" width="304" height="236">
+                <img src="<?=base_url('assets/')?>/img/icon/star.ico" class="rounded img-thumbnail img-responsive star" alt="Star Logo" width="304" height="236">
             </div>
             <div class="sidebar-brand-text mx-3">PT. STAR Software</div>
             </a>
@@ -22,9 +23,9 @@
             $queryMenu = "SELECT `user_menu`.`id`, `menu`
                     FROM `user_menu` JOIN `user_access_menu`
                     ON `user_menu`.`id` = `user_access_menu`.`menu_id`
-                     WHERE `user_access_menu`.`role_id` = $role_id
-                     ORDER BY `user_access_menu`.`menu_id` ASC
-                     ";
+                    WHERE `user_access_menu`.`role_id` = $role_id
+                    ORDER BY `user_access_menu`.`menu_id` ASC
+                    ";
             $menu = $this->db->query($queryMenu)->result_array();
             ?>
 
