@@ -2,7 +2,9 @@
 <div class="container-fluid">
 
     <!-- Page Heading -->
-    <h1 class="h3 mb-4 text-gray-800"><?= $title; ?></h1>
+    <h1 class="h3 mb-0 text-gray-800"><?= $title; ?></h1>
+  <p>You can create a new user here</p>
+  <hr class="mb-4">
 
     <div class="row">
         <?php $this->view('message') ?>
@@ -23,7 +25,7 @@
 
 
                 <a href="" class="btn btn-primary mb-3" data-toggle="modal" data-target="#newUserModal">Add New User</a>
-                <div class="card border-0 shadow-sm">
+                <div class="card border-0 shadow-sm mb-4">
                 <div class="card-body p-3">
                 <div class="table-responsive-md" style="margin-bottom: 15px;">
                     <table class="table table-hover" cellspacing="0" width="100%" id="tabeluserlist">

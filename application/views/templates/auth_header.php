@@ -10,6 +10,7 @@
     <meta name="author" content="">
 
     <title><?= $title; ?></title>
+    <link rel="icon" type="ico" sizes="192x192" href="<?=base_url('assets/')?>img/icon/star.ico">
 
     <!-- Custom fonts for this template-->
     <link href="<?= base_url('assets/'); ?>vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">

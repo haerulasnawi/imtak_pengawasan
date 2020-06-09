@@ -2,13 +2,19 @@
 <div class="container-fluid">
 
     <!-- Page Heading -->
-    <h1 class="h3 mb-4 text-gray-800"><?= $title; ?></h1>
+    <h1 class="h3 mb-0 text-gray-800"><?= $title; ?></h1>
+    <p>
+        This page for role access settings 
+      </p>
+    <hr>
 
     <div class="row">
         <div class="col-lg-6">
 
             <?= $this->session->flashdata('menus'); ?>
             <h5>Role : <?= $role['role'] ?></h5>
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body p-3">
             <table class="table table-hover">
                 <thead>
                     <tr>
@@ -34,6 +40,8 @@
                     <?php endforeach; ?>
                 </tbody>
             </table>
+        </div>
+        </div>
         </div>
     </div>
 </div>

@@ -4,6 +4,7 @@
     <!-- Page Heading -->
     <div class="shadow-sm p-3 mb-4 bg-white rounded">
         <h1 class="h3 mb-2 mt-2 text-gray-800 "><?= $title; ?></h1>
+        
     </div>
     <link rel="stylesheet" href="<?= base_url('assets'); ?>/css/sb-admin-2.min.css" />
     <script src="<?= base_url('assets/'); ?>vendor/bootstrap/js/bootstrap.min.js"></script>

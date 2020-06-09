@@ -2,7 +2,9 @@
 <div class="container-fluid">
 
     <!-- Page Heading -->
-    <h1 class="h3 mb-4 text-gray-800"><?= $title; ?></h1>
+    <h1 class="h3 mb-0 text-gray-800"><?= $title; ?></h1>
+  <p>You can create a new menu here</p>
+  <hr class="mb-4">
 
     <div class="row">
         <div class="col-lg-12">
@@ -13,7 +15,7 @@
                 <link rel="stylesheet" href="<?= base_url('assets'); ?>/css/sb-admin-2.min.css" />
                 <link rel="stylesheet" href="<?= base_url('assets'); ?>/vendor/datatables/dataTables.bootstrap4.min.css" />
                 <a href="" class="btn btn-primary mb-3 tombolTambahData" data-toggle="modal" data-target="#newMenuModal">Add New Menu</a>
-                <div class="card border-0 shadow-sm">
+                <div class="card border-0 shadow-sm mb-4">
                 <div class="card-body p-3">
                 <div class="table-responsive-md" style="margin-bottom: 15px;">
                     <table class="table table-hover" cellspacing="0" width="100%" id="tabelmenu">
