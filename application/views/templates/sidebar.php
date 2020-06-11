@@ -1,6 +1,6 @@
 <!-- Sidebar -->
 
-<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+<ul class="navbar-nav sidebar sidebar-dark accordion" style=" background: #a80231 ;" id="accordionSidebar">
 
     <!-- Sidebar - Brand -->
     <?php if ($this->session->userdata('role_id') == 2 || $this->session->userdata('role_id') == 1) : ?>

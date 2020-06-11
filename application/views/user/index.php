@@ -118,7 +118,7 @@
       <!-- Illustrations -->
       <div class="card shadow mb-4 ml-0 mt-2" style="width: 445px;">
         <a href="#collapseCardExample" class="card-header" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample">
-          <h6 class="m-0 font-weight-bold text-primary">Tasks Remaining</h6>
+          <h6 class="m-0 font-weight-bold" style="color:#a80231;">Tasks Remaining</h6>
         </a>
         <div class="collapse show" id="collapseCardExample">
         <?php if ($taskremaining != 0) { ?>
@@ -146,7 +146,7 @@
       <!-- Illustrations -->
       <div class="card shadow mb-4 ml-0 mt-2" style="width: 400px;">
         <a href="#collapseCardExample2" class="card-header" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample2">
-          <h6 class="m-0 font-weight-bold text-primary">Intermezzo</h6>
+          <h6 class="m-0 font-weight-bold" style="color:#a80231;">Intermezzo</h6>
         </a>
         <div class="collapse show" id="collapseCardExample2">
           <div class="card-body">

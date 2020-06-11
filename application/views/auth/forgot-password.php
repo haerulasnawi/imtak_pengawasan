@@ -12,7 +12,7 @@
                         <div class="col-lg">
                             <div class="p-5">
                                 <div class="text-center">
-                                    <h1 class="h4 text-gray-900 mb-4">Forgot your password ?</h1>
+                                    <h1 class="h4 text-gray-900 mb-4"><strong>Forgot your password ?</strong></h1>
                                 </div>
                                 <!-- Flash data -->
                                 <?php $this->view('message') ?>
@@ -23,14 +23,14 @@
                                         <?= form_error('email', '<small class="text-danger pl-3">', '</small>'); ?>
                                     </div>
 
-                                    <button type="submit" class="btn btn-primary btn-user btn-block">
+                                    <button type="submit" class="btn btn-user btn-block text-white" style=" background: #a80231 ;">
                                         Reset Password
                                     </button>
                                 </form>
                                 <hr>
 
                                 <div class="text-center">
-                                    <a class="small" href="<?= base_url('auth'); ?>">Back to login</a>
+                                    <a class="small" href="<?= base_url('auth'); ?>" style=" color: #a80231 ;">Back to login</a>
                                 </div>
                             </div>
                         </div>

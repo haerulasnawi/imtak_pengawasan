@@ -20,7 +20,7 @@
             <link rel="stylesheet" href="<?= base_url('assets'); ?>/vendor/datatables/dataTables.bootstrap4.min.css" />
             <div class="col-sm-12">
 
-                <a href="" class="btn btn-primary mb-3 tampilModalUbahFree" data-toggle="modal" data-target="#newFreelanceModal">Add New Freelance</a>
+                <a href="" class="btn btn-primary mb-3 tampilModalUbahFree text-white border-0" style=" background: #a80231 ;" data-toggle="modal" data-target="#newFreelanceModal">Add New Freelance</a>
                 <div class="card border-0 shadow-sm mb-4">
                 <div class="card-body p-3">
                 <div class="table-responsive-md" style="margin-bottom: 15px;">

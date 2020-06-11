@@ -11,7 +11,7 @@
         <div class="col-lg-12">
             <?= form_error('menu', '<div class="alert alert-danger alert-dismissible" role="alert">', '</div>'); ?>
             <?= $this->session->flashdata('menus'); ?>
-            <a href="" class="btn btn-primary mb-3 shadow tampilAddRole" data-toggle="modal" data-target="#newRoleModal">Add New Role</a>
+            <a href="" class="btn mb-3 shadow tampilAddRole text-white" style=" background: #a80231 ;" data-toggle="modal" data-target="#newRoleModal">Add New Role</a>
 
             <body>
                 <link rel="stylesheet" href="<?= base_url('assets'); ?>/css/sb-admin-2.min.css" />

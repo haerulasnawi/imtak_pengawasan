@@ -118,7 +118,7 @@
                 <div class="card shadow mb-4">
                     <!-- Card Header - Dropdown -->
                     <a href="#collapseCardExample3" class="card-header py-3 d-flex flex-row align-items-center justify-content-between" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample3">
-                        <h6 class="m-0 font-weight-bold text-primary">Projects Overview</h6>
+                        <h6 class="m-0 font-weight-bold" style="color:#a80231;">Projects Overview</h6>
                     <!-- Card Body -->
                     </a>
                 <div class="collapse show" id="collapseCardExample3">
@@ -190,10 +190,10 @@
                         label: "Projects",
                         lineTension: 0.3,
                         backgroundColor: "rgba(78, 115, 223, 0.05)",
-                        borderColor: "rgba(78, 115, 223, 1)",
+                        borderColor: "#a80231",
                         pointRadius: 3,
-                        pointBackgroundColor: "rgba(78, 115, 223, 1)",
-                        pointBorderColor: "rgba(78, 115, 223, 1)",
+                        pointBackgroundColor: "#a80231",
+                        pointBorderColor: "#a80231",
                         pointHoverRadius: 3,
                         pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
                         pointHoverBorderColor: "rgba(78, 115, 223, 1)",
