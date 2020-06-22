@@ -173,10 +173,10 @@
                         <?= form_error('name', '<small class="text-danger pl-3">', '</small>'); ?>
                     </div>
                     <div class="form-group">
-                        <input type="text" class="form-control" id="alamat" name="alamat" placeholder="Alamat" value="<?= set_value('alamat'); ?>">
+                        <input type="text" class="form-control" id="alamat" name="alamat" placeholder="Address" value="<?= set_value('alamat'); ?>">
                     </div>
                     <div class="form-group">
-                        <input type="text" class="form-control" id="no_telp" name="no_telp" placeholder="Telepon" value="<?= set_value('no_telp'); ?>">
+                        <input type="text" class="form-control" id="no_telp" name="no_telp" placeholder="Phone Number" value="<?= set_value('no_telp'); ?>">
                     </div>
                     <div class="form-group">
                         <select name="email" id="email" class="form-control">
@@ -192,7 +192,7 @@
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Add Freelance</button>
+                        <button type="submit" class="btn text-white" style="background:#a80231 ;">Add Freelance</button>
                     </div>
                 </form>
             </div>

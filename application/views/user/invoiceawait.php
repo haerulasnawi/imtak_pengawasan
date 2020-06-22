@@ -192,7 +192,7 @@
                     <?= form_error('password', '<small class="text-danger pl-3">', '</small>'); ?>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="submit" class="btn text-white" style="background:#a80231 ;">Submit</button>
                     </div>
                 </form>
             </div>
