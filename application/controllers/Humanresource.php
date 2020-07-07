@@ -379,4 +379,107 @@ class Humanresource extends CI_Controller
             redirect('humanresource/invoiceDataFromUser');
         }
     }
+
+    public function userlist()
+    {
+        $data['title'] = 'User Management';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+        $data['userlist'] = $this->db->get('user')->result_array();
+        $data['user_role'] = $this->db->get('user_role')->result_array();
+
+        $this->form_validation->set_rules('name', 'Name', 'required|trim');
+        $this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email|is_unique[user.email]', [
+            'is_unique' => 'This email has already registered!'
+        ]);
+        $this->form_validation->set_rules('password1', 'Password', 'required|trim|min_length[3]|matches[password2]', [
+            'matches' => 'Password dont match!',
+            'min_length' => 'Password too short!'
+        ]);
+        $this->form_validation->set_rules('password2', 'Password', 'required|trim|matches[password1]');
+        $this->form_validation->set_rules('role_id', 'role_id', 'required');
+
+        if ($this->form_validation->run() == false) {
+            $this->load->view('templates/header', $data);
+            $this->load->view('templates/sidebar', $data);
+            $this->load->view('templates/topbar', $data);
+            $this->load->view('menu/userlist', $data);
+            $this->load->view('templates/footer');
+        } else {
+            $email = $this->input->post('email', true);
+            $data = [
+                'name' =>  htmlspecialchars($this->input->post('name', true)),
+                'email' => htmlspecialchars($email),
+                'image' => 'default.jpeg',
+                'password' => password_hash($this->input->post('password1'), PASSWORD_DEFAULT),
+                'role_id' => $this->input->post('role_id', true),
+                'is_active' => 0,
+                'date_created' => time()
+
+            ];
+            //siapkan token
+            $token = base64_encode(random_bytes(32));
+            $user_token = [
+                'email' => $email,
+                'token' => $token,
+                'date_created' => time()
+            ];
+
+            $this->db->insert('user', $data);
+            $this->db->insert('user_token', $user_token);
+
+            $this->_sendEmail($token, 'verify');
+
+            $this->session->set_flashdata('menus', '<div class="alert alert-success alert-dismissible" role="alert">Congratulation, account has been created, please activate your account! </div>');
+            redirect('menu/userlist');
+        }
+    }
+    private function _sendEmail($token, $type)
+    {
+        $config = [
+            'protocol' => 'smtp',
+            'smtp_host' => 'ssl://smtp.gmail.com',
+            'smtp_user' => 'allandanshiva@gmail.com',
+            'smtp_pass' => 'alandanshiva',
+            'smtp_port' => '465',
+            'mailtype' => 'html',
+            'charset' => 'utf-8',
+            'newline' => "\r\n"
+        ];
+
+        $this->load->library('email', $config);
+        $this->email->initialize($config);
+
+        $this->email->from('allandanshiva@gmail.com', 'HR PT. STAR Software Indonesia');
+        $this->email->to($this->input->post('email'));
+
+        if ($type == 'verify') {
+            $this->email->subject('Account Verification');
+            $this->email->message('Click this link to verify your account : <a href=" ' . base_url() . 'auth/verify?email=' . $this->input->post('email') . '& token=' . urlencode($token) . '">Activate</a>');
+        }
+        if ($this->email->send()) {
+            return true;
+        } else {
+            echo $this->email->print_debugger();
+            die;
+        }
+    }
+
+    public function deleteuser($id)
+    {
+        $data['title'] = 'User Management';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+
+        $data['user'] = $this->db->get('user')->result_array();
+
+
+        $this->load->model('Menu_model', 'menu');
+
+        if ($this->menu->deleteUser($id) > 0) {
+            $this->session->set_flashdata('menus', '<div class="alert alert-success alert-dismissible" role="alert">User successfully deleted! </div>');
+            redirect('humanresource/userlist');
+        } else {
+            $this->session->set_flashdata('menus', '<div class="alert alert-danger alert-dismissible" role="alert">Error while deleting user! </div>');
+            redirect('humanresource/userlist');
+        }
+    }
 }

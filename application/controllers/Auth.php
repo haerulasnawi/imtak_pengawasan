@@ -47,6 +47,9 @@ class Auth extends CI_Controller
                     }
                     if ($user['role_id'] == 4) {
                         redirect('humanresource');
+                    }
+                    if ($user['role_id'] == 5) {
+                        redirect('projectmanager');
                     } else {
                         redirect('user');
                     }
