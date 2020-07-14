@@ -26,7 +26,7 @@ class User extends CI_Controller
         $data['title'] = 'Edit Profile';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
-        // $this->form_validation->set_rules('name', 'Full Name', 'required|trim');
+        $this->form_validation->set_rules('name', 'Full Name', 'required|trim');
 
         if ($this->form_validation->run() == false) {
             $this->load->view('templates/header', $data);
@@ -65,6 +65,7 @@ class User extends CI_Controller
 
             $this->db->set('name', $name);
             $this->db->where('email', $email);
+            // $this->db->where('name', $name);
             $this->db->update('user');
 
             $this->session->set_flashdata('menus', '<div class="alert alert-success alert-dismissible" role="alert">Your profile successfully changed! </div>');
@@ -253,7 +254,7 @@ class User extends CI_Controller
         $this->load->model('Menu_model', 'menu');
         // $data['taskinvoiceuser'] = $this->menu->gettasksinvoice();
         $data['taskinvoiceuser'] = $this->db->get_where('task_invoice', ['email' => $user, 'status' => 'pending invoice'])->result_array();
-        $data['humanr'] = $this->db->get_where('user', ['role_id' => 4])->result_array();
+        $data['humanr'] = $this->db->get_where('user', ['role_id' => 5])->result_array();
         $data['reqtask'] = $this->db->get_where('request_task', ['email' => $user, 'status' => 'accepted'])->result_array();
 
         $this->form_validation->set_rules('email_hr', 'Email HR', 'required|trim');
@@ -330,8 +331,8 @@ class User extends CI_Controller
         $this->email->to($this->input->post('email_hr'));
 
         if ($type == 'verify_taskFinal') {
-            $this->email->subject('New task ready to invoice!');
-            $this->email->message('Click this link to login & invoicing the task : <a href=" ' . base_url() . 'humanresource/verify_taskFinal?email=' . $this->input->post('email_hr') . '& token=' . urlencode($token) .  '& file=' . $file . '& task_id=' . $task_id . '">Accept</a>');
+            $this->email->subject('New task has submitted!');
+            $this->email->message('Click this link to login & review the task : <a href=" ' . base_url() . 'projectmanager/verify_taskFinal?email=' . $this->input->post('email_hr') . '& token=' . urlencode($token) .  '& file=' . $file . '& task_id=' . $task_id . '">Login/Accept</a>');
         }
         if ($this->email->send()) {
             return true;
@@ -383,7 +384,7 @@ class User extends CI_Controller
         $this->load->model('Menu_model', 'menu');
         // $data['datainvoiceTask'] = $this->menu->getdataInvoice();
         $data['datainvoiceTask'] = $this->db->get_where('invoice', ['email_freelance' => $user, 'status' => 'Waiting for invoice'])->result_array();
-        $data['humanr'] = $this->db->get_where('user', ['role_id' => 4])->result_array();
+        $data['humanr'] = $this->db->get_where('user', ['role_id' => 5])->result_array();
         $data['reqtask'] = $this->db->get_where('request_task', ['email' => $user, 'status' => 'Waiting for invoice'])->result_array();
         $data['taskinvoice'] = $this->db->get_where('task_invoice', ['email' => $user, 'status' => 'Ready to invoicing'])->result_array();
 
@@ -464,7 +465,7 @@ class User extends CI_Controller
 
         if ($type == 'verify_InvoiceHR') {
             $this->email->subject('Freelance Invoice');
-            $this->email->message('Click this link to login & invoicing : <a href=" ' . base_url() . 'humanresource/verify_InvoiceHR?email=' . $this->input->post('email_hr') . '& token=' . urlencode($token) .  '& file=' . $file .  '& id_reqtask=' . $id_reqtask . '">Login and Invoicing</a>');
+            $this->email->message('Click this link to login & invoicing : <a href=" ' . base_url() . 'projectmanager/verify_InvoiceHR?email=' . $this->input->post('email_hr') . '& token=' . urlencode($token) .  '& file=' . $file .  '& id_reqtask=' . $id_reqtask . '">Login and Invoicing</a>');
         }
         if ($this->email->send()) {
             return true;

@@ -41,12 +41,48 @@
                                 <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                 My Profile
                             </a>
-                        <?php else : ?> <a class="dropdown-item" href="<?= base_url('humanresource'); ?>">
+                            <a class="dropdown-item" href="<?= base_url('user/edit'); ?>">
+                                <i class="fas fa-user-edit fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Edit Profile
+                            </a>
+                            <a class="dropdown-item" href="<?= base_url('user/changepassword'); ?>">
+                                <i class="fas fa-key fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Change Password
+                            </a>
+                        <?php elseif ($this->session->userdata('role_id') == 5) : ?>
+                            <a class="dropdown-item" href="<?= base_url('projectmanager'); ?>">
                                 <i class="fas fa-arrow-left fa-sm fa-fw mr-2 text-gray-400"></i>
                                 Back
                             </a>
+                            <a class="dropdown-item" href="<?= base_url('projectmanager/edit'); ?>">
+                                <i class="fas fa-user-edit fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Edit Profile
+                            </a>
+                            <a class="dropdown-item" href="<?= base_url('projectmanager/changepassword'); ?>">
+                                <i class="fas fa-key fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Change Password
+                            </a>
+                        <?php else : ?> 
+                        <a class="dropdown-item" href="<?= base_url('humanresource'); ?>">
+                                <i class="fas fa-arrow-left fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Back
+                            </a>
+                        <a class="dropdown-item" href="<?= base_url('humanresource/edit'); ?>">
+                                <i class="fas fa-user-edit fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Edit Profile
+                            </a>
+                            <a class="dropdown-item" href="<?= base_url('humanresource/changepassword'); ?>">
+                                <i class="fas fa-key fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Change Password
+                            </a>
                         <?php endif; ?>
+                        
 
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="<?= base_url('about'); ?>">
+                            <i class="fas fa-landmark fa-sm fa-fw mr-2 text-gray-400"></i>
+                            About Office
+                        </a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="<?= base_url('auth/logout'); ?>" data-toggle="modal" data-target="#logoutModal">
                             <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>

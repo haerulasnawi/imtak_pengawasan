@@ -27,7 +27,7 @@
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
-                                <th scope="col">Email HR</th>
+                                <th scope="col">Email PM</th>
                                 <th scope="col">Your Name</th>
                                 <th scope="col">Your Email</th>
                                 <th scope="col">Base Task ID</th>
@@ -141,7 +141,7 @@
                     <input type="hidden" id="date_created" name="date_created">
                     <input type="hidden" id="status" name="status">
                     <div class="form-group">
-                        <label for="email_hr">Email HR</label>
+                        <label for="email_hr">Email PM</label>
                         <select name="email_hr" id="email_hr" class="form-control">
                             <option value="">Select Email</option>
                             <?php foreach ($humanr as $hr) : ?>
@@ -163,12 +163,12 @@
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="name">Your Name</label>
-                            <input type="text" class="form-control" id="name" name="name">
+                            <input type="text" class="form-control" id="name" name="name" value="<?= $user['name']; ?>" readonly>
                             <?= form_error('name', '<small class="text-danger pl-3">', '</small>'); ?>
                         </div>
                         <div class="form-group col-md-6">
                             <label for="email">Your Email</label>
-                            <input type="text" class="form-control" id="email" name="email">
+                            <input type="text" class="form-control" id="email" name="email" value="<?= $user['email']; ?>" readonly>
                             <?= form_error('email', '<small class="text-danger pl-3">', '</small>'); ?>
                         </div>
                     </div>

@@ -179,9 +179,9 @@
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label for="email_hr">Email</label>
+                            <label for="email_hr">Email PM</label>
                             <select name="email_hr" id="email_hr" class="form-control">
-                                <option value="">Select Email HR</option>
+                                <option value="">Select Email PM</option>
                                 <?php foreach ($humanr as $hr) : ?>
                                     <option value="<?= $hr['email']; ?>"><?= $hr['email']; ?></option>
                                 <?php endforeach; ?>
@@ -221,7 +221,7 @@
                     </div>
                     <div class="form-group">
                         <label for="email_freelance">Your Email</label>
-                        <input type="text" class="form-control" id="email_freelance" name="email_freelance">
+                        <input type="text" class="form-control" id="email_freelance" name="email_freelance" value="<?= $user['email']; ?>" readonly>
                         <?= form_error('email_freelance', '<small class="text-danger pl-3">', '</small>'); ?>
                     </div>
                     <div class="form-group">
