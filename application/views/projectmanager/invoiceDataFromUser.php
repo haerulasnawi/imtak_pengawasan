@@ -55,8 +55,8 @@
                                     <td><?= $diT['file_invoice']; ?></td>
                                     <td><?= $diT['status']; ?></td>
                                     <td>
-                                        <!-- <a href="" data-target="#newInvoiceModal" data-toggle="modal" data-id="<?= $diT['id']; ?>" class="badge badge-success tampilModalInvoice">edit</a>
-                                        <a href="<?= site_url('user/deleteinvoiceUser/' . $diT['id']); ?>" class="badge badge-danger" onclick="return confirm('Want to delete this stuff ?')">delete</a> -->
+                                        <!-- <a href="" data-target="#newInvoiceModal" data-toggle="modal" data-id="<?= $diT['id']; ?>" class="badge badge-success tampilModalInvoice">edit</a> -->
+                                        <!-- <a href="<?= site_url('projectmanager/deleteinvoiceUser/' . $diT['id']); ?>" class="badge badge-danger" onclick="return confirm('Want to delete this stuff ?')">delete</a> -->
                                         <a href="<?= base_url('projectmanager/downloadinvoiceData/' . $diT['id']); ?>" class="badge badge-primary">download</a>
                                     </td>
                                 </tr>

@@ -292,7 +292,7 @@ class Projectmanager extends CI_Controller
 
     public function invoicedata()
     {
-        $data['title'] = 'Send Invoice Data';
+        $data['title'] = 'Send PO Data';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
         $this->load->model('Menu_model', 'menu');
@@ -398,7 +398,7 @@ class Projectmanager extends CI_Controller
 
     public function deleteinvoice($id)
     {
-        $data['title'] = 'Request Tasks';
+        $data['title'] = 'Send PO Data';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
         $this->load->model('Menu_model', 'menu');

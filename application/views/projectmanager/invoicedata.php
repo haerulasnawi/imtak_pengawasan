@@ -2,7 +2,7 @@
 
     <!-- Page Heading -->
     <h1 class="h3 mb-0 text-gray-800"><?= $title; ?></h1>
-  <p>You can see the invoice task data you sent here</p>
+  <p>You can see the PO data you sent here</p>
   <hr class="mb-4">
 
     <div class="row align-middle position-relative">
@@ -56,8 +56,8 @@
                                     <td><?= $dn['file_invoice']; ?></td>
                                     <td><?= $dn['status']; ?></td>
                                     <td>
-                                        <!-- <a href="" data-target="#newInvoiceModal" data-toggle="modal" data-id="<?= $dn['id']; ?>" class="badge badge-success tampilModalInvoice">edit</a>
-                                        <a href="<?= site_url('projectmanager/deleteinvoice/' . $dn['id']); ?>" class="badge badge-danger" onclick="return confirm('Want to delete this stuff ?')">delete</a> -->
+                                        <!-- <a href="" data-target="#newInvoiceModal" data-toggle="modal" data-id="<?= $dn['id']; ?>" class="badge badge-success tampilModalInvoice">edit</a> -->
+                                        <a href="<?= site_url('projectmanager/deleteinvoice/' . $dn['id']); ?>" class="badge badge-danger" onclick="return confirm('Want to delete this stuff ?')">delete</a>
                                         <a href="<?= base_url('projectmanager/downloadinvoice/' . $dn['id']); ?>" class="badge badge-primary">download</a>
                                     </td>
                                 </tr>
