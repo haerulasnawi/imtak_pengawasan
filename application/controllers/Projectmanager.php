@@ -8,12 +8,12 @@ class Projectmanager extends CI_Controller
         parent::__construct();
         is_logged_in();
     }
-    
+
 
     public function index()
     {
 
-        $data['title'] = 'Request Tasks';
+        $data['title'] = 'My Project';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
         $this->load->model('Menu_model', 'menu');
@@ -209,7 +209,7 @@ class Projectmanager extends CI_Controller
 
     public function taskInvoice()
     {
-        $data['title'] = 'Task to Invoice';
+        $data['title'] = 'Project Result';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
         $this->load->model('Menu_model', 'menu');
