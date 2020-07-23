@@ -52,7 +52,6 @@
                                     <td><?= $us['role_id']; ?></td>
                                     <td><?= $us['is_active']; ?></td>
                                     <td><?= date('d F Y', $us['date_created']); ?></td>
-
                                     <td>
                                         <a href="<?= site_url('humanresource/deleteuser/' . $us['id']); ?>" class="badge badge-danger" onclick="return confirm('Want to delete this stuff ?')">delete</a>
                                     </td>
@@ -83,12 +82,46 @@
         </div>
         </div>
         </div>
+        <div class="alert alert-info mb-4" role="alert">
+  Description!  ⫸ Role ID  :  1 → Administration  |  2 → Freelance  |  4 → Humanresource  |  5 → Project Manager  |  6 → Finance  ||  Active : 1 → True  |  0 → False
+</div>
     </div>
 </div>
 
+<!-- <script>
+    var ctx = document.getElementById("tabeluserlist");
+    $(ctx).DataTable({
+  // dom: '<"top">rt<"bottom"lfp><"clear">',
+  pagingType: 'full_numbers',
+  responsive: true,
 
-</div>
-<!-- Modal Add Menu -->
+  columnDefs: [{
+    orderable: false,
+    className: 'select-checkbox select-checkbox-all',
+    targets: 0
+  }],
+  select: {
+    style: 'multi',
+    selector: 'td:first-child'
+  },
+  initComplete: function () {
+    this.api().columns().every(function () {
+      var column = this;
+      var search = $(`<input class="form-control form-control-sm" type="text" placeholder="Search">`)
+        .appendTo($(column.footer()).empty())
+        .on('change input', function () {
+          var val = $(this).val()
+
+          column
+            .search(val ? val : '', true, false)
+            .draw();
+        });
+
+    });
+  };
+</scrip> -->
+
+
 <div class="modal fade" id="newUserModal" tabindex="-1" role="dialog" aria-labelledby="newUserModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -133,11 +166,4 @@
     </div>
 </div>
 
-
-<!-- /.container-fluid -->
-
-
-
-
 </div>
-<!-- End of Main Content -->

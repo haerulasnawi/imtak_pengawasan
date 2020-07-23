@@ -402,7 +402,7 @@ class Humanresource extends CI_Controller
             $this->load->view('templates/header', $data);
             $this->load->view('templates/sidebar', $data);
             $this->load->view('templates/topbar', $data);
-            $this->load->view('menu/userlist', $data);
+            $this->load->view('humanresource/userlist', $data);
             $this->load->view('templates/footer');
         } else {
             $email = $this->input->post('email', true);
@@ -430,7 +430,7 @@ class Humanresource extends CI_Controller
             $this->_sendEmail($token, 'verify');
 
             $this->session->set_flashdata('menus', '<div class="alert alert-success alert-dismissible" role="alert">Congratulation, account has been created, please activate your account! </div>');
-            redirect('menu/userlist');
+            redirect('humanresource/userlist');
         }
     }
     private function _sendEmail($token, $type)

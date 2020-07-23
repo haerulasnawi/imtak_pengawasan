@@ -24,6 +24,7 @@
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">Role</th>
+                                <th scope="col">Role ID</th>
                                 <th scope="col">Action</th>
                             </tr>
                         </thead>
@@ -33,6 +34,7 @@
                                 <tr>
                                     <th scope="row"><?= $i; ?></th>
                                     <td><?= $r['role']; ?></td>
+                                    <td><?= $r['id']; ?></td>
                                     <td>
                                         <a href="<?= base_url('admin/roleaccess/') . $r['id']; ?>" class="badge badge-warning">access</a>
                                         <a href="" data-toggle="modal" data-id="<?= $r['id']; ?>" data-target="#newRoleModal" class="badge badge-success tampilModalRole">edit</a>
