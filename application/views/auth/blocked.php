@@ -43,6 +43,8 @@
                         <p class="text-gray-500 mb-0">It looks like you found a glitch in the matrix...</p>
                         <?php if ($this->session->userdata('role_id') == 2 || $this->session->userdata('role_id') == 1) : ?>
                             <a href="<?= base_url('user') ?>">&larr; Back to Dashboard</a>
+                        <?php elseif ($this->session->userdata('role_id') == 5 || $this->session->userdata('role_id') == 6) : ?>
+                        <a href="<?= base_url('projectmanager') ?>">&larr; Back to Dashboard</a>
                         <?php else : ?>
                             <a href="<?= base_url('humanresource') ?>">&larr; Back to Dashboard</a>
                         <?php endif; ?>
