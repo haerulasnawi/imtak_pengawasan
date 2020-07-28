@@ -77,7 +77,7 @@
     <script src="<?= base_url('assets/'); ?>js/jquery.min.js"></script>
     <script src="<?= base_url('assets/'); ?>vendor/datatables/jquery.dataTables.min.js"></script>
     <script src="<?= base_url('assets/'); ?>vendor/datatables/dataTables.bootstrap4.min.js"></script>
-    <!-- <script src="<?= base_url('assets/'); ?>js/demo/datatables-demo.js"></script> -->
+    <script src="<?= base_url('assets/'); ?>js/demo/datatables-demo.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.2/js/dataTables.buttons.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.bootstrap4.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
@@ -89,7 +89,7 @@
     </body>
 </div>
 
-<script>
+<!-- <script>
     var ctx = document.getElementById("tabelku");
     $(ctx).DataTable({
         pagingType: 'full_numbers',
@@ -150,10 +150,11 @@
                     });
 
             });
-        }
+        };
 
     });
-</script>
+    
+</script> -->
 <!-- Modal Add Freelance -->
 <div class="modal fade" id="newFreelanceModal" tabindex="-1" role="dialog" aria-labelledby="newFreelanceModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
