@@ -249,6 +249,25 @@ class Admin extends CI_Controller
         }
     }
 
+    public function deleteRole($id)
+    {
+        $data['title'] = 'Role';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+
+        $data['role'] = $this->db->get('user_role')->result_array();
+
+
+        $this->load->model('Menu_model', 'menu');
+
+        if ($this->menu->deleteRole($id) > 0) {
+            $this->session->set_flashdata('menus', '<div class="alert alert-success alert-dismissible" role="alert">Role successfully deleted! </div>');
+            redirect('admin/role');
+        } else {
+            $this->session->set_flashdata('menus', '<div class="alert alert-danger alert-dismissible" role="alert">Error while deleting role! </div>');
+            redirect('admin/role');
+        }
+    }
+
     // public function getubahtask()
     // {
     //     $this->load->model('Menu_model', 'menu');

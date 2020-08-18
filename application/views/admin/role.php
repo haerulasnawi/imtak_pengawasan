@@ -38,7 +38,7 @@
                                     <td>
                                         <a href="<?= base_url('admin/roleaccess/') . $r['id']; ?>" class="badge badge-warning">access</a>
                                         <a href="" data-toggle="modal" data-id="<?= $r['id']; ?>" data-target="#newRoleModal" class="badge badge-success tampilModalRole">edit</a>
-                                        <a href="" class="badge badge-danger">delete</a>
+                                        <a href="<?= base_url('admin/deleteRole/' . $r['id']); ?>" class="badge badge-danger" onclick="return confirm('Want to delete this stuff ?')">delete</a>
                                     </td>
                                 </tr>
                                 <?php $i++; ?>

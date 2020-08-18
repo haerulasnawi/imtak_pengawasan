@@ -41,6 +41,14 @@ class Menu_model extends CI_Model
         return $this->db->affected_rows();
     }
 
+    public function deleteRole($id)
+    {
+
+        $this->db->delete('user_role', array('id' => $id));
+
+        return $this->db->affected_rows();
+    }
+
     public function getFreelance()
     {
         $query = "SELECT `freelance`.*,`user`.`email`
