@@ -403,7 +403,7 @@ class Projectmanager extends CI_Controller
 
         $this->load->model('Menu_model', 'menu');
 
-        $data['datainvoice'] = $this->menu->dataInvoice();
+        $data['datainvoice'] = $this->menu->getdataInvoice();
 
         if ($this->menu->deleteInvoice($id) > 0) {
             $this->session->set_flashdata('menus', '<div class="alert alert-success alert-dismissible" role="alert">Invoice successfully deleted! </div>');

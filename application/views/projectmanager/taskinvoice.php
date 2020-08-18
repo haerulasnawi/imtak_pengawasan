@@ -27,7 +27,7 @@
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
-                                <th scope="col">Email HR</th>
+                                <th scope="col">Email PM</th>
                                 <th scope="col">Name</th>
                                 <th scope="col">Email</th>
                                 <th scope="col">Base Task ID</th>
