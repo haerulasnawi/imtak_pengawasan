@@ -12,7 +12,7 @@
                         <div class="col-lg">
                             <div class="p-5">
                                 <div class="text-center">
-                                    <h1 class="h4 text-gray-900 mb-4"><strong>Project Management System</strong></h1>
+                                    <h1 class="h4 text-gray-900 mb-4"><strong>Administration Management System</strong></h1>
                                 </div>
                                 <!-- Flash data -->
                                 <?php $this->view('message') ?>
@@ -26,13 +26,13 @@
                                         <input type="password" class="form-control form-control-user" id="password" name="password" placeholder="Password">
                                         <?= form_error('password', '<small class="text-danger pl-3">', '</small>'); ?>
                                     </div>
-                                    <button type="submit" class="btn btn-user btn-block text-white" style="background:#a80231 ;">
+                                    <button type="submit" class="btn btn-user btn-block text-white" style="background:#1a4645 ;">
                                         Login
                                     </button>
                                 </form>
                                 <hr>
                                 <div class="text-center">
-                                    <a class="small" href="<?= base_url('auth/forgotpassword'); ?>" style="color:#a80231 ; ">Forgot Password?</a>
+                                    <a class="small" href="<?= base_url('auth/forgotpassword'); ?>" style="color:#1a4645 ; ">Forgot Password?</a>
                                 </div>
                                 <!-- <div class="text-center">
                                     <a class="small" href="<?= base_url('auth/registration'); ?>">Create an Account!</a>

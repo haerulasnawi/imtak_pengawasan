@@ -1,8 +1,8 @@
 <footer class="sticky-footer fixed-bottom">
     <div class="container fixed-bottom">
         <div class="copyright text-center text-dark">
-            <img src="<?= base_url('assets/');?>img/icon/apple-icon.png" class="rounded mb-2" alt="..." style="max-width:45px;">
-            <span>Copyright &copy; <?= date('Y'); ?> PT. STAR Software Indonesia. All Rights Reserved</span>
+            <img src="<?= base_url('assets2/');?>img/bkpsdm.png" class="rounded mb-2" alt="..." style="max-width:45px;">
+            <span>Copyright &copy; <?= date('Y'); ?> Badan Kepegawaian & Pengembangan Sumber Daya Manusia. All Rights Reserved</span>
             
         </div>
     </div>
