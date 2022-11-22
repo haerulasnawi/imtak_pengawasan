@@ -10,12 +10,12 @@ $(function () {
     $(document).on('click', '.tampilModalRole', function (e) {
         $('#newRoleModalLabel').html('Change Role');
         $('.modal-footer button[type=submit]').html('Change');
-        $('.modal-body form').attr('action', 'http://localhost/wpu-login/admin/editRole');
+        $('.modal-body form').attr('action', 'http://localhost/bkpsdm/admin/editRole');
 
         const id = $(this).data('id');
 
         $.ajax({
-            url: 'http://localhost/wpu-login/admin/getubahrole',
+            url: 'http://localhost/bkpsdm/admin/getubahrole',
             data: { id: id },
             method: 'post',
             dataType: 'json',

@@ -60,12 +60,14 @@ class Admin extends CI_Controller
         $this->load->view('templates/footer');
     }
 
-    public function getubahrole(){
+    public function getubahrole()
+    {
         $this->load->model('Menu_model', 'menu');
         echo json_encode($this->menu->getDataUbahRole($_POST['id']));
     }
 
-    public function editRole(){
+    public function editRole()
+    {
         $data['title'] = 'Role Access';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
@@ -218,17 +220,106 @@ class Admin extends CI_Controller
     private function _filetoupload()
     {
 
-        $config['upload_path'] = './assets/taskfiles/';
-        $config['allowed_types'] = 'doc|docx|pdf|xlsx|csv|zip|rar';
-        $config['max_size']     = 0;
+        $config['upload_path'] = './assets/informasi/';
+        $config['allowed_types'] = 'jpg|png|jpeg';
+        $config['max_size']     = 10240;
 
         $this->load->library('upload', $config);
 
-        if ($this->upload->do_upload('task_files')) {
+        if ($this->upload->do_upload('image')) {
             return $this->upload->data("file_name");
         }
 
         return true;
+    }
+
+    public function informasi()
+    {
+        $data['title'] = 'Pengumuman';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+
+        $data['pengumuman'] = $this->db->get('informasi')->result_array();
+        $this->form_validation->set_rules('title', 'Judul', 'required');
+        $this->form_validation->set_rules('uraian', 'Uraian', 'required');
+        // $this->form_validation->set_rules('image', 'Gambar', 'required');
+
+        if ($this->form_validation->run() == false) {
+            $this->load->view('templates/header', $data);
+            $this->load->view('templates/sidebar', $data);
+            $this->load->view('templates/topbar', $data);
+            $this->load->view('admin/pengumuman', $data);
+            $this->load->view('templates/footer');
+        } else {
+            $data = [
+                'id' => $this->input->post('id'),
+                'title' => $this->input->post('title'),
+                'uraian' => $this->input->post('uraian'),
+                'date_created' => time(),
+                'is_active' => $this->input->post('is_active'),
+                'image' => $file = $this->_filetoupload()
+            ];
+
+            $this->db->insert('informasi', $data);
+
+            $this->session->set_flashdata('menus', '<div class="alert alert-success" role="alert">New announcement successfully created!</div>');
+            redirect('admin/informasi');
+        }
+    }
+
+    public function deletepengumuman($id)
+    {
+        $data['title'] = 'Pengumuman';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+
+        $this->load->model('Menu_model', 'menu');
+
+        if ($this->menu->deletepengumuman($id) > 0) {
+            $this->session->set_flashdata('menus', '<div class="alert alert-success alert-dismissible" role="alert">Announcement successfully deleted! </div>');
+            redirect('admin/informasi');
+        } else {
+            $this->session->set_flashdata('menus', '<div class="alert alert-danger alert-dismissible" role="alert">Error while deleting announcement! </div>');
+            redirect('admin/informasi');
+        }
+    }
+
+    public function edit_pengumuman($id)
+    {
+        $data['title'] = 'Pengumuman';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+
+        $data['pengumuman'] = $this->db->get_where('informasi', ['id' => $id])->row_array();
+        $this->form_validation->set_rules('title', 'Judul', 'required');
+        $this->form_validation->set_rules('uraian', 'Uraian', 'required');
+        // $this->form_validation->set_rules('image', 'Gambar', 'required');
+
+        if ($this->form_validation->run() == false) {
+            $this->load->view('templates/header', $data);
+            $this->load->view('templates/sidebar', $data);
+            $this->load->view('templates/topbar', $data);
+            $this->load->view('admin/pengumuman', $data);
+            $this->load->view('templates/footer');
+        } else {
+            $data = [
+                'id' => $this->input->post('id'),
+                'title' => $this->input->post('title'),
+                'uraian' => $this->input->post('uraian'),
+                'date_created' => time(),
+                'is_active' => $this->input->post('is_active'),
+                'image' => $file = $this->_filetoupload()
+            ];
+
+            $this->db->set('title', $data['title']);
+            $this->db->set('uraian', $data['uraian']);
+            $this->db->set('date_created', $data['date_created']);
+            $this->db->set('is_active', $data['is_active']);
+            $this->db->set('image', $data['image']);
+            $this->db->where('id', $id);
+
+            $this->db->update('informasi');
+
+            $this->session->set_flashdata('menus', '<div class="alert alert-success" role="alert">Succesfully updated!</div>');
+            redirect('admin/informasi');
+        }
     }
 
     public function deletetask($id)

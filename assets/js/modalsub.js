@@ -13,12 +13,12 @@ $(function () {
     $(document).on('click', '.tampilModal', function (e) {
         $('#newSubMenuModalLabel').html('Change Submenu');
         $('.modal-footer button[type=submit]').html('Change');
-        $('.modal-body form').attr('action', 'http://localhost/wpu-login/menu/editsubmenu');
+        $('.modal-body form').attr('action', 'http://localhost/bkpsdm/menu/editsubmenu');
 
         const id = $(this).data('id');
 
         $.ajax({
-            url: 'http://localhost/wpu-login/menu/getubahsub',
+            url: 'http://localhost/bkpsdm/menu/getubahsub',
             data: { id: id },
             method: 'post',
             dataType: 'json',

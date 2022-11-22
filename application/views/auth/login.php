@@ -11,8 +11,10 @@
                     <div class="row">
                         <div class="col-lg">
                             <div class="p-5">
-                                <div class="text-center">
-                                    <h1 class="h4 text-gray-900 mb-4"><strong>Administration Management System</strong></h1>
+                                <div class="text-center mb-1">
+                                    <img src="<?= base_url('assets/img/kota_mataram.png'); ?>" alt="BKPSDM Kota Mataram" width="80" height="100" class="img-responsive mb-1">
+                                    <h1 class="h4 text-gray-900 mb-0"><strong>Inspektorat Kota Mataram</strong></h1>
+                                    <!-- <h2 class="h4 text-gray-900 mb-4"><strong>Online Appointment System</strong></h2> -->
                                 </div>
                                 <!-- Flash data -->
                                 <?php $this->view('message') ?>
@@ -34,9 +36,9 @@
                                 <div class="text-center">
                                     <a class="small" href="<?= base_url('auth/forgotpassword'); ?>" style="color:#1a4645 ; ">Forgot Password?</a>
                                 </div>
-                                <!-- <div class="text-center">
-                                    <a class="small" href="<?= base_url('auth/registration'); ?>">Create an Account!</a>
-                                </div> -->
+                                <div class="text-center">
+                                    <a class="small" href="<?= base_url('auth/createAccount'); ?>" style="color:#1a4645 ; ">Create an Account!</a>
+                                </div>
                             </div>
                         </div>
                     </div>

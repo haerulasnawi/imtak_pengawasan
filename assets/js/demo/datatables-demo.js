@@ -1,12 +1,49 @@
 //Call the dataTables jQuery plugin
 $('#tabelku').DataTable({
-	order: [
-		[3, 'desc']
-	],
 	// dom: '<"top">rt<"bottom"lfp><"clear">',
 	pagingType: 'full_numbers',
-	responsive: true,
-
+        responsive: true,
+        scrollX: true,
+        scrollY: true,
+        lengthMenu: [
+            [10, 25, 50, -1],
+            [10, 25, 50, 'All'],
+        ],
+	dom: 'lBfrtip',
+	buttons: [{
+			extend: 'copyHtml5',
+			exportOptions: {
+				columns: [0, 1, 2, 3, 4, 5, 6, 7]
+			}
+		},
+		{
+			extend: 'excelHtml5',
+			exportOptions: {
+				columns: [0, 1, 2, 3, 4, 5, 6, 7]
+			}
+		},
+		{
+			extend: 'csvHtml5',
+			exportOptions: {
+				columns: [0, 1, 2, 3, 4, 5, 6, 7]
+			}
+		},
+		{
+			extend: 'pdfHtml5',
+			orientation: 'landscape',
+			pageSize: 'LEGAL',
+			filename: 'Coaching List',
+			exportOptions: {
+				columns: [0, 1, 2, 3, 4, 5, 6, 7]
+			}
+		},
+		{
+			extend: 'print',
+			exportOptions: {
+				columns: [0, 1, 2, 3, 4, 5, 6, 7]
+			}
+		}
+	],
 	columnDefs: [{
 		orderable: false,
 		className: 'select-checkbox select-checkbox-all',

@@ -1,6 +1,6 @@
 <!-- Sidebar -->
 
-<ul class="navbar-nav sidebar sidebar-dark accordion" style=" background: #a80231 ;" id="accordionSidebar">
+<ul class="navbar-nav sidebar sidebar-dark accordion" style=" background: #1a4645 ;" id="accordionSidebar">
 
     <!-- Sidebar - Brand -->
     <?php if ($this->session->userdata('role_id') == 2 || $this->session->userdata('role_id') == 1) : ?>
@@ -9,14 +9,17 @@
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="<?= base_url('humanresource') ?>">
             <?php endif; ?>
 
-            <div class="sidebar-brand-icon rotate-n-0">
-                <img src="<?=base_url('assets/')?>/img/icon/star.ico" class="rounded img-thumbnail img-responsive star" alt="Star Logo" width="304" height="236">
+            <div class="sidebar-brand-icon rotate-n-0 mt-4">
+                <img src="<?=base_url('assets2/')?>/img/kota_mataram.png" class="rounded img-thumbnail img-responsive star" alt="BKPSDM Logo" width="200" height="200">
             </div>
-            <div class="sidebar-brand-text mx-3">PT. STAR Software</div>
+                <div class="sidebar-brand-text mx-3 mt-4">Inspektorat</div>
             </a>
 
             <!-- Divider -->
-            <hr class="sidebar-divider">
+            <hr class="sidebar-divider mt-4">
+            <div class="">
+                
+            </div>
 
             <?php
             $role_id = $this->session->userdata('role_id');
@@ -41,7 +44,7 @@
                 $querySubMenu = "SELECT *
                         FROM `user_sub_menu` JOIN `user_menu`
                         ON `user_sub_menu`.`menu_id` = `user_menu`.`id`
-                         WHERE `user_sub_menu`.`menu_id` = $menuId
+                        WHERE `user_sub_menu`.`menu_id` = $menuId
                         AND `user_sub_menu`.`is_active` = 1
                         ";
                 $subMenu = $this->db->query($querySubMenu)->result_array();

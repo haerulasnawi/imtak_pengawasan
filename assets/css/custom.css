@@ -28,3 +28,39 @@ body {
 .form-group.last {
 	margin-bottom: 0px;
 }
+
+.breadcrumb {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-ms-flex-wrap: wrap;
+	flex-wrap: wrap;
+	padding: 0.75rem 1rem;
+	margin-bottom: 1rem;
+	list-style: none;
+	background-color: #B6DFCF;
+	border-radius: 0.35rem;
+  }
+  
+  .breadcrumb-item + .breadcrumb-item {
+	padding-left: 0.5rem;
+  }
+  
+  .breadcrumb-item + .breadcrumb-item::before {
+	display: inline-block;
+	padding-right: 0.5rem;
+	color: #858796;
+	content: "/";
+  }
+  
+  .breadcrumb-item + .breadcrumb-item:hover::before {
+	text-decoration: underline;
+  }
+  
+  .breadcrumb-item + .breadcrumb-item:hover::before {
+	text-decoration: none;
+  }
+  
+  .breadcrumb-item.active {
+	color: #858796;
+  }

@@ -59,6 +59,13 @@ class Menu_model extends CI_Model
         return $this->db->query($query)->result_array();
     }
 
+    public function getPegawai()
+    {
+        $query = "SELECT * FROM `user` WHERE `role_id` = 2";
+
+        return $this->db->query($query)->result_array();
+    }
+
     public function deleteFreelance($id)
     {
 
@@ -170,5 +177,28 @@ class Menu_model extends CI_Model
         $this->db->delete('invoice', array('id' => $id));
 
         return $this->db->affected_rows();
+    }
+
+    public function deleteEvent($id)
+    {
+
+        $this->db->delete('event', array('id' => $id));
+
+        return $this->db->affected_rows();
+    }
+
+    public function deletepengumuman($id)
+    {
+
+        $this->db->delete('informasi', array('id' => $id));
+
+        return $this->db->affected_rows();
+    }
+
+    public function approvalEvent($id)
+    {
+        $query = "UPDATE `event` SET `status`='disetujui' WHERE `id`=$id";
+
+        return $this->db->query($query);
     }
 }

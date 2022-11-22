@@ -23,14 +23,14 @@
                                         <?= form_error('email', '<small class="text-danger pl-3">', '</small>'); ?>
                                     </div>
 
-                                    <button type="submit" class="btn btn-user btn-block text-white" style=" background: #a80231 ;">
+                                    <button type="submit" class="btn btn-user btn-block text-white" style=" background: #1a4645 ;">
                                         Reset Password
                                     </button>
                                 </form>
                                 <hr>
 
                                 <div class="text-center">
-                                    <a class="small" href="<?= base_url('auth'); ?>" style=" color: #a80231 ;">Back to login</a>
+                                    <a class="small" href="<?= base_url('auth'); ?>" style=" color:#1a4645 ;">Back to login</a>
                                 </div>
                             </div>
                         </div>

@@ -4,7 +4,7 @@
     <!-- Page Heading -->
     <div class="shadow-sm p-3 mb-4 bg-white rounded">
         <h1 class="h3 mb-2 mt-2 text-gray-800 "><?= $title; ?></h1>
-        
+
     </div>
     <link rel="stylesheet" href="<?= base_url('assets'); ?>/css/sb-admin-2.min.css" />
     <script src="<?= base_url('assets/'); ?>vendor/bootstrap/js/bootstrap.min.js"></script>
@@ -44,8 +44,8 @@
                     <div class="card-body">
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
-                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Freelance</div>
-                                <?php $query = $this->db->query("SELECT * FROM `freelance`"); ?>
+                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Pegawai</div>
+                                <?php $query = $this->db->query("SELECT * FROM `user` WHERE `role_id` =2"); ?>
                                 <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $query->num_rows(); ?></div>
                             </div>
                             <div class="col-auto">
@@ -66,15 +66,15 @@
             $hasilpersen = 100 - $equals;
 
             ?>
-            <div class="col-xl-3 col-md-6 mb-4">
+            <!-- <div class="col-xl-3 col-md-6 mb-4">
                 <div class="card border-left-info shadow h-100 py-2">
                     <div class="card-body">
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
-                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Tasks Completed</div>
+                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Coaching Selesai</div>
                                 <div class="row no-gutters align-items-center">
                                     <div class="col-auto">
-                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"><?= $hasilpersen ?>%</div>
+                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"></div>
                                     </div>
                                     <div class="col">
                                         <div class="progress progress-sm mr-2">
@@ -89,7 +89,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
             <!-- Pending Requests Card Example -->
             <div class="col-xl-3 col-md-6 mb-4">
@@ -97,8 +97,26 @@
                     <div class="card-body">
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
-                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Pending Requests</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $ini; ?></div>
+                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Coaching Selesai</div>
+                                <?php $event_hasil = $this->db->query("SELECT * FROM `event` WHERE `status`LIKE '%disetujui%'"); ?>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $event_hasil->num_rows(); ?></div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-check-circle fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Pending Requests Card Example -->
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-danger shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Coaching Tertunda</div>
+                                <?php $event_hasil_2 = $this->db->query("SELECT * FROM `event` WHERE `status`LIKE '%diajukan%'"); ?>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $event_hasil_2->num_rows(); ?></div>
                             </div>
                             <div class="col-auto">
                                 <i class="fas fa-hourglass-half fa-2x text-gray-300"></i>
@@ -118,23 +136,23 @@
                 <div class="card shadow mb-4">
                     <!-- Card Header - Dropdown -->
                     <a href="#collapseCardExample3" class="card-header py-3 d-flex flex-row align-items-center justify-content-between" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample3">
-                        <h6 class="m-0 font-weight-bold" style="color:#a80231;">Projects Overview</h6>
-                    <!-- Card Body -->
+                        <h6 class="m-0 font-weight-bold" style="color:#1a4645;">Grafik Pengajuan Coaching Clinic</h6>
+                        <!-- Card Body -->
                     </a>
-                <div class="collapse show" id="collapseCardExample3">
-                    <div class="card-body">
-                        <div class="chart-area">
-                            <div class="chartjs-size-monitor">
-                                <div class="chartjs-size-monitor-expand">
-                                    <div class=""></div>
+                    <div class="collapse show" id="collapseCardExample3">
+                        <div class="card-body">
+                            <div class="chart-area">
+                                <div class="chartjs-size-monitor">
+                                    <div class="chartjs-size-monitor-expand">
+                                        <div class=""></div>
+                                    </div>
+                                    <div class="chartjs-size-monitor-shrink">
+                                        <div class=""></div>
+                                    </div>
                                 </div>
-                                <div class="chartjs-size-monitor-shrink">
-                                    <div class=""></div>
-                                </div>
+                                <canvas id="chartproject" style="display: block; height: 320px; width: 467px;" width="583" height="400" class="chartjs-render-monitor"></canvas>
                             </div>
-                            <canvas id="chartproject" style="display: block; height: 320px; width: 467px;" width="583" height="400" class="chartjs-render-monitor"></canvas>
                         </div>
-                    </div>
                     </div>
                 </div>
             </div>
@@ -144,7 +162,7 @@
     <?php
     for ($i = 1; $i <= 12; $i++) {
     ?>
-        <?php $query = $this->db->query("SELECT * FROM `request_task` WHERE YEAR(date_created) = '" . date('Y-m-d') . "' and MONTH(date_created) = '" . $i . "'"); ?>
+        <?php $query = $this->db->query("SELECT * FROM `event` WHERE YEAR(date_event) = '" . date('Y-m-d') . "' and MONTH(date_event) = '" . $i . "'"); ?>
         <input type="hidden" value="<?= $query->num_rows(); ?>" id="ke<?= $i ?>">
     <?php
     }
@@ -153,7 +171,7 @@
     <script>
         $(window).on("load", function() {
             Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
-            Chart.defaults.global.defaultFontColor = '#858796';
+            Chart.defaults.global.defaultFontColor = '#1a4645';
 
             function number_format(number, decimals, dec_point, thousands_sep) {
                 // *     example: number_format(1234.56, 2, ',', ' ');
@@ -190,10 +208,10 @@
                         label: "Projects",
                         lineTension: 0.3,
                         backgroundColor: "rgba(78, 115, 223, 0.05)",
-                        borderColor: "#a80231",
+                        borderColor: "#1a4645",
                         pointRadius: 3,
-                        pointBackgroundColor: "#a80231",
-                        pointBorderColor: "#a80231",
+                        pointBackgroundColor: "#1a4645",
+                        pointBorderColor: "#1a4645",
                         pointHoverRadius: 3,
                         pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
                         pointHoverBorderColor: "rgba(78, 115, 223, 1)",

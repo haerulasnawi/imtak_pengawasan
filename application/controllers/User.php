@@ -13,6 +13,7 @@ class User extends CI_Controller
     {
         $data['title'] = 'My Profile';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+        $data['date_coach'] = $this->db->get_where('event', ['email' => $this->session->userdata('email')])->result_array();
 
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar', $data);
@@ -26,7 +27,11 @@ class User extends CI_Controller
         $data['title'] = 'Edit Profile';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
-        $this->form_validation->set_rules('name', 'Full Name', 'required|trim');
+        $this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email');
+        $this->form_validation->set_rules('name', 'Nama lengkap', 'required|trim');
+        $this->form_validation->set_rules('nip', 'NIP', 'required|trim');
+        $this->form_validation->set_rules('unit_kerja', 'Unit kerja', 'required|trim');
+        $this->form_validation->set_rules('no_hp', 'No HP', 'required|trim');
 
         if ($this->form_validation->run() == false) {
             $this->load->view('templates/header', $data);
@@ -35,8 +40,13 @@ class User extends CI_Controller
             $this->load->view('user/edit', $data);
             $this->load->view('templates/footer');
         } else {
+            $id = $this->input->post('id');
             $name = $this->input->post('name');
             $email = $this->input->post('email');
+            $nip = $this->input->post('nip');
+            $unit_kerja = $this->input->post('unit_kerja');
+            $date_created = $this->input->post('date_created');
+            $no_hp = $this->input->post('no_hp');
 
             //cek jika ada gambar yang akan diupload
 
@@ -44,7 +54,7 @@ class User extends CI_Controller
 
             if ($upload_image) {
                 $config['upload_path'] = './assets/img/profile/';
-                $config['allowed_types'] = 'gif|jpg|png|jpeg';
+                $config['allowed_types'] = 'jpg|png|jpeg';
                 $config['max_size']     = '5048';
 
                 $this->load->library('upload', $config);
@@ -62,12 +72,14 @@ class User extends CI_Controller
                     redirect('user');
                 }
             }
-
+            $this->db->set('nip', $nip);
+            $this->db->set('unit_kerja', $unit_kerja);
+            $this->db->set('date_created', $date_created);
+            $this->db->set('no_hp', $no_hp);
             $this->db->set('name', $name);
-            $this->db->where('email', $email);
+            $this->db->where('id', $id);
             // $this->db->where('name', $name);
             $this->db->update('user');
-
             $this->session->set_flashdata('menus', '<div class="alert alert-success alert-dismissible" role="alert">Your profile successfully changed! </div>');
             redirect('user');
         }
@@ -221,6 +233,79 @@ class User extends CI_Controller
 
         redirect('user/curtask');
     }
+
+    public function requestCoaching()
+    {
+        $data['title'] = 'Request Coaching';
+        $data['user'] = $this->db->get_where('user', ['email' => $user = $this->session->userdata('email')])->row_array();
+
+        $data['event'] = $this->db->get_where('event', ['email' => $user])->result_array();
+        $this->load->helper('date');
+
+        $this->form_validation->set_rules('event_problem', 'Permasalahan', 'required|trim');
+        $this->form_validation->set_rules('penjelasan_umum', 'Penjelasan Umum', 'required|trim');
+        $this->form_validation->set_rules('date_event', 'Tanggal & Waktu', 'required|trim');
+
+        if ($this->form_validation->run() == false) {
+            $this->load->view('templates/header', $data);
+            $this->load->view('templates/sidebar', $data);
+            $this->load->view('templates/topbar', $data);
+            $this->load->view('user/requestCoaching', $data);
+            $this->load->view('templates/footer');
+        } else {
+            // $format = "%Y-%M-%d %H:%i";
+            $data = [
+                'id' => $this->input->post('id'),
+                'id_user' => $this->input->post('id_user'),
+                'name' => $this->input->post('name'),
+                'email' => $this->input->post('email'),
+                'no_hp' => $this->input->post('no_hp'),
+                'event_problem' => $this->input->post('event_problem'),
+                'penjelasan_umum' => $this->input->post('penjelasan_umum'),
+                'date_event' => date('Y-m-d', strtotime($this->input->post('date_event'))),
+                'status' => 'diajukan',
+                'date_created' => time()
+            ];
+
+            $this->db->insert('event', $data);
+            $this->session->set_flashdata('menus', '<div class="alert alert-success alert-dismissible" role="alert">Congratulation, your agenda has been send to admin! </div>');
+            redirect('user/requestCoaching');
+        }
+    }
+
+    public function deleteEvent($id)
+    {
+        $data['title'] = 'Request Coaching';
+        $data['user'] = $this->db->get_where('user', ['email' => $user = $this->session->userdata('email')])->row_array();
+
+        $data['event'] = $this->db->get_where('event', ['email' => $user])->result_array();
+        $this->load->model('Menu_model', 'menu');
+
+        if ($this->menu->deleteEvent($id) > 0) {
+            $this->session->set_flashdata('menus', '<div class="alert alert-success alert-dismissible" role="alert">Agenda successfully deleted! </div>');
+            redirect('user/requestCoaching');
+        } else {
+            $this->session->set_flashdata('menus', '<div class="alert alert-danger alert-dismissible" role="alert">Error while deleting agenda! </div>');
+            redirect('user/requestCoaching');
+        }
+    }
+
+    // public function getEvent()
+    // {
+    //     $data['user'] = $this->db->get_where('user', ['email' => $user = $this->session->userdata('email')])->row_array();
+
+    //     foreach ($this->db->get_where('event', ['email' => $user])->result_array() as $row()) {
+    //         $data[] = array(
+    //             'id' => $event['id'],
+    //             'event_problem' => $this->input->post('event_problem'),
+    //             'penjelasan_umum' => $this->input->post('penjelasan_umum'),
+    //             'date_event' => date('Y-m-d', strtotime($this->input->post('date_event'))),
+    //             'status' => 'diajukan',
+    //         );
+    //     }
+
+    //     echo json_encode($data);
+    // }
 
     public function curtask()
     {

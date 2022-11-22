@@ -12,10 +12,10 @@ class Humanresource extends CI_Controller
     public function index()
     {
 
-        $data['title'] = 'Data Freelance';
+        $data['title'] = 'Data Pegawai';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
-        $this->load->model('Menu_model', 'menu');
-        $data['freelance'] = $this->menu->getFreelance();
+        // $this->load->model('Menu_model', 'menu');
+        // $data['pegawai'] = $this->menu->getPegawai();
         $data['useraja'] = $this->db->get_where('user', ['role_id' => 2])->result_array();
 
         $this->form_validation->set_rules('name', 'Name', 'required|is_unique[freelance.name]', [
@@ -96,6 +96,53 @@ class Humanresource extends CI_Controller
             $this->session->set_flashdata('menus', '<div class="alert alert-danger alert-dismissible" role="alert">Error while changing data freelance! </div>');
             redirect('humanresource');
         }
+    }
+
+
+
+    public function coachingList()
+    {
+        $data['title'] = 'Coaching List';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+
+        $this->load->model('Menu_model', 'menu');
+        $data['event'] = $this->db->get('event')->result_array();
+        // $data['taskinvoice'] = $this->db->get_where('task_invoice', ['status' => 'pending invoice'])->result_array();
+
+
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('humanresource/coachingList', $data);
+        $this->load->view('templates/footer');
+    }
+
+    public function deleteCoaching($id)
+    {
+        $data['title'] = 'Coaching List';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+
+        $this->load->model('Menu_model', 'menu');
+
+        if ($this->menu->deleteEvent($id) > 0) {
+            $this->session->set_flashdata('menus', '<div class="alert alert-success alert-dismissible" role="alert">Agenda successfully deleted! </div>');
+            redirect('humanresource/coachingList');
+        } else {
+            $this->session->set_flashdata('menus', '<div class="alert alert-danger alert-dismissible" role="alert">Error while deleting agenda! </div>');
+            redirect('humanresource/coachingList');
+        }
+    }
+
+    public function approveCoaching($id)
+    {
+        $data['title'] = 'Coaching List';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+
+        $this->load->model('Menu_model', 'menu');
+
+        $this->menu->approvalEvent($id);
+        $this->session->set_flashdata('menus', '<div class="alert alert-success alert-dismissible" role="alert">Agenda successfully approved! </div>');
+        redirect('humanresource/coachingList');
     }
 
     public function taskInvoice()
@@ -476,19 +523,70 @@ class Humanresource extends CI_Controller
 
         if ($this->menu->deleteUser($id) > 0) {
             $this->session->set_flashdata('menus', '<div class="alert alert-success alert-dismissible" role="alert">User successfully deleted! </div>');
-            redirect('humanresource/userlist');
+            redirect('humanresource');
         } else {
             $this->session->set_flashdata('menus', '<div class="alert alert-danger alert-dismissible" role="alert">Error while deleting user! </div>');
-            redirect('humanresource/userlist');
+            redirect('humanresource');
         }
     }
 
     public function edit()
     {
+        // $data['title'] = 'Edit Profile';
+        // $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+
+        // $this->form_validation->set_rules('name', 'Full Name', 'required|trim');
+
+        // if ($this->form_validation->run() == false) {
+        //     $this->load->view('templates/header', $data);
+        //     $this->load->view('templates/sidebar', $data);
+        //     $this->load->view('templates/topbar', $data);
+        //     $this->load->view('humanresource/edit', $data);
+        //     $this->load->view('templates/footer');
+        // } else {
+        //     $name = $this->input->post('name');
+        //     $email = $this->input->post('email');
+
+        //     //cek jika ada gambar yang akan diupload
+
+        //     $upload_image = $_FILES['image']['name'];
+
+        //     if ($upload_image) {
+        //         $config['upload_path'] = './assets/img/profile/';
+        //         $config['allowed_types'] = 'gif|jpg|png|jpeg';
+        //         $config['max_size']     = '5048';
+
+        //         $this->load->library('upload', $config);
+
+        //         if ($this->upload->do_upload('image')) {
+        //             $old_image = $data['user']['image'];
+        //             if ($old_image != 'default.jpeg') {
+        //                 unlink(FCPATH . 'assets/img/profile/' . $old_image);
+        //             }
+
+        //             $new_image = $this->upload->data('file_name');
+        //             $this->db->set('image', $new_image);
+        //         } else {
+        //             $this->session->set_flashdata('menus', '<div class="alert alert-danger" role="alert">' . $this->upload->display_errors() . '</div>');
+        //             redirect('humanresource/edit');
+        //         }
+        //     }
+
+        //     $this->db->set('name', $name);
+        //     $this->db->where('email', $email);
+        //     $this->db->update('user');
+
+        //     $this->session->set_flashdata('menus', '<div class="alert alert-success alert-dismissible" role="alert">Your profile successfully changed! </div>');
+        //     redirect('humanresource/edit');
+        // }
         $data['title'] = 'Edit Profile';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
-        $this->form_validation->set_rules('name', 'Full Name', 'required|trim');
+        $this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email');
+        $this->form_validation->set_rules('name', 'Nama lengkap', 'required|trim');
+        $this->form_validation->set_rules('nip', 'NIP', 'required|trim');
+        $this->form_validation->set_rules('unit_kerja', 'Unit kerja', 'required|trim');
+        $this->form_validation->set_rules('no_hp', 'No HP', 'required|trim');
 
         if ($this->form_validation->run() == false) {
             $this->load->view('templates/header', $data);
@@ -497,8 +595,13 @@ class Humanresource extends CI_Controller
             $this->load->view('humanresource/edit', $data);
             $this->load->view('templates/footer');
         } else {
+            $id = $this->input->post('id');
             $name = $this->input->post('name');
             $email = $this->input->post('email');
+            $nip = $this->input->post('nip');
+            $unit_kerja = $this->input->post('unit_kerja');
+            $date_created = $this->input->post('date_created');
+            $no_hp = $this->input->post('no_hp');
 
             //cek jika ada gambar yang akan diupload
 
@@ -506,7 +609,7 @@ class Humanresource extends CI_Controller
 
             if ($upload_image) {
                 $config['upload_path'] = './assets/img/profile/';
-                $config['allowed_types'] = 'gif|jpg|png|jpeg';
+                $config['allowed_types'] = 'jpg|png|jpeg';
                 $config['max_size']     = '5048';
 
                 $this->load->library('upload', $config);
@@ -524,11 +627,14 @@ class Humanresource extends CI_Controller
                     redirect('humanresource/edit');
                 }
             }
-
+            $this->db->set('nip', $nip);
+            $this->db->set('unit_kerja', $unit_kerja);
+            $this->db->set('date_created', $date_created);
+            $this->db->set('no_hp', $no_hp);
             $this->db->set('name', $name);
-            $this->db->where('email', $email);
+            $this->db->where('id', $id);
+            // $this->db->where('name', $name);
             $this->db->update('user');
-
             $this->session->set_flashdata('menus', '<div class="alert alert-success alert-dismissible" role="alert">Your profile successfully changed! </div>');
             redirect('humanresource/edit');
         }

@@ -3,8 +3,8 @@
 
     <!-- Page Heading -->
     <h1 class="h3 mb-0 text-gray-800"><?= $title; ?></h1>
-  <p>You can create a new user here</p>
-  <hr class="mb-4">
+    <p>You can create a new user here</p>
+    <hr class="mb-4">
 
     <div class="row">
         <?php $this->view('message') ?>
@@ -23,69 +23,67 @@
                 <link rel="stylesheet" href="<?= base_url('assets'); ?>/css/sb-admin-2.min.css" />
                 <link rel="stylesheet" href="<?= base_url('assets'); ?>/vendor/datatables/dataTables.bootstrap4.min.css" />
 
-
                 <a href="" class="btn btn-primary mb-3 text-white border-0" style=" background: #a80231 ;" data-toggle="modal" data-target="#newUserModal">Add New User</a>
                 <div class="card border-0 shadow-sm mb-4">
-                <div class="card-body p-3">
-                <div class="table-responsive-md" style="margin-bottom: 15px;">
-                    <table class="table table-hover" cellspacing="0" width="100%" id="tabeluserlist">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Image</th>
-                                <th>Role ID</th>
-                                <th>Active</th>
-                                <th>Created</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php $i = 1; ?>
-                            <?php foreach ($userlist as $us) : ?>
-                                <tr>
-                                    <th scope="row"><?= $i; ?></th>
-                                    <td><?= $us['name']; ?></td>
-                                    <td><?= $us['email']; ?></td>
-                                    <td><?= $us['image']; ?></td>
-                                    <td><?= $us['role_id']; ?></td>
-                                    <td><?= $us['is_active']; ?></td>
-                                    <td><?= date('d F Y', $us['date_created']); ?></td>
-                                    <td>
-                                        <a href="<?= site_url('humanresource/deleteuser/' . $us['id']); ?>" class="badge badge-danger" onclick="return confirm('Want to delete this stuff ?')">delete</a>
-                                    </td>
-                                </tr>
-                                <?php $i++; ?>
-                            <?php endforeach; ?>
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Name</th>
-                                <th scope="col">Email</th>
-                                <th scope="col">Image</th>
-                                <th scope="col">Role ID</th>
-                                <th scope="col">Active</th>
-                                <th scope="col">Created</th>
-                                <th scope="col">Action</th>
-                            </tr>
-                        </tfoot>
-                    </table>
-                    <script src="<?= base_url('assets/'); ?>vendor/bootstrap/js/bootstrap.min.js"></script>
-                    <script src="<?= base_url('assets/'); ?>js/jquery.min.js"></script>
-                    <script src="<?= base_url('assets/'); ?>vendor/datatables/jquery.dataTables.min.js"></script>
-                    <script src="<?= base_url('assets/'); ?>vendor/datatables/dataTables.bootstrap4.min.js"></script>
-                    <script src="<?= base_url('assets/'); ?>js/demo/datatables-demo.js"></script>
+                    <div class="card-body p-3">
+                        <div class="table-responsive" style="margin-bottom: 15px;">
+                            <table class="table table-hover" width="100%" id="tabeluserlist">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th style="width:100px;">Name</th>
+                                        <th style="width:50px;">Email</th>
+                                        <th style="width:20px;">Image</th>
+                                        <th style="width:10px;">Role ID</th>
+                                        <th style="width:10px;">Active</th>
+                                        <th style="width:20px;">Created</th>
+                                        <th style="width:10px;">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php $i = 1; ?>
+                                    <?php foreach ($userlist as $us) : ?>
+                                        <tr>
+                                            <th scope="row"><?= $i; ?></th>
+                                            <td><?= $us['name']; ?></td>
+                                            <td><?= $us['email']; ?></td>
+                                            <td><?= $us['image']; ?></td>
+                                            <td><?= $us['role_id']; ?></td>
+                                            <td><?= $us['is_active']; ?></td>
+                                            <td><?= date('d F Y', $us['date_created']); ?></td>
+                                            <td>
+                                                <a href="<?= site_url('humanresource/deleteuser/' . $us['id']); ?>" class="badge badge-danger" onclick="return confirm('Want to delete this stuff ?')">delete</a>
+                                            </td>
+                                        </tr>
+                                        <?php $i++; ?>
+                                    <?php endforeach; ?>
+                                </tbody>
+                                <!-- <tfoot>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Email</th>
+                                        <th scope="col">Image</th>
+                                        <th scope="col">Role ID</th>
+                                        <th scope="col">Active</th>
+                                        <th scope="col">Created</th>
+                                        <th scope="col">Action</th>
+                                    </tr>
+                                </tfoot> -->
+                            </table>
+                            <script src="<?= base_url('assets/'); ?>vendor/bootstrap/js/bootstrap.min.js"></script>
+                            <script src="<?= base_url('assets/'); ?>js/jquery.min.js"></script>
+                            <script src="<?= base_url('assets/'); ?>vendor/datatables/jquery.dataTables.min.js"></script>
+                            <script src="<?= base_url('assets/'); ?>vendor/datatables/dataTables.bootstrap4.min.js"></script>
+                            <script src="<?= base_url('assets/'); ?>js/demo/datatables-demo.js"></script>
             </body>
-
         </div>
-        </div>
-        </div>
-        <div class="alert alert-info mb-4" role="alert">
-  Description!  ⫸ Role ID  :  1 → Administration  |  2 → Freelance  |  4 → Humanresource  |  5 → Project Manager  |  6 → Finance  ||  Active : 1 → True  |  0 → False
-</div>
     </div>
+</div>
+<div class="alert alert-info mb-4" role="alert">
+    Description! ⫸ Role ID : 1 → Administration | 2 → Freelance | 4 → Humanresource | 5 → Project Manager | 6 → Finance || Active : 1 → True | 0 → False
+</div>
+</div>
 </div>
 </div>
 

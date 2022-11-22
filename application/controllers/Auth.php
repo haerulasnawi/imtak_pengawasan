@@ -126,19 +126,20 @@ class Auth extends CI_Controller
     {
         $config = [
             'protocol' => 'smtp',
-            'smtp_host' => 'smtp.mail.com',
-            'smtp_user' => 'bkpsdm@mail.com',
-            'smtp_pass' => 'bkpsdm2022',
-            'smtp_port' => '465',
+            'smtp_host' => 'in-v3.mailjet.com',
+            'smtp_user' => '59c1747dc31bc9bac6fd1237e19a20d5',
+            'smtp_pass' => 'a6bb930b90659f5a1bc3fcd1ad28645f',
+            'smtp_port' => 587,
             'mailtype' => 'html',
             'charset' => 'utf-8',
-            'newline' => "\r\n"
+            'newline' => "\r\n",
+            'crlf' => "\r\n"
         ];
 
         $this->load->library('email', $config);
         $this->email->initialize($config);
 
-        $this->email->from('bkpsdm@mail.com', 'Admin Badan Kepegawaian dan Pengembangan Sumber Daya Manusia');
+        $this->email->from('bkpsdm@mataramkota.go.id', 'Admin Badan Kepegawaian dan Pengembangan Sumber Daya Manusia');
         $this->email->to($this->input->post('email'));
 
         if ($type == 'verify') {
@@ -234,6 +235,70 @@ class Auth extends CI_Controller
                 $this->session->set_flashdata('menus', '<div class="alert alert-danger alert-dismissible" role="alert">Email is not registered or activated!</div>');
                 redirect('auth/forgotpassword');
             }
+        }
+    }
+
+    public function createAccount()
+    {
+        if ($this->session->userdata('email')) {
+            redirect('user');
+        }
+        $this->db->select('email, nip');
+        $query['user'] = $this->db->get('user')->result_array();
+
+
+        $this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email|is_unique[user.email]', [
+            'is_unique' => 'This email has already registered!'
+        ]);
+        $this->form_validation->set_rules('name', 'Nama lengkap', 'required|trim');
+        $this->form_validation->set_rules('nip', 'NIP', 'required|trim|is_unique[user.nip]', [
+            'is_unique' => 'This NIP has already registered!'
+        ]);
+        $this->form_validation->set_rules('unit_kerja', 'Unit kerja', 'required|trim');
+        $this->form_validation->set_rules('no_hp', 'No HP', 'required|trim');
+        $this->form_validation->set_rules('password', 'Password', 'required|trim|min_length[6]|matches[re_password]', [
+            'matches' => 'Password not match!',
+            'min_length' => 'Password too short!'
+        ]);
+        $this->form_validation->set_rules('re_password', 'Confirm Password', 'required|trim|matches[password]');
+
+        if ($this->form_validation->run() == false) {
+
+            $data['title'] = 'Buat Akun';
+            $this->load->view('templates/auth_header', $data);
+            $this->load->view('auth/create-account');
+            $this->load->view('templates/auth_footer');
+        } else {
+            $email = $this->input->post('email', true);
+            $data = [
+                'id' => htmlspecialchars($this->input->post('id')),
+                'name' =>  htmlspecialchars($this->input->post('name', true)),
+                'unit_kerja' =>  htmlspecialchars($this->input->post('unit_kerja', true)),
+                'nip' =>  htmlspecialchars($this->input->post('nip', true)),
+                'no_hp' =>  htmlspecialchars($this->input->post('no_hp', true)),
+                'email' => htmlspecialchars($email),
+                'image' => 'default.jpeg',
+                'password' => password_hash($this->input->post('password'), PASSWORD_DEFAULT),
+                'role_id' => 2,
+                'is_active' => 0,
+                'date_created' => time()
+
+            ];
+            //siapkan token
+            $token = base64_encode(random_bytes(32));
+            $user_token = [
+                'email' => $email,
+                'token' => $token,
+                'date_created' => time()
+            ];
+
+            $this->db->insert('user', $data);
+            $this->db->insert('user_token', $user_token);
+
+            $this->_sendEmail($token, 'verify');
+
+            $this->session->set_flashdata('menus', '<div class="alert alert-success alert-dismissible" role="alert">Congratulation, account has been created, please check your email and activate your account! </div>');
+            redirect('auth');
         }
     }
 

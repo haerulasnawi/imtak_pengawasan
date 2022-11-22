@@ -3,8 +3,8 @@
 
     <!-- Page Heading -->
     <h1 class="h3 mb-0 text-gray-800"><?= $title; ?></h1>
-  <p>You can change your password here</p>
-  <hr class="mb-3">
+    <p>You can change your password here</p>
+    <hr class="mb-3">
 
     <div class="row">
         <div class="col-lg-6">
@@ -27,7 +27,7 @@
                         <?= form_error('new_password2', '<small class="text-danger pl-3">', '</small>'); ?>
                     </div>
                     <div class="form-group">
-                        <button type="submit" class="btn text-white border-0" style=" background: #a80231 ;">Change Password</button>
+                        <button type="submit" class="btn text-white border-0" style=" background: #1a4645  ;">Change Password</button>
                     </div>
 
                 </div>
